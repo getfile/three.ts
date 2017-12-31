@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": false,
+    "module": "amd",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "removeComments": true,
+    "sourceMap": true,
+    "strictNullChecks": false,
+    "target": "es2015",
+	"outDir": "out",
+  },
+
+	"exclude": [
+		"out"
+	],
+
+  "compileOnSave": true
+}

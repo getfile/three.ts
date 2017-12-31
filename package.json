@@ -1,0 +1,11 @@
+{
+  "author": "HP",
+  "name": "three.ts",
+  "version": "0.0.0",
+  "description": "Generated with typescript.java",
+  "license": "MIT",
+  "dependencies": {
+    "amd-loader": "0.0.8",
+    "require": "^2.4.20"
+  }
+}
