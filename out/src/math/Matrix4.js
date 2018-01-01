@@ -576,11 +576,9 @@ define(["require", "exports", "./Vector3"], function (require, exports, Vector3_
                 this.elements[i] = array[i + offset];
             return this;
         }
-        toArray(array, offset) {
+        toArray(array, offset = 0) {
             if (array === undefined)
                 array = [];
-            if (offset === undefined)
-                offset = 0;
             let te = this.elements;
             array[offset] = te[0];
             array[offset + 1] = te[1];

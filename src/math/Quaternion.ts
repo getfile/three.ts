@@ -391,14 +391,8 @@ class Quaternion
 		return this;
 	}
 
-	multiply( q, p )
+	multiply( q )
 	{
-		if ( p !== undefined )
-		{
-			console.warn( 'THREE.Quaternion: .multiply() now only accepts one argument. Use .multiplyQuaternions( a, b ) instead.' );
-			return this.multiplyQuaternions( q, p );
-		}
-
 		return this.multiplyQuaternions( this, q );
 	}
 

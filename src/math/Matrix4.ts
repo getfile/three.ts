@@ -881,10 +881,9 @@ class Matrix4
 		return this;
 	}
 
-	toArray( array, offset )
+	toArray( array?:Array<number>, offset:number=0 )
 	{
 		if ( array === undefined ) array = [];
-		if ( offset === undefined ) offset = 0;
 
 		let te = this.elements;
 

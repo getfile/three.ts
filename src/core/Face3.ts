@@ -20,7 +20,7 @@ class Face3
 
 	materialIndex: number;
 
-	constructor( a, b, c, normal: Vector3, color: Color, materialIndex: number = 0 )
+	constructor( a, b, c, normal: Array<Vector3>, color: Array<Color>, materialIndex: number = 0 )
 	{
 		this.a = a;
 		this.b = b;

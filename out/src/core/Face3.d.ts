@@ -9,7 +9,7 @@ declare class Face3 {
     normal: Vector3;
     vertexNormals: Array<Vector3>;
     materialIndex: number;
-    constructor(a: any, b: any, c: any, normal: Vector3, color: Color, materialIndex?: number);
+    constructor(a: any, b: any, c: any, normal: Array<Vector3>, color: Array<Color>, materialIndex?: number);
     clone(): Face3;
     copy(source: Face3): Face3;
 }

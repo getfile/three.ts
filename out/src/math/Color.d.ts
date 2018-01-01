@@ -8,7 +8,7 @@ declare class Color {
     r: number;
     g: number;
     b: number;
-    constructor(r: any, g?: number, b?: number);
+    constructor(r?: any, g?: number, b?: number);
     set(value: any): Color;
     setScalar(scalar: number): Color;
     setHex(hex: number): Color;

@@ -51,7 +51,7 @@ class Color
 	g: number = 1;
 	b: number = 1;
 
-	constructor( r: any, g?: number, b?: number )
+	constructor( r?: any, g?: number, b?: number )
 	{
 		if ( g === undefined || b === undefined )
 		{

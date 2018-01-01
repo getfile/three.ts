@@ -37,6 +37,6 @@ declare class Matrix4 {
     makeOrthographic(left: any, right: any, top: any, bottom: any, near: any, far: any): this;
     equals(matrix: any): boolean;
     fromArray(array: Array<number>, offset?: number): this;
-    toArray(array: any, offset: any): any;
+    toArray(array?: Array<number>, offset?: number): number[];
 }
 export { Matrix4 };

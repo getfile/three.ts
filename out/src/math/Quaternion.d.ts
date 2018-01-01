@@ -23,7 +23,7 @@ declare class Quaternion {
     lengthSq(): number;
     length(): number;
     normalize(): this;
-    multiply(q: any, p: any): this;
+    multiply(q: any): this;
     premultiply(q: any): this;
     multiplyQuaternions(a: any, b: any): this;
     slerp(qb: any, t: any): Quaternion;
