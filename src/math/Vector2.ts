@@ -10,8 +10,8 @@ class Vector2
 
 	isVector2: boolean = true;
 
-	private x: number;
-	private y: number;
+	x: number;
+	y: number;
 
 	constructor( x: number = 0, y: number = 0 )
 	{
@@ -141,7 +141,7 @@ class Vector2
 		return this;
 	}
 
-	sub( v: Vector2, w: Vector2 ): Vector2
+	sub( v: Vector2, w?: Vector2 ): Vector2
 	{
 		if ( w !== undefined )
 		{

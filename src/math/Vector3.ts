@@ -453,7 +453,7 @@ class Vector3
 		return this.subVectors( v2, v1 ).multiplyScalar( alpha ).add( v1 );
 	}
 
-	cross( v, w )
+	cross( v, w?: Vector3 )
 	{
 		if ( w !== undefined )
 		{
@@ -570,12 +570,12 @@ class Vector3
 		return this;
 	}
 
-	setFromMatrixColumn( m:Matrix4, index )
+	setFromMatrixColumn( m: Matrix4, index )
 	{
 		return this.fromArray( m.elements, index * 4 );
 	}
 
-	equals( v:Vector3 ):boolean
+	equals( v: Vector3 ): boolean
 	{
 		return ( ( v.x === this.x ) && ( v.y === this.y ) && ( v.z === this.z ) );
 	}
@@ -603,13 +603,8 @@ class Vector3
 		return array;
 	}
 
-	fromBufferAttribute( attribute, index, offset )
+	fromBufferAttribute( attribute, index )
 	{
-		if ( offset !== undefined )
-		{
-			console.warn( 'THREE.Vector3: offset has been removed from .fromBufferAttribute().' );
-		}
-
 		this.x = attribute.getX( index );
 		this.y = attribute.getY( index );
 		this.z = attribute.getZ( index );

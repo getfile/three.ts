@@ -1,7 +1,7 @@
 declare class Vector2 {
     isVector2: boolean;
-    private x;
-    private y;
+    x: number;
+    y: number;
     constructor(x?: number, y?: number);
     width: number;
     height: number;
@@ -17,7 +17,7 @@ declare class Vector2 {
     addScalar(s: number): Vector2;
     addVectors(a: Vector2, b: Vector2): Vector2;
     addScaledVector(v: Vector2, s: number): Vector2;
-    sub(v: Vector2, w: Vector2): Vector2;
+    sub(v: Vector2, w?: Vector2): Vector2;
     subScalar(s: number): Vector2;
     subVectors(a: Vector2, b: Vector2): Vector2;
     multiply(v: any): Vector2;

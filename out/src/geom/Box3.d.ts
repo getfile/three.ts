@@ -1,0 +1,38 @@
+import { Vector3 } from '../math/Vector3';
+declare class Box3 {
+    min: Vector3;
+    max: Vector3;
+    constructor(min?: Vector3, max?: Vector3);
+    set(min: any, max: any): this;
+    setFromArray(array: any): this;
+    setFromBufferAttribute(attribute: any): this;
+    setFromPoints(points: any): this;
+    setFromCenterAndSize(center: any, size: any): this;
+    setFromObject(object: any): this;
+    clone(): Box3;
+    copy(box: any): this;
+    makeEmpty(): this;
+    isEmpty(): boolean;
+    getCenter(optionalTarget: any): any;
+    getSize(optionalTarget: any): any;
+    expandByPoint(point: any): this;
+    expandByVector(vector: any): this;
+    expandByScalar(scalar: any): this;
+    private traverse(node);
+    expandByObject(object: any): this;
+    containsPoint(point: any): boolean;
+    containsBox(box: any): boolean;
+    getParameter(point: any, optionalTarget: any): any;
+    intersectsBox(box: any): boolean;
+    intersectsSphere(sphere: any): boolean;
+    intersectsPlane(plane: any): boolean;
+    clampPoint(point: any, optionalTarget: any): any;
+    distanceToPoint(point: any): number;
+    getBoundingSphere(optionalTarget: any): any;
+    intersect(box: any): this;
+    union(box: any): this;
+    applyMatrix4(matrix: any): this;
+    translate(offset: any): this;
+    equals(box: any): any;
+}
+export { Box3 };

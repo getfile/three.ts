@@ -52,7 +52,7 @@ declare class Vector3 {
     setLength(length: any): Vector3;
     lerp(v: any, alpha: any): this;
     lerpVectors(v1: any, v2: any, alpha: any): Vector3;
-    cross(v: any, w: any): this;
+    cross(v: any, w?: Vector3): this;
     crossVectors(a: any, b: any): this;
     projectOnVector(vector: any): Vector3;
     projectOnPlane(planeNormal: any): Vector3;
@@ -69,6 +69,6 @@ declare class Vector3 {
     equals(v: Vector3): boolean;
     fromArray(array: any, offset: any): this;
     toArray(array: any, offset: any): any;
-    fromBufferAttribute(attribute: any, index: any, offset: any): this;
+    fromBufferAttribute(attribute: any, index: any): this;
 }
 export { Vector3 };

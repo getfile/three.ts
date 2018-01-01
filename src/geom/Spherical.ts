@@ -1,4 +1,4 @@
-import { _Math } from './Math.js';
+import { _Math } from '../math/Math';
 
 /**
  * @author bhouston / http://clara.io
@@ -10,19 +10,26 @@ import { _Math } from './Math.js';
  * The equator starts at positive z.
  */
 
-function Spherical( radius, phi, theta ) {
+class Spherical
+{
 
-	this.radius = ( radius !== undefined ) ? radius : 1.0;
-	this.phi = ( phi !== undefined ) ? phi : 0; // up / down towards top and bottom pole
-	this.theta = ( theta !== undefined ) ? theta : 0; // around the equator of the sphere
+	radius: number;
+	phi: number;
+	theta: number;
 
-	return this;
+	constructor( radius?: number, phi?: number, theta?: number )
+	{
 
-}
+		this.radius = ( radius !== undefined ) ? radius : 1.0;
+		this.phi = ( phi !== undefined ) ? phi : 0; // up / down towards top and bottom pole
+		this.theta = ( theta !== undefined ) ? theta : 0; // around the equator of the sphere
 
-Object.assign( Spherical.prototype, {
+		return this;
 
-	set: function ( radius, phi, theta ) {
+	}
+
+	set( radius, phi, theta )
+	{
 
 		this.radius = radius;
 		this.phi = phi;
@@ -30,15 +37,17 @@ Object.assign( Spherical.prototype, {
 
 		return this;
 
-	},
+	}
 
-	clone: function () {
+	clone()
+	{
 
-		return new this.constructor().copy( this );
+		return new Spherical().copy( this );
 
-	},
+	}
 
-	copy: function ( other ) {
+	copy( other )
+	{
 
 		this.radius = other.radius;
 		this.phi = other.phi;
@@ -46,28 +55,32 @@ Object.assign( Spherical.prototype, {
 
 		return this;
 
-	},
+	}
 
 	// restrict phi to be betwee EPS and PI-EPS
-	makeSafe: function () {
+	makeSafe()
+	{
 
 		var EPS = 0.000001;
 		this.phi = Math.max( EPS, Math.min( Math.PI - EPS, this.phi ) );
 
 		return this;
 
-	},
+	}
 
-	setFromVector3: function ( vec3 ) {
+	setFromVector3( vec3 )
+	{
 
 		this.radius = vec3.length();
 
-		if ( this.radius === 0 ) {
+		if ( this.radius === 0 )
+		{
 
 			this.theta = 0;
 			this.phi = 0;
 
-		} else {
+		} else
+		{
 
 			this.theta = Math.atan2( vec3.x, vec3.z ); // equator angle around y-up axis
 			this.phi = Math.acos( _Math.clamp( vec3.y / this.radius, - 1, 1 ) ); // polar angle
@@ -78,7 +91,7 @@ Object.assign( Spherical.prototype, {
 
 	}
 
-} );
+}
 
 
 export { Spherical };

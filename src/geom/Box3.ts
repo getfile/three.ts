@@ -1,32 +1,35 @@
-import { Vector3 } from './Vector3.js';
-import { Sphere } from './Sphere.js';
+import { Vector3 } from '../math/Vector3';
+import { Sphere } from './Sphere';
 
 /**
  * @author bhouston / http://clara.io
  * @author WestLangley / http://github.com/WestLangley
  */
 
-function Box3( min, max ) {
+class Box3
+{
+	min: Vector3;
+	max: Vector3;
 
-	this.min = ( min !== undefined ) ? min : new Vector3( + Infinity, + Infinity, + Infinity );
-	this.max = ( max !== undefined ) ? max : new Vector3( - Infinity, - Infinity, - Infinity );
+	constructor( min?: Vector3, max?: Vector3 )
+	{
+		this.min = ( min !== undefined ) ? min : new Vector3( + Infinity, + Infinity, + Infinity );
+		this.max = ( max !== undefined ) ? max : new Vector3( - Infinity, - Infinity, - Infinity );
+	}
 
-}
 
-Object.assign( Box3.prototype, {
-
-	isBox3: true,
-
-	set: function ( min, max ) {
+	set( min, max )
+	{
 
 		this.min.copy( min );
 		this.max.copy( max );
 
 		return this;
 
-	},
+	}
 
-	setFromArray: function ( array ) {
+	setFromArray( array )
+	{
 
 		var minX = + Infinity;
 		var minY = + Infinity;
@@ -36,7 +39,8 @@ Object.assign( Box3.prototype, {
 		var maxY = - Infinity;
 		var maxZ = - Infinity;
 
-		for ( var i = 0, l = array.length; i < l; i += 3 ) {
+		for ( var i = 0, l = array.length; i < l; i += 3 )
+		{
 
 			var x = array[ i ];
 			var y = array[ i + 1 ];
@@ -57,9 +61,10 @@ Object.assign( Box3.prototype, {
 
 		return this;
 
-	},
+	}
 
-	setFromBufferAttribute: function ( attribute ) {
+	setFromBufferAttribute( attribute )
+	{
 
 		var minX = + Infinity;
 		var minY = + Infinity;
@@ -69,7 +74,8 @@ Object.assign( Box3.prototype, {
 		var maxY = - Infinity;
 		var maxZ = - Infinity;
 
-		for ( var i = 0, l = attribute.count; i < l; i ++ ) {
+		for ( var i = 0, l = attribute.count; i < l; i++ )
+		{
 
 			var x = attribute.getX( i );
 			var y = attribute.getY( i );
@@ -90,13 +96,15 @@ Object.assign( Box3.prototype, {
 
 		return this;
 
-	},
+	}
 
-	setFromPoints: function ( points ) {
+	setFromPoints( points )
+	{
 
 		this.makeEmpty();
 
-		for ( var i = 0, il = points.length; i < il; i ++ ) {
+		for ( var i = 0, il = points.length; i < il; i++ )
+		{
 
 			this.expandByPoint( points[ i ] );
 
@@ -104,188 +112,151 @@ Object.assign( Box3.prototype, {
 
 		return this;
 
-	},
+	}
 
-	setFromCenterAndSize: function () {
-
+	setFromCenterAndSize( center, size )
+	{
 		var v1 = new Vector3();
 
-		return function setFromCenterAndSize( center, size ) {
+		var halfSize = v1.copy( size ).multiplyScalar( 0.5 );
 
-			var halfSize = v1.copy( size ).multiplyScalar( 0.5 );
+		this.min.copy( center ).sub( halfSize );
+		this.max.copy( center ).add( halfSize );
 
-			this.min.copy( center ).sub( halfSize );
-			this.max.copy( center ).add( halfSize );
+		return this;
 
-			return this;
+	};
 
-		};
 
-	}(),
-
-	setFromObject: function ( object ) {
-
+	setFromObject( object )
+	{
 		this.makeEmpty();
-
 		return this.expandByObject( object );
+	}
 
-	},
+	clone()
+	{
+		return new Box3().copy( this );
+	}
 
-	clone: function () {
-
-		return new this.constructor().copy( this );
-
-	},
-
-	copy: function ( box ) {
-
+	copy( box )
+	{
 		this.min.copy( box.min );
 		this.max.copy( box.max );
-
 		return this;
+	}
 
-	},
-
-	makeEmpty: function () {
-
+	makeEmpty()
+	{
 		this.min.x = this.min.y = this.min.z = + Infinity;
 		this.max.x = this.max.y = this.max.z = - Infinity;
-
 		return this;
+	}
 
-	},
-
-	isEmpty: function () {
-
+	isEmpty()
+	{
 		// this is a more robust check for empty than ( volume <= 0 ) because volume can get positive with two negative axes
-
 		return ( this.max.x < this.min.x ) || ( this.max.y < this.min.y ) || ( this.max.z < this.min.z );
+	}
 
-	},
-
-	getCenter: function ( optionalTarget ) {
-
+	getCenter( optionalTarget )
+	{
 		var result = optionalTarget || new Vector3();
 		return this.isEmpty() ? result.set( 0, 0, 0 ) : result.addVectors( this.min, this.max ).multiplyScalar( 0.5 );
+	}
 
-	},
-
-	getSize: function ( optionalTarget ) {
-
+	getSize( optionalTarget )
+	{
 		var result = optionalTarget || new Vector3();
 		return this.isEmpty() ? result.set( 0, 0, 0 ) : result.subVectors( this.max, this.min );
+	}
 
-	},
-
-	expandByPoint: function ( point ) {
-
+	expandByPoint( point )
+	{
 		this.min.min( point );
 		this.max.max( point );
 
 		return this;
+	}
 
-	},
-
-	expandByVector: function ( vector ) {
-
+	expandByVector( vector )
+	{
 		this.min.sub( vector );
 		this.max.add( vector );
 
 		return this;
+	}
 
-	},
-
-	expandByScalar: function ( scalar ) {
-
+	expandByScalar( scalar )
+	{
 		this.min.addScalar( - scalar );
 		this.max.addScalar( scalar );
 
 		return this;
+	}
 
-	},
-
-	expandByObject: function () {
-
-		// Computes the world-axis-aligned bounding box of an object (including its children),
-		// accounting for both the object's, and children's, world transforms
-
-		var scope, i, l;
+	// Computes the world-axis-aligned bounding box of an object (including its children),
+	// accounting for both the object's, and children's, world transforms
+	private traverse( node )
+	{
+		var  i, l;
 
 		var v1 = new Vector3();
+		var geometry = node.geometry;
 
-		function traverse( node ) {
-
-			var geometry = node.geometry;
-
-			if ( geometry !== undefined ) {
-
-				if ( geometry.isGeometry ) {
-
-					var vertices = geometry.vertices;
-
-					for ( i = 0, l = vertices.length; i < l; i ++ ) {
-
-						v1.copy( vertices[ i ] );
-						v1.applyMatrix4( node.matrixWorld );
-
-						scope.expandByPoint( v1 );
-
-					}
-
-				} else if ( geometry.isBufferGeometry ) {
-
-					var attribute = geometry.attributes.position;
-
-					if ( attribute !== undefined ) {
-
-						for ( i = 0, l = attribute.count; i < l; i ++ ) {
-
-							v1.fromBufferAttribute( attribute, i ).applyMatrix4( node.matrixWorld );
-
-							scope.expandByPoint( v1 );
-
-						}
-
-					}
-
+		if ( geometry !== undefined )
+		{
+			if ( geometry.isGeometry )
+			{
+				var vertices = geometry.vertices;
+				for ( i = 0, l = vertices.length; i < l; i++ )
+				{
+					v1.copy( vertices[ i ] );
+					v1.applyMatrix4( node.matrixWorld );
+					this.expandByPoint( v1 );
 				}
 
 			}
-
+			else if ( geometry.isBufferGeometry )
+			{
+				var attribute = geometry.attributes.position;
+				if ( attribute !== undefined )
+				{
+					for ( i = 0, l = attribute.count; i < l; i++ )
+					{
+						v1.fromBufferAttribute( attribute, i ).applyMatrix4( node.matrixWorld );
+						this.expandByPoint( v1 );
+					}
+				}
+			}
 		}
+	}
 
-		return function expandByObject( object ) {
+	expandByObject( object )
+	{
+		// todo
+//		object.updateMatrixWorld( true );
+//		object.traverse( traverse );
+		return this;
+	};
 
-			scope = this;
 
-			object.updateMatrixWorld( true );
-
-			object.traverse( traverse );
-
-			return this;
-
-		};
-
-	}(),
-
-	containsPoint: function ( point ) {
-
+	containsPoint( point )
+	{
 		return point.x < this.min.x || point.x > this.max.x ||
 			point.y < this.min.y || point.y > this.max.y ||
 			point.z < this.min.z || point.z > this.max.z ? false : true;
+	}
 
-	},
-
-	containsBox: function ( box ) {
-
+	containsBox( box )
+	{
 		return this.min.x <= box.min.x && box.max.x <= this.max.x &&
 			this.min.y <= box.min.y && box.max.y <= this.max.y &&
 			this.min.z <= box.min.z && box.max.z <= this.max.z;
+	}
 
-	},
-
-	getParameter: function ( point, optionalTarget ) {
-
+	getParameter( point, optionalTarget )
+	{
 		// This can potentially have a divide by zero if the box
 		// has a size dimension of 0.
 
@@ -296,121 +267,95 @@ Object.assign( Box3.prototype, {
 			( point.y - this.min.y ) / ( this.max.y - this.min.y ),
 			( point.z - this.min.z ) / ( this.max.z - this.min.z )
 		);
+	}
 
-	},
-
-	intersectsBox: function ( box ) {
-
+	intersectsBox( box )
+	{
 		// using 6 splitting planes to rule out intersections.
 		return box.max.x < this.min.x || box.min.x > this.max.x ||
 			box.max.y < this.min.y || box.min.y > this.max.y ||
 			box.max.z < this.min.z || box.min.z > this.max.z ? false : true;
+	}
 
-	},
 
-	intersectsSphere: ( function () {
-
+	intersectsSphere( sphere )
+	{
 		var closestPoint = new Vector3();
 
-		return function intersectsSphere( sphere ) {
+		// Find the point on the AABB closest to the sphere center.
+		this.clampPoint( sphere.center, closestPoint );
 
-			// Find the point on the AABB closest to the sphere center.
-			this.clampPoint( sphere.center, closestPoint );
+		// If that point is inside the sphere, the AABB and sphere intersect.
+		return closestPoint.distanceToSquared( sphere.center ) <= ( sphere.radius * sphere.radius );
 
-			// If that point is inside the sphere, the AABB and sphere intersect.
-			return closestPoint.distanceToSquared( sphere.center ) <= ( sphere.radius * sphere.radius );
+	};
 
-		};
-
-	} )(),
-
-	intersectsPlane: function ( plane ) {
-
+	intersectsPlane( plane )
+	{
 		// We compute the minimum and maximum dot product values. If those values
 		// are on the same side (back or front) of the plane, then there is no intersection.
-
 		var min, max;
 
-		if ( plane.normal.x > 0 ) {
-
+		if ( plane.normal.x > 0 )
+		{
 			min = plane.normal.x * this.min.x;
 			max = plane.normal.x * this.max.x;
-
-		} else {
-
+		} else
+		{
 			min = plane.normal.x * this.max.x;
 			max = plane.normal.x * this.min.x;
-
 		}
 
-		if ( plane.normal.y > 0 ) {
-
+		if ( plane.normal.y > 0 )
+		{
 			min += plane.normal.y * this.min.y;
 			max += plane.normal.y * this.max.y;
-
-		} else {
-
+		} else
+		{
 			min += plane.normal.y * this.max.y;
 			max += plane.normal.y * this.min.y;
-
 		}
 
-		if ( plane.normal.z > 0 ) {
-
+		if ( plane.normal.z > 0 )
+		{
 			min += plane.normal.z * this.min.z;
 			max += plane.normal.z * this.max.z;
-
-		} else {
-
+		} else
+		{
 			min += plane.normal.z * this.max.z;
 			max += plane.normal.z * this.min.z;
-
 		}
 
 		return ( min <= plane.constant && max >= plane.constant );
+	}
 
-	},
-
-	clampPoint: function ( point, optionalTarget ) {
-
+	clampPoint( point, optionalTarget )
+	{
 		var result = optionalTarget || new Vector3();
 		return result.copy( point ).clamp( this.min, this.max );
+	}
 
-	},
-
-	distanceToPoint: function () {
-
+	distanceToPoint( point )
+	{
 		var v1 = new Vector3();
+		var clampedPoint = v1.copy( point ).clamp( this.min, this.max );
+		return clampedPoint.sub( point ).length();
+	};
 
-		return function distanceToPoint( point ) {
-
-			var clampedPoint = v1.copy( point ).clamp( this.min, this.max );
-			return clampedPoint.sub( point ).length();
-
-		};
-
-	}(),
-
-	getBoundingSphere: function () {
-
+	getBoundingSphere( optionalTarget )
+	{
 		var v1 = new Vector3();
+		var result = optionalTarget || new Sphere();
 
-		return function getBoundingSphere( optionalTarget ) {
+		this.getCenter( result.center );
+		result.radius = this.getSize( v1 ).length() * 0.5;
 
-			var result = optionalTarget || new Sphere();
+		return result;
+	};
 
-			this.getCenter( result.center );
 
-			result.radius = this.getSize( v1 ).length() * 0.5;
-
-			return result;
-
-		};
-
-	}(),
-
-	intersect: function ( box ) {
-
+	intersect( box )
+	{
 		this.min.max( box.min );
 		this.max.min( box.max );
 
@@ -418,20 +363,18 @@ Object.assign( Box3.prototype, {
 		if ( this.isEmpty() ) this.makeEmpty();
 
 		return this;
+	}
 
-	},
-
-	union: function ( box ) {
-
+	union( box )
+	{
 		this.min.min( box.min );
 		this.max.max( box.max );
 
 		return this;
+	}
 
-	},
-
-	applyMatrix4: function () {
-
+	applyMatrix4( matrix )
+	{
 		var points = [
 			new Vector3(),
 			new Vector3(),
@@ -442,46 +385,38 @@ Object.assign( Box3.prototype, {
 			new Vector3(),
 			new Vector3()
 		];
+		// transform of empty box is an empty box.
+		if ( this.isEmpty() ) return this;
 
-		return function applyMatrix4( matrix ) {
+		// NOTE: I am using a binary pattern to specify all 2^3 combinations below
+		points[ 0 ].set( this.min.x, this.min.y, this.min.z ).applyMatrix4( matrix ); // 000
+		points[ 1 ].set( this.min.x, this.min.y, this.max.z ).applyMatrix4( matrix ); // 001
+		points[ 2 ].set( this.min.x, this.max.y, this.min.z ).applyMatrix4( matrix ); // 010
+		points[ 3 ].set( this.min.x, this.max.y, this.max.z ).applyMatrix4( matrix ); // 011
+		points[ 4 ].set( this.max.x, this.min.y, this.min.z ).applyMatrix4( matrix ); // 100
+		points[ 5 ].set( this.max.x, this.min.y, this.max.z ).applyMatrix4( matrix ); // 101
+		points[ 6 ].set( this.max.x, this.max.y, this.min.z ).applyMatrix4( matrix ); // 110
+		points[ 7 ].set( this.max.x, this.max.y, this.max.z ).applyMatrix4( matrix ); // 111
 
-			// transform of empty box is an empty box.
-			if ( this.isEmpty() ) return this;
+		this.setFromPoints( points );
 
-			// NOTE: I am using a binary pattern to specify all 2^3 combinations below
-			points[ 0 ].set( this.min.x, this.min.y, this.min.z ).applyMatrix4( matrix ); // 000
-			points[ 1 ].set( this.min.x, this.min.y, this.max.z ).applyMatrix4( matrix ); // 001
-			points[ 2 ].set( this.min.x, this.max.y, this.min.z ).applyMatrix4( matrix ); // 010
-			points[ 3 ].set( this.min.x, this.max.y, this.max.z ).applyMatrix4( matrix ); // 011
-			points[ 4 ].set( this.max.x, this.min.y, this.min.z ).applyMatrix4( matrix ); // 100
-			points[ 5 ].set( this.max.x, this.min.y, this.max.z ).applyMatrix4( matrix ); // 101
-			points[ 6 ].set( this.max.x, this.max.y, this.min.z ).applyMatrix4( matrix ); // 110
-			points[ 7 ].set( this.max.x, this.max.y, this.max.z ).applyMatrix4( matrix );	// 111
+		return this;
+	};
 
-			this.setFromPoints( points );
-
-			return this;
-
-		};
-
-	}(),
-
-	translate: function ( offset ) {
-
+	translate( offset )
+	{
 		this.min.add( offset );
 		this.max.add( offset );
 
 		return this;
-
-	},
-
-	equals: function ( box ) {
-
-		return box.min.equals( this.min ) && box.max.equals( this.max );
-
 	}
 
-} );
+	equals( box )
+	{
+		return box.min.equals( this.min ) && box.max.equals( this.max );
+	}
+
+}
 
 
 export { Box3 };

@@ -385,10 +385,7 @@ define(["require", "exports", "./Math", "./Matrix4", "./Quaternion"], function (
             array[offset + 2] = this.z;
             return array;
         }
-        fromBufferAttribute(attribute, index, offset) {
-            if (offset !== undefined) {
-                console.warn('THREE.Vector3: offset has been removed from .fromBufferAttribute().');
-            }
+        fromBufferAttribute(attribute, index) {
             this.x = attribute.getX(index);
             this.y = attribute.getY(index);
             this.z = attribute.getZ(index);
