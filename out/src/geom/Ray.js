@@ -1,10 +1,10 @@
-define(["require", "exports", "../math/Vector3.js"], function (require, exports, Vector3_js_1) {
+define(["require", "exports", "../math/Vector3"], function (require, exports, Vector3_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Ray {
         constructor(origin, direction) {
-            this.origin = (origin !== undefined) ? origin : new Vector3_js_1.Vector3();
-            this.direction = (direction !== undefined) ? direction : new Vector3_js_1.Vector3();
+            this.origin = (origin !== undefined) ? origin : new Vector3_1.Vector3();
+            this.direction = (direction !== undefined) ? direction : new Vector3_1.Vector3();
         }
         set(origin, direction) {
             this.origin.copy(origin);
@@ -20,7 +20,7 @@ define(["require", "exports", "../math/Vector3.js"], function (require, exports,
             return this;
         }
         at(t, optionalTarget) {
-            var result = optionalTarget || new Vector3_js_1.Vector3();
+            var result = optionalTarget || new Vector3_1.Vector3();
             return result.copy(this.direction).multiplyScalar(t).add(this.origin);
         }
         lookAt(v) {
@@ -28,12 +28,12 @@ define(["require", "exports", "../math/Vector3.js"], function (require, exports,
             return this;
         }
         recast(t) {
-            var v1 = new Vector3_js_1.Vector3();
+            var v1 = new Vector3_1.Vector3();
             this.origin.copy(this.at(t, v1));
             return this;
         }
         closestPointToPoint(point, optionalTarget) {
-            var result = optionalTarget || new Vector3_js_1.Vector3();
+            var result = optionalTarget || new Vector3_1.Vector3();
             result.subVectors(point, this.origin);
             var directionDistance = result.dot(this.direction);
             if (directionDistance < 0) {
@@ -45,7 +45,7 @@ define(["require", "exports", "../math/Vector3.js"], function (require, exports,
             return Math.sqrt(this.distanceSqToPoint(point));
         }
         distanceSqToPoint(point) {
-            var v1 = new Vector3_js_1.Vector3();
+            var v1 = new Vector3_1.Vector3();
             var directionDistance = v1.subVectors(point, this.origin).dot(this.direction);
             if (directionDistance < 0) {
                 return this.origin.distanceToSquared(point);
@@ -54,9 +54,9 @@ define(["require", "exports", "../math/Vector3.js"], function (require, exports,
             return v1.distanceToSquared(point);
         }
         distanceSqToSegment(v0, v1, optionalPointOnRay, optionalPointOnSegment) {
-            var segCenter = new Vector3_js_1.Vector3();
-            var segDir = new Vector3_js_1.Vector3();
-            var diff = new Vector3_js_1.Vector3();
+            var segCenter = new Vector3_1.Vector3();
+            var segDir = new Vector3_1.Vector3();
+            var diff = new Vector3_1.Vector3();
             segCenter.copy(v0).add(v1).multiplyScalar(0.5);
             segDir.copy(v1).sub(v0).normalize();
             diff.copy(this.origin).sub(segCenter);
@@ -123,7 +123,7 @@ define(["require", "exports", "../math/Vector3.js"], function (require, exports,
             return sqrDist;
         }
         intersectSphere(sphere, optionalTarget) {
-            var v1 = new Vector3_js_1.Vector3();
+            var v1 = new Vector3_1.Vector3();
             v1.subVectors(sphere.center, this.origin);
             var tca = v1.dot(this.direction);
             var d2 = v1.dot(v1) - tca * tca;
@@ -216,15 +216,15 @@ define(["require", "exports", "../math/Vector3.js"], function (require, exports,
             return this.at(tmin >= 0 ? tmin : tmax, optionalTarget);
         }
         intersectsBox(box) {
-            var v = new Vector3_js_1.Vector3();
+            var v = new Vector3_1.Vector3();
             return this.intersectBox(box, v) !== null;
         }
         ;
         intersectTriangle(a, b, c, backfaceCulling, optionalTarget) {
-            var diff = new Vector3_js_1.Vector3();
-            var edge1 = new Vector3_js_1.Vector3();
-            var edge2 = new Vector3_js_1.Vector3();
-            var normal = new Vector3_js_1.Vector3();
+            var diff = new Vector3_1.Vector3();
+            var edge1 = new Vector3_1.Vector3();
+            var edge2 = new Vector3_1.Vector3();
+            var normal = new Vector3_1.Vector3();
             edge1.subVectors(b, a);
             edge2.subVectors(c, a);
             normal.crossVectors(edge1, edge2);
