@@ -1,30 +1,31 @@
-import { Object3D } from '../core/Object3D.js';
+import { Object3D } from '../core/Object3D';
 
 /**
  * @author mrdoob / http://mrdoob.com/
  */
 
-function Scene() {
+class Scene extends Object3D
+{
+	background;
+	fog;
+	overrideMaterial;
+	autoUpdate;
 
-	Object3D.call( this );
+	constructor()
+	{
+		super();
 
-	this.type = 'Scene';
+		this.type = 'Scene';
+		this.background = null;
+		this.fog = null;
+		this.overrideMaterial = null;
 
-	this.background = null;
-	this.fog = null;
-	this.overrideMaterial = null;
+		this.autoUpdate = true; // checked by the renderer
+	}
 
-	this.autoUpdate = true; // checked by the renderer
-
-}
-
-Scene.prototype = Object.assign( Object.create( Object3D.prototype ), {
-
-	constructor: Scene,
-
-	copy: function ( source, recursive ) {
-
-		Object3D.prototype.copy.call( this, source, recursive );
+	copy( source, recursive )
+	{
+		super.copy( source, recursive );
 
 		if ( source.background !== null ) this.background = source.background.clone();
 		if ( source.fog !== null ) this.fog = source.fog.clone();
@@ -34,22 +35,18 @@ Scene.prototype = Object.assign( Object.create( Object3D.prototype ), {
 		this.matrixAutoUpdate = source.matrixAutoUpdate;
 
 		return this;
+	}
 
-	},
-
-	toJSON: function ( meta ) {
-
-		var data = Object3D.prototype.toJSON.call( this, meta );
+	toJSON( meta )
+	{
+		var data = super.toJSON( meta );
 
 		if ( this.background !== null ) data.object.background = this.background.toJSON( meta );
 		if ( this.fog !== null ) data.object.fog = this.fog.toJSON();
 
 		return data;
-
 	}
 
-} );
-
-
+}
 
 export { Scene };

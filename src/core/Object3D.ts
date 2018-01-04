@@ -438,7 +438,6 @@ class Object3D extends EventDispatcher
 	{
 		// meta is a string when called from JSON.stringify
 		let isRootObject = ( meta === undefined || typeof meta === 'string' );
-
 		let output = {};
 
 		// meta is a hash used to collect geometries, materials.
@@ -476,14 +475,6 @@ class Object3D extends EventDispatcher
 		if ( JSON.stringify( this.userData ) !== '{}' ) object.userData = this.userData;
 
 		object.matrix = this.matrix.toArray();
-
-		//
-		function serialize( library, element )
-		{
-			if ( library[ element.uuid ] === undefined )
-				library[ element.uuid ] = element.toJSON( meta );
-			return element.uuid;
-		}
 
 		if ( this.geometry !== undefined )
 		{
@@ -545,6 +536,14 @@ class Object3D extends EventDispatcher
 		output.object = object;
 
 		return output;
+
+		//
+		function serialize( library, element )
+		{
+			if ( library[ element.uuid ] === undefined )
+				library[ element.uuid ] = element.toJSON( meta );
+			return element.uuid;
+		}
 
 		// extract data from the cache hash
 		// remove metadata on each item
