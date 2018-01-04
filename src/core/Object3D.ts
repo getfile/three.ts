@@ -249,7 +249,6 @@ class Object3D extends EventDispatcher
 
 	add( object )
 	{
-
 		if ( arguments.length > 1 )
 		{
 			for ( let i = 0; i < arguments.length; i++ )
