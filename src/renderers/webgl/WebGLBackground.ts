@@ -2,50 +2,55 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { BackSide } from '../../constants.js';
-import { OrthographicCamera } from '../../cameras/OrthographicCamera.js';
-import { BoxBufferGeometry } from '../../geometries/BoxGeometry.js';
-import { PlaneBufferGeometry } from '../../geometries/PlaneGeometry.js';
-import { MeshBasicMaterial } from '../../materials/MeshBasicMaterial.js';
-import { ShaderMaterial } from '../../materials/ShaderMaterial.js';
-import { Color } from '../../math/Color.js';
-import { Mesh } from '../../objects/Mesh.js';
-import { ShaderLib } from '../shaders/ShaderLib.js';
+import { BackSide } from '../../constants';
+import { OrthographicCamera } from '../../cameras/OrthographicCamera';
+import { BoxBufferGeometry } from '../../geometries/BoxGeometry';
+import { PlaneBufferGeometry } from '../../geometries/PlaneGeometry';
+import { MeshBasicMaterial } from '../../materials/MeshBasicMaterial';
+import { ShaderMaterial } from '../../materials/ShaderMaterial';
+import { Color } from '../../math/Color';
+import { Mesh } from '../../objects/Mesh';
+import { ShaderLib } from '../shaders/ShaderLib';
 
-function WebGLBackground( renderer, state, geometries, premultipliedAlpha ) {
+class WebGLBackground
+{
+	renderer; state; geometries; premultipliedAlpha;
 
-	var clearColor = new Color( 0x000000 );
-	var clearAlpha = 0;
+	constructor( renderer, state, geometries, premultipliedAlpha )
+	{
+		this.renderer = renderer;
+		this.state = state;
+		this.geometries = geometries;
+		this.premultipliedAlpha = premultipliedAlpha;
+	}
 
-	var planeCamera, planeMesh;
-	var boxMesh;
+	clearColor = new Color( 0x000000 );
+	clearAlpha = 0;
 
-	function render( renderList, scene, camera, forceClear ) {
+	planeCamera;
+	planeMesh;
+	boxMesh;
 
+	render( renderList, scene, camera, forceClear )
+	{
 		var background = scene.background;
-
-		if ( background === null ) {
-
-			setClear( clearColor, clearAlpha );
-
-		} else if ( background && background.isColor ) {
-
-			setClear( background, 1 );
+		if ( background === null )
+		{
+			this.setClear( this.clearColor, this.clearAlpha );
+		} else if ( background && background.isColor )
+		{
+			this.setClear( background, 1 );
 			forceClear = true;
-
 		}
 
-		if ( renderer.autoClear || forceClear ) {
+		if ( this.renderer.autoClear || forceClear )
+			this.renderer.clear( this.renderer.autoClearColor, this.renderer.autoClearDepth, this.renderer.autoClearStencil );
 
-			renderer.clear( renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil );
-
-		}
-
-		if ( background && background.isCubeTexture ) {
-
-			if ( boxMesh === undefined ) {
-
-				boxMesh = new Mesh(
+		if ( background && background.isCubeTexture )
+		{
+			if ( this.boxMesh === undefined )
+			{
+				this.boxMesh = new Mesh(
 					new BoxBufferGeometry( 1, 1, 1 ),
 					new ShaderMaterial( {
 						uniforms: ShaderLib.cube.uniforms,
@@ -58,82 +63,62 @@ function WebGLBackground( renderer, state, geometries, premultipliedAlpha ) {
 					} )
 				);
 
-				boxMesh.geometry.removeAttribute( 'normal' );
-				boxMesh.geometry.removeAttribute( 'uv' );
+				this.boxMesh.geometry.removeAttribute( 'normal' );
+				this.boxMesh.geometry.removeAttribute( 'uv' );
 
-				boxMesh.onBeforeRender = function ( renderer, scene, camera ) {
-
+				this.boxMesh.onBeforeRender = function ( renderer, scene, camera )
+				{
 					this.matrixWorld.copyPosition( camera.matrixWorld );
-
 				};
-
-				geometries.update( boxMesh.geometry );
-
+				this.geometries.update( this.boxMesh.geometry );
 			}
-
-			boxMesh.material.uniforms.tCube.value = background;
-
-			renderList.push( boxMesh, boxMesh.geometry, boxMesh.material, 0, null );
-
-		} else if ( background && background.isTexture ) {
-
-			if ( planeCamera === undefined ) {
-
-				planeCamera = new OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
-
-				planeMesh = new Mesh(
+			this.boxMesh.material.uniforms.tCube.value = background;
+			renderList.push( this.boxMesh, this.boxMesh.geometry, this.boxMesh.material, 0, null );
+		} else if ( background && background.isTexture )
+		{
+			if ( this.planeCamera === undefined )
+			{
+				this.planeCamera = new OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
+				this.planeMesh = new Mesh(
 					new PlaneBufferGeometry( 2, 2 ),
 					new MeshBasicMaterial( { depthTest: false, depthWrite: false, fog: false } )
 				);
-
-				geometries.update( planeMesh.geometry );
-
+				this.geometries.update( this.planeMesh.geometry );
 			}
 
-			planeMesh.material.map = background;
-
+			this.planeMesh.material.map = background;
 			// TODO Push this to renderList
-
-			renderer.renderBufferDirect( planeCamera, null, planeMesh.geometry, planeMesh.material, planeMesh, null );
-
+			this.renderer.renderBufferDirect( this.planeCamera, null, this.planeMesh.geometry, this.planeMesh.material, this.planeMesh, null );
 		}
-
 	}
 
-	function setClear( color, alpha ) {
-
-		state.buffers.color.setClear( color.r, color.g, color.b, alpha, premultipliedAlpha );
-
+	setClear( color, alpha )
+	{
+		this.state.buffers.color.setClear( color.r, color.g, color.b, alpha, this.premultipliedAlpha );
 	}
 
-	return {
+	getClearColor()
+	{
+		return this.clearColor;
+	}
 
-		getClearColor: function () {
+	setClearColor( color, alpha )
+	{
+		this.clearColor.set( color );
+		this.clearAlpha = alpha !== undefined ? alpha : 1;
+		this.setClear( this.clearColor, this.clearAlpha );
+	}
 
-			return clearColor;
+	getClearAlpha()
+	{
+		return this.clearAlpha;
+	}
 
-		},
-		setClearColor: function ( color, alpha ) {
-
-			clearColor.set( color );
-			clearAlpha = alpha !== undefined ? alpha : 1;
-			setClear( clearColor, clearAlpha );
-
-		},
-		getClearAlpha: function () {
-
-			return clearAlpha;
-
-		},
-		setClearAlpha: function ( alpha ) {
-
-			clearAlpha = alpha;
-			setClear( clearColor, clearAlpha );
-
-		},
-		render: render
-
-	};
+	setClearAlpha( alpha )
+	{
+		this.clearAlpha = alpha;
+		this.setClear( this.clearColor, this.clearAlpha );
+	}
 
 }
 

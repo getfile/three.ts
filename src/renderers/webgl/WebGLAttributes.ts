@@ -2,57 +2,46 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLAttributes( gl ) {
+class WebGLAttributes
+{
+	gl: WebGLRenderingContext;
 
-	var buffers = {};
+	constructor( gl )
+	{ this.gl = gl; }
 
-	function createBuffer( attribute, bufferType ) {
+	buffers = {};
+
+	createBuffer( attribute, bufferType )
+	{
 
 		var array = attribute.array;
-		var usage = attribute.dynamic ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
+		var usage = attribute.dynamic ? this.gl.DYNAMIC_DRAW : this.gl.STATIC_DRAW;
 
-		var buffer = gl.createBuffer();
+		var buffer = this.gl.createBuffer();
 
-		gl.bindBuffer( bufferType, buffer );
-		gl.bufferData( bufferType, array, usage );
+		this.gl.bindBuffer( bufferType, buffer );
+		this.gl.bufferData( bufferType, array, usage );
 
 		attribute.onUploadCallback();
 
-		var type = gl.FLOAT;
+		var type = this.gl.FLOAT;
 
-		if ( array instanceof Float32Array ) {
-
-			type = gl.FLOAT;
-
-		} else if ( array instanceof Float64Array ) {
-
+		if ( array instanceof Float32Array )
+			type = this.gl.FLOAT;
+		else if ( array instanceof Float64Array )
 			console.warn( 'THREE.WebGLAttributes: Unsupported data buffer format: Float64Array.' );
-
-		} else if ( array instanceof Uint16Array ) {
-
-			type = gl.UNSIGNED_SHORT;
-
-		} else if ( array instanceof Int16Array ) {
-
-			type = gl.SHORT;
-
-		} else if ( array instanceof Uint32Array ) {
-
-			type = gl.UNSIGNED_INT;
-
-		} else if ( array instanceof Int32Array ) {
-
-			type = gl.INT;
-
-		} else if ( array instanceof Int8Array ) {
-
-			type = gl.BYTE;
-
-		} else if ( array instanceof Uint8Array ) {
-
-			type = gl.UNSIGNED_BYTE;
-
-		}
+		else if ( array instanceof Uint16Array )
+			type = this.gl.UNSIGNED_SHORT;
+		else if ( array instanceof Int16Array )
+			type = this.gl.SHORT;
+		else if ( array instanceof Uint32Array )
+			type = this.gl.UNSIGNED_INT;
+		else if ( array instanceof Int32Array )
+			type = this.gl.INT;
+		else if ( array instanceof Int8Array )
+			type = this.gl.BYTE;
+		else if ( array instanceof Uint8Array )
+			type = this.gl.UNSIGNED_BYTE;
 
 		return {
 			buffer: buffer,
@@ -60,33 +49,37 @@ function WebGLAttributes( gl ) {
 			bytesPerElement: array.BYTES_PER_ELEMENT,
 			version: attribute.version
 		};
-
 	}
 
-	function updateBuffer( buffer, attribute, bufferType ) {
+	updateBuffer( buffer, attribute, bufferType )
+	{
 
 		var array = attribute.array;
 		var updateRange = attribute.updateRange;
 
-		gl.bindBuffer( bufferType, buffer );
+		this.gl.bindBuffer( bufferType, buffer );
 
-		if ( attribute.dynamic === false ) {
+		if ( attribute.dynamic === false )
+		{
 
-			gl.bufferData( bufferType, array, gl.STATIC_DRAW );
+			this.gl.bufferData( bufferType, array, this.gl.STATIC_DRAW );
 
-		} else if ( updateRange.count === - 1 ) {
+		} else if ( updateRange.count === - 1 )
+		{
 
 			// Not using update ranges
 
-			gl.bufferSubData( bufferType, 0, array );
+			this.gl.bufferSubData( bufferType, 0, array );
 
-		} else if ( updateRange.count === 0 ) {
+		} else if ( updateRange.count === 0 )
+		{
 
 			console.error( 'THREE.WebGLObjects.updateBuffer: dynamic THREE.BufferAttribute marked as needsUpdate but updateRange.count is 0, ensure you are using set methods or updating manually.' );
 
-		} else {
+		} else
+		{
 
-			gl.bufferSubData( bufferType, updateRange.offset * array.BYTES_PER_ELEMENT,
+			this.gl.bufferSubData( bufferType, updateRange.offset * array.BYTES_PER_ELEMENT,
 				array.subarray( updateRange.offset, updateRange.offset + updateRange.count ) );
 
 			updateRange.count = - 1; // reset range
@@ -96,8 +89,8 @@ function WebGLAttributes( gl ) {
 	}
 
 	//
-
-	function get( attribute ) {
+	get( attribute )
+	{
 
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
 
@@ -105,15 +98,17 @@ function WebGLAttributes( gl ) {
 
 	}
 
-	function remove( attribute ) {
+	remove( attribute )
+	{
 
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
 
 		var data = buffers[ attribute.uuid ];
 
-		if ( data ) {
+		if ( data )
+		{
 
-			gl.deleteBuffer( data.buffer );
+			this.gl.deleteBuffer( data.buffer );
 
 			delete buffers[ attribute.uuid ];
 
@@ -121,33 +116,27 @@ function WebGLAttributes( gl ) {
 
 	}
 
-	function update( attribute, bufferType ) {
-
+	update( attribute, bufferType )
+	{
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
-
 		var data = buffers[ attribute.uuid ];
 
-		if ( data === undefined ) {
-
-			buffers[ attribute.uuid ] = createBuffer( attribute, bufferType );
-
-		} else if ( data.version < attribute.version ) {
-
-			updateBuffer( data.buffer, attribute, bufferType );
-
+		if ( data === undefined )
+			this.buffers[ attribute.uuid ] = this.createBuffer( attribute, bufferType );
+		else if ( data.version < attribute.version )
+		{
+			this.updateBuffer( data.buffer, attribute, bufferType );
 			data.version = attribute.version;
-
 		}
-
 	}
 
-	return {
+return {
 
-		get: get,
-		remove: remove,
-		update: update
+	get: get,
+	remove: remove,
+	update: update
 
-	};
+};
 
 }
 

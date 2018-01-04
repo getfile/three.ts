@@ -2,12 +2,38 @@
  * @author thespite / http://www.twitter.com/thespite
  */
 
-import { MaxEquation, MinEquation, RGB_ETC1_Format, RGBA_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGB_PVRTC_4BPPV1_Format, RGBA_S3TC_DXT5_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT1_Format, RGB_S3TC_DXT1_Format, SrcAlphaSaturateFactor, OneMinusDstColorFactor, DstColorFactor, OneMinusDstAlphaFactor, DstAlphaFactor, OneMinusSrcAlphaFactor, SrcAlphaFactor, OneMinusSrcColorFactor, SrcColorFactor, OneFactor, ZeroFactor, ReverseSubtractEquation, SubtractEquation, AddEquation, DepthFormat, DepthStencilFormat, LuminanceAlphaFormat, LuminanceFormat, RGBAFormat, RGBFormat, AlphaFormat, HalfFloatType, FloatType, UnsignedIntType, IntType, UnsignedShortType, ShortType, ByteType, UnsignedInt248Type, UnsignedShort565Type, UnsignedShort5551Type, UnsignedShort4444Type, UnsignedByteType, LinearMipMapLinearFilter, LinearMipMapNearestFilter, LinearFilter, NearestMipMapLinearFilter, NearestMipMapNearestFilter, NearestFilter, MirroredRepeatWrapping, ClampToEdgeWrapping, RepeatWrapping } from '../../constants.js';
+import
+{
+	MaxEquation, MinEquation, //
+	RGB_ETC1_Format, RGBA_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, //
+	RGB_PVRTC_2BPPV1_Format, RGB_PVRTC_4BPPV1_Format, RGBA_S3TC_DXT5_Format, //
+	RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT1_Format, RGB_S3TC_DXT1_Format, //
+	//
+	SrcAlphaSaturateFactor, OneMinusDstColorFactor, DstColorFactor, OneMinusDstAlphaFactor, //
+	DstAlphaFactor, OneMinusSrcAlphaFactor, SrcAlphaFactor, OneMinusSrcColorFactor, SrcColorFactor, //
+	OneFactor, ZeroFactor, //
+	//
+	ReverseSubtractEquation, SubtractEquation, AddEquation, //
+	//
+	DepthFormat, DepthStencilFormat, LuminanceAlphaFormat, LuminanceFormat, //
+	RGBAFormat, RGBFormat, AlphaFormat, //
+	//
+	HalfFloatType, FloatType, UnsignedIntType, IntType, UnsignedShortType, ShortType, //
+	ByteType, UnsignedInt248Type, UnsignedShort565Type, UnsignedShort5551Type, UnsignedShort4444Type, //
+	UnsignedByteType, //
+	//
+	LinearMipMapLinearFilter, LinearMipMapNearestFilter, LinearFilter, NearestMipMapLinearFilter, //
+	NearestMipMapNearestFilter, NearestFilter, //
+	//
+	MirroredRepeatWrapping, ClampToEdgeWrapping, RepeatWrapping
+} from '../../constants.js';
 
-function WebGLUtils( gl, extensions ) {
 
-	function convert( p ) {
+function WebGLUtils( gl, extensions )
+{
 
+	function convert( p )
+	{
 		var extension;
 
 		if ( p === RepeatWrapping ) return gl.REPEAT;
@@ -34,12 +60,11 @@ function WebGLUtils( gl, extensions ) {
 		if ( p === UnsignedIntType ) return gl.UNSIGNED_INT;
 		if ( p === FloatType ) return gl.FLOAT;
 
-		if ( p === HalfFloatType ) {
-
+		if ( p === HalfFloatType )
+		{
 			extension = extensions.get( 'OES_texture_half_float' );
-
-			if ( extension !== null ) return extension.HALF_FLOAT_OES;
-
+			if ( extension !== null ) 
+				return extension.HALF_FLOAT_OES;
 		}
 
 		if ( p === AlphaFormat ) return gl.ALPHA;
@@ -68,72 +93,57 @@ function WebGLUtils( gl, extensions ) {
 		if ( p === SrcAlphaSaturateFactor ) return gl.SRC_ALPHA_SATURATE;
 
 		if ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format ||
-			p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format ) {
-
+			p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format )
+		{
 			extension = extensions.get( 'WEBGL_compressed_texture_s3tc' );
-
-			if ( extension !== null ) {
-
+			if ( extension !== null )
+			{
 				if ( p === RGB_S3TC_DXT1_Format ) return extension.COMPRESSED_RGB_S3TC_DXT1_EXT;
 				if ( p === RGBA_S3TC_DXT1_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT1_EXT;
 				if ( p === RGBA_S3TC_DXT3_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT3_EXT;
 				if ( p === RGBA_S3TC_DXT5_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT5_EXT;
-
 			}
-
 		}
 
 		if ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format ||
-			p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) {
-
+			p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format )
+		{
 			extension = extensions.get( 'WEBGL_compressed_texture_pvrtc' );
-
-			if ( extension !== null ) {
-
+			if ( extension !== null )
+			{
 				if ( p === RGB_PVRTC_4BPPV1_Format ) return extension.COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
 				if ( p === RGB_PVRTC_2BPPV1_Format ) return extension.COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
 				if ( p === RGBA_PVRTC_4BPPV1_Format ) return extension.COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
 				if ( p === RGBA_PVRTC_2BPPV1_Format ) return extension.COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
-
 			}
-
 		}
 
-		if ( p === RGB_ETC1_Format ) {
-
+		if ( p === RGB_ETC1_Format )
+		{
 			extension = extensions.get( 'WEBGL_compressed_texture_etc1' );
-
 			if ( extension !== null ) return extension.COMPRESSED_RGB_ETC1_WEBGL;
-
 		}
 
-		if ( p === MinEquation || p === MaxEquation ) {
-
+		if ( p === MinEquation || p === MaxEquation )
+		{
 			extension = extensions.get( 'EXT_blend_minmax' );
-
-			if ( extension !== null ) {
-
+			if ( extension !== null )
+			{
 				if ( p === MinEquation ) return extension.MIN_EXT;
 				if ( p === MaxEquation ) return extension.MAX_EXT;
-
 			}
-
 		}
 
-		if ( p === UnsignedInt248Type ) {
-
+		if ( p === UnsignedInt248Type )
+		{
 			extension = extensions.get( 'WEBGL_depth_texture' );
-
 			if ( extension !== null ) return extension.UNSIGNED_INT_24_8_WEBGL;
-
 		}
 
 		return 0;
-
 	}
 
 	return { convert: convert };
-
 }
 
 
