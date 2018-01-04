@@ -244,9 +244,7 @@ define(["require", "exports"], function (require, exports) {
             array[offset + 1] = this.y;
             return array;
         }
-        fromBufferAttribute(attribute, index, offset) {
-            if (offset !== undefined)
-                console.warn('THREE.Vector2: offset has been removed from .fromBufferAttribute().');
+        fromBufferAttribute(attribute, index) {
             this.x = attribute.getX(index);
             this.y = attribute.getY(index);
             return this;

@@ -49,6 +49,8 @@ class Geometry extends EventDispatcher
 	lineDistancesNeedUpdate;
 	groupsNeedUpdate;
 
+	parameters;
+
 	constructor()
 	{
 		super();

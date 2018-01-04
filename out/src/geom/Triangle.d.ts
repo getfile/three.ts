@@ -4,7 +4,7 @@ declare class Triangle {
     b: Vector3;
     c: Vector3;
     constructor(a?: Vector3, b?: Vector3, c?: Vector3);
-    static normal(a: any, b: any, c: any, optionalTarget: any): any;
+    static normal(a: any, b: any, c: any, optionalTarget?: Vector3): Vector3;
     static barycoordFromPoint(point: any, a: any, b: any, c: any, optionalTarget: any): any;
     static containsPoint(point: any, a: any, b: any, c: any): boolean;
     set(a: any, b: any, c: any): this;
@@ -13,7 +13,7 @@ declare class Triangle {
     copy(triangle: any): this;
     area(): number;
     midpoint(optionalTarget: any): any;
-    normal(optionalTarget: any): any;
+    normal(optionalTarget: any): Vector3;
     plane(optionalTarget: any): any;
     barycoordFromPoint(point: any, optionalTarget: any): any;
     containsPoint(point: any): boolean;

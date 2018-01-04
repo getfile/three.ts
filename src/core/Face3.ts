@@ -20,7 +20,7 @@ class Face3
 
 	materialIndex: number;
 
-	constructor( a, b, c, normal: Array<Vector3>, color: Array<Color>, materialIndex: number = 0 )
+	constructor( a, b, c, normal?: any, color?: any, materialIndex: number = 0 )
 	{
 		this.a = a;
 		this.b = b;
@@ -56,7 +56,7 @@ class Face3
 
 		for ( var i = 0, il = source.vertexColors.length; i < il; i++ )
 			this.vertexColors[ i ] = source.vertexColors[ i ].clone();
-		
+
 		return this;
 	}
 

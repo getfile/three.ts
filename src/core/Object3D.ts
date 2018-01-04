@@ -53,6 +53,7 @@ class Object3D extends EventDispatcher
 	material;
 
 	userData: Object;
+	
 	static DefaultUp: Vector3 = new Vector3( 0, 1, 0 );
 	static DefaultMatrixAutoUpdate: boolean = true;
 

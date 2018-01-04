@@ -22,6 +22,7 @@ declare class Geometry extends EventDispatcher {
     colorsNeedUpdate: any;
     lineDistancesNeedUpdate: any;
     groupsNeedUpdate: any;
+    parameters: any;
     constructor();
     applyMatrix(matrix: any): this;
     rotateX(angle: any): this;

@@ -50,7 +50,7 @@ declare class Vector2 {
     equals(v: any): boolean;
     fromArray(array: Array<number>, offset: number): Vector2;
     toArray(array: Array<number>, offset: number): Array<number>;
-    fromBufferAttribute(attribute: any, index: number, offset: number): Vector2;
+    fromBufferAttribute(attribute: any, index: number): Vector2;
     rotateAround(center: Vector2, angle: number): Vector2;
 }
 export { Vector2 };

@@ -390,11 +390,8 @@ class Vector2
 		return array;
 	}
 
-	fromBufferAttribute( attribute: any, index: number, offset: number ): Vector2
+	fromBufferAttribute( attribute: any, index: number ): Vector2
 	{
-		if ( offset !== undefined )
-			console.warn( 'THREE.Vector2: offset has been removed from .fromBufferAttribute().' );
-
 		this.x = attribute.getX( index );
 		this.y = attribute.getY( index );
 

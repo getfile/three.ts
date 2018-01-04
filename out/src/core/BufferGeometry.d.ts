@@ -11,13 +11,14 @@ declare class BufferGeometry extends EventDispatcher {
     boundingBox: any;
     boundingSphere: any;
     drawRange: any;
+    parameters: any;
     constructor();
     getIndex(): any;
     setIndex(index: any): void;
     addAttribute(name: any, attribute: any): this;
     getAttribute(name: any): any;
     removeAttribute(name: any): this;
-    addGroup(start: any, count: any, materialIndex: any): void;
+    addGroup(start: any, count: any, materialIndex?: number): void;
     clearGroups(): void;
     setDrawRange(start: any, count: any): void;
     applyMatrix(matrix: any): this;
@@ -46,6 +47,10 @@ declare class BufferGeometry extends EventDispatcher {
             type: string;
             generator: string;
         };
+        name: string;
+        uuid: string;
+        type: string;
+        data: any;
     };
     clone(): BufferGeometry;
     copy(source: any): this;

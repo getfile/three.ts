@@ -20,7 +20,7 @@ class Triangle
 		this.c = ( c !== undefined ) ? c : new Vector3();
 	}
 
-	static normal( a, b, c, optionalTarget )
+	static normal( a, b, c, optionalTarget?: Vector3 )
 	{
 		var v0 = new Vector3();
 		var result = optionalTarget || new Vector3();

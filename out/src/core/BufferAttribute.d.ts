@@ -1,0 +1,66 @@
+declare class BufferAttribute {
+    uuid: string;
+    name: string;
+    array: any;
+    itemSize: number;
+    count: number;
+    normalized: boolean;
+    dynamic: boolean;
+    updateRange: Object;
+    onUploadCallback: Function;
+    version: number;
+    constructor(array: any, itemSize: any, normalized?: boolean);
+    needsUpdate: any;
+    setArray(array: any): void;
+    setDynamic(value: any): this;
+    copy(source: any): this;
+    copyAt(index1: any, attribute: any, index2: any): this;
+    copyArray(array: any): this;
+    copyColorsArray(colors: any): this;
+    copyIndicesArray(indices: any): this;
+    copyVector2sArray(vectors: any): this;
+    copyVector3sArray(vectors: any): this;
+    copyVector4sArray(vectors: any): this;
+    set(value: any, offset: any): this;
+    getX(index: any): any;
+    setX(index: any, x: any): this;
+    getY(index: any): any;
+    setY(index: any, y: any): this;
+    getZ(index: any): any;
+    setZ(index: any, z: any): this;
+    getW(index: any): any;
+    setW(index: any, w: any): this;
+    setXY(index: any, x: any, y: any): this;
+    setXYZ(index: any, x: any, y: any, z: any): this;
+    setXYZW(index: any, x: any, y: any, z: any, w: any): this;
+    onUpload(callback: any): this;
+    clone(): BufferAttribute;
+}
+declare class Int8BufferAttribute extends BufferAttribute {
+    constructor(array: any, itemSize: any, normalized?: boolean);
+}
+declare class Uint8BufferAttribute extends BufferAttribute {
+    constructor(array: any, itemSize: any, normalized?: boolean);
+}
+declare class Uint8ClampedBufferAttribute extends BufferAttribute {
+    constructor(array: any, itemSize: any, normalized?: boolean);
+}
+declare class Int16BufferAttribute extends BufferAttribute {
+    constructor(array: any, itemSize: any, normalized?: boolean);
+}
+declare class Uint16BufferAttribute extends BufferAttribute {
+    constructor(array: any, itemSize: any, normalized?: boolean);
+}
+declare class Int32BufferAttribute extends BufferAttribute {
+    constructor(array: any, itemSize: any, normalized?: boolean);
+}
+declare class Uint32BufferAttribute extends BufferAttribute {
+    constructor(array: any, itemSize: any, normalized?: boolean);
+}
+declare class Float32BufferAttribute extends BufferAttribute {
+    constructor(array: any, itemSize: any, normalized?: boolean);
+}
+declare class Float64BufferAttribute extends BufferAttribute {
+    constructor(array: any, itemSize: any, normalized?: boolean);
+}
+export { BufferAttribute, Float64BufferAttribute, Float32BufferAttribute, Uint32BufferAttribute, Int32BufferAttribute, Uint16BufferAttribute, Int16BufferAttribute, Uint8ClampedBufferAttribute, Uint8BufferAttribute, Int8BufferAttribute };
