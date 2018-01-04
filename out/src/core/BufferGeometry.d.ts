@@ -1,0 +1,54 @@
+import { EventDispatcher } from './EventDispatcher';
+declare class BufferGeometry extends EventDispatcher {
+    id: any;
+    uuid: any;
+    name: any;
+    type: any;
+    index: any;
+    attributes: any;
+    morphAttributes: any;
+    groups: any;
+    boundingBox: any;
+    boundingSphere: any;
+    drawRange: any;
+    constructor();
+    getIndex(): any;
+    setIndex(index: any): void;
+    addAttribute(name: any, attribute: any): this;
+    getAttribute(name: any): any;
+    removeAttribute(name: any): this;
+    addGroup(start: any, count: any, materialIndex: any): void;
+    clearGroups(): void;
+    setDrawRange(start: any, count: any): void;
+    applyMatrix(matrix: any): this;
+    rotateX(angle: any): this;
+    rotateY(angle: any): this;
+    rotateZ(angle: any): this;
+    translate(x: any, y: any, z: any): this;
+    scale(x: any, y: any, z: any): this;
+    lookAt(vector: any): void;
+    center(): any;
+    setFromObject(object: any): this;
+    setFromPoints(points: any): this;
+    updateFromObject(object: any): this;
+    fromGeometry(geometry: any): this;
+    fromDirectGeometry(geometry: any): this;
+    computeBoundingBox(): void;
+    computeBoundingSphere(): void;
+    computeFaceNormals(): void;
+    computeVertexNormals(): void;
+    merge(geometry: any, offset: any): this;
+    normalizeNormals(): void;
+    toNonIndexed(): BufferGeometry;
+    toJSON(): {
+        metadata: {
+            version: number;
+            type: string;
+            generator: string;
+        };
+    };
+    clone(): BufferGeometry;
+    copy(source: any): this;
+    dispose(): void;
+}
+export { BufferGeometry };

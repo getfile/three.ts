@@ -1,0 +1,1 @@
+{"version":3,"file":"LineSegments.js","sourceRoot":"","sources":["../../../src/objects/LineSegments.ts"],"names":[],"mappings":";;;IAMA,kBAAmB,SAAQ,cAAI;QAE9B,YAAa,QAAQ,EAAE,QAAQ;YAE9B,KAAK,CAAE,QAAQ,EAAE,QAAQ,CAAE,CAAC;YAC5B,IAAI,CAAC,IAAI,GAAG,cAAc,CAAC;QAC5B,CAAC;KACD;IAEQ,oCAAY"}
