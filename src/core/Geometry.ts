@@ -52,7 +52,7 @@ class Geometry extends EventDispatcher
 	constructor()
 	{
 		super();
-		
+
 		this.id = { value: geometryId += 2 };
 
 		this.uuid = _Math.generateUUID();
@@ -173,7 +173,7 @@ class Geometry extends EventDispatcher
 	{
 		let scope = this;
 
-		let indices = (geometry.index !== null ? geometry.index.array : undefined);
+		let indices = ( geometry.index !== null ? geometry.index.array : undefined );
 		let attributes = geometry.attributes;
 
 		let positions = attributes.position.array;
@@ -205,7 +205,7 @@ class Geometry extends EventDispatcher
 				tempUVs2.push( new Vector2( uvs2[ j ], uvs2[ j + 1 ] ) );
 		}
 
-		function addFace( a, b, c, materialIndex )
+		function addFace( a, b, c, materialIndex?: number )
 		{
 			let vertexNormals = normals !== undefined ? [ tempNormals[ a ].clone(), tempNormals[ b ].clone(), tempNormals[ c ].clone() ] : [];
 			let vertexColors = colors !== undefined ? [ scope.colors[ a ].clone(), scope.colors[ b ].clone(), scope.colors[ c ].clone() ] : [];
@@ -320,10 +320,8 @@ class Geometry extends EventDispatcher
 		}
 	}
 
-	computeVertexNormals( areaWeighted )
+	computeVertexNormals( areaWeighted: boolean = true )
 	{
-		if ( areaWeighted === undefined ) areaWeighted = true;
-
 		let v, vl, f, fl, face, vertices;
 
 		vertices = new Array( this.vertices.length );
@@ -549,7 +547,7 @@ class Geometry extends EventDispatcher
 		this.boundingSphere.setFromPoints( this.vertices );
 	}
 
-	merge( geometry, matrix, materialIndexOffset )
+	merge( geometry, matrix, materialIndexOffset: number = 0 )
 	{
 		if ( !( geometry && geometry.isGeometry ) )
 		{
@@ -567,8 +565,6 @@ class Geometry extends EventDispatcher
 			uvs2 = geometry.faceVertexUvs[ 0 ],
 			colors1 = this.colors,
 			colors2 = geometry.colors;
-
-		if ( materialIndexOffset === undefined ) materialIndexOffset = 0;
 
 		if ( matrix !== undefined )
 			normalMatrix = new Matrix3().getNormalMatrix( matrix );
@@ -590,7 +586,7 @@ class Geometry extends EventDispatcher
 			colors1.push( colors2[ i ].clone() );
 
 		// faces
-		for ( i = 0, il = faces2.length; i < il; i++ )
+		for ( let i = 0, il = faces2.length; i < il; i++ )
 		{
 			let face = faces2[ i ], faceCopy, normal, color,
 				faceVertexNormals = face.vertexNormals,
@@ -624,7 +620,7 @@ class Geometry extends EventDispatcher
 		}
 
 		// uvs
-		for ( i = 0, il = uvs2.length; i < il; i++ )
+		for ( let i = 0, il = uvs2.length; i < il; i++ )
 		{
 			let uv = uvs2[ i ], uvCopy = [];
 
@@ -784,7 +780,10 @@ class Geometry extends EventDispatcher
 				version: 4.5,
 				type: 'Geometry',
 				generator: 'Geometry.toJSON'
-			}
+			},
+			uuid:'',
+			type:'',
+			name:''
 		};
 
 		// standard Geometry serialization

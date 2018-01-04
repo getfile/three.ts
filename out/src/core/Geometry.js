@@ -180,9 +180,7 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
                 face.normal.copy(cb);
             }
         }
-        computeVertexNormals(areaWeighted) {
-            if (areaWeighted === undefined)
-                areaWeighted = true;
+        computeVertexNormals(areaWeighted = true) {
             let v, vl, f, fl, face, vertices;
             vertices = new Array(this.vertices.length);
             for (v = 0, vl = this.vertices.length; v < vl; v++)
@@ -325,14 +323,12 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
                 this.boundingSphere = new Sphere_1.Sphere();
             this.boundingSphere.setFromPoints(this.vertices);
         }
-        merge(geometry, matrix, materialIndexOffset) {
+        merge(geometry, matrix, materialIndexOffset = 0) {
             if (!(geometry && geometry.isGeometry)) {
                 console.error('THREE.Geometry.merge(): geometry not an instance of THREE.Geometry.', geometry);
                 return;
             }
             let normalMatrix, vertexOffset = this.vertices.length, vertices1 = this.vertices, vertices2 = geometry.vertices, faces1 = this.faces, faces2 = geometry.faces, uvs1 = this.faceVertexUvs[0], uvs2 = geometry.faceVertexUvs[0], colors1 = this.colors, colors2 = geometry.colors;
-            if (materialIndexOffset === undefined)
-                materialIndexOffset = 0;
             if (matrix !== undefined)
                 normalMatrix = new Matrix3_1.Matrix3().getNormalMatrix(matrix);
             for (let i = 0, il = vertices2.length; i < il; i++) {
@@ -344,7 +340,7 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
             }
             for (let i = 0, il = colors2.length; i < il; i++)
                 colors1.push(colors2[i].clone());
-            for (i = 0, il = faces2.length; i < il; i++) {
+            for (let i = 0, il = faces2.length; i < il; i++) {
                 let face = faces2[i], faceCopy, normal, color, faceVertexNormals = face.vertexNormals, faceVertexColors = face.vertexColors;
                 faceCopy = new Face3_1.Face3(face.a + vertexOffset, face.b + vertexOffset, face.c + vertexOffset);
                 faceCopy.normal.copy(face.normal);
@@ -364,7 +360,7 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
                 faceCopy.materialIndex = face.materialIndex + materialIndexOffset;
                 faces1.push(faceCopy);
             }
-            for (i = 0, il = uvs2.length; i < il; i++) {
+            for (let i = 0, il = uvs2.length; i < il; i++) {
                 let uv = uvs2[i], uvCopy = [];
                 if (uv === undefined)
                     continue;
@@ -467,7 +463,10 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
                     version: 4.5,
                     type: 'Geometry',
                     generator: 'Geometry.toJSON'
-                }
+                },
+                uuid: '',
+                type: '',
+                name: ''
             };
             data.uuid = this.uuid;
             data.type = this.type;

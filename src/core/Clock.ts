@@ -68,7 +68,7 @@ class Clock
 		return diff;
 	}
 
-};
+}
 
 
 export { Clock };

@@ -34,13 +34,13 @@ declare class Geometry extends EventDispatcher {
     center(): any;
     normalize(): this;
     computeFaceNormals(): void;
-    computeVertexNormals(areaWeighted: any): void;
+    computeVertexNormals(areaWeighted?: boolean): void;
     computeFlatVertexNormals(): void;
     computeMorphNormals(): void;
     computeLineDistances(): void;
     computeBoundingBox(): void;
     computeBoundingSphere(): void;
-    merge(geometry: any, matrix: any, materialIndexOffset: any): void;
+    merge(geometry: any, matrix: any, materialIndexOffset?: number): void;
     mergeMesh(mesh: any): void;
     mergeVertices(): number;
     setFromPoints(points: any): this;
@@ -51,6 +51,9 @@ declare class Geometry extends EventDispatcher {
             type: string;
             generator: string;
         };
+        uuid: string;
+        type: string;
+        name: string;
     };
     clone(): Geometry;
     copy(source: any): this;

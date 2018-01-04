@@ -40,6 +40,5 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.Clock = Clock;
-    ;
 });
 //# sourceMappingURL=Clock.js.map

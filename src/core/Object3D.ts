@@ -6,6 +6,7 @@ import { Matrix4 } from '../math/Matrix4';
 import { Euler } from '../math/Euler';
 import { Quaternion } from '../math/Quaternion';
 import { _Math } from '../math/Math';
+import { Camera } from "../cameras/Camera";
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -48,6 +49,7 @@ class Object3D extends EventDispatcher
 	frustumCulled: boolean;
 
 	renderOrder: number;
+	geometry;
 	material;
 
 	userData: Object;
@@ -227,7 +229,7 @@ class Object3D extends EventDispatcher
 	};
 
 	// This method does not support objects with rotated and/or translated parent(s)
-	lookAt( x, y, z )
+	lookAt( x, y: number = 0, z: number = 0 )
 	{
 		let m1 = new Matrix4();
 		let vector = new Vector3();
@@ -236,7 +238,7 @@ class Object3D extends EventDispatcher
 		else
 			vector.set( x, y, z );
 
-		if ( this instanceof Canera )
+		if ( this instanceof Camera )
 			m1.lookAt( this.position, vector, this.up );
 		else
 			m1.lookAt( vector, this.position, this.up );
@@ -376,7 +378,7 @@ class Object3D extends EventDispatcher
 		return result.set( 0, 0, 1 ).applyQuaternion( quaternion );
 	}
 
-	raycast() { }
+	raycast( raycaster, intersects ) { }
 
 	traverse( callback )
 	{
@@ -565,10 +567,8 @@ class Object3D extends EventDispatcher
 		return new Object3D().copy( this, recursive );
 	}
 
-	copy( source, recursive )
+	copy( source, recursive: boolean = true )
 	{
-		if ( recursive === undefined ) recursive = true;
-
 		this.name = source.name;
 
 		this.up.copy( source.up );
