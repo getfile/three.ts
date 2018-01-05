@@ -1,4 +1,4 @@
-define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3", "../math/Matrix3", "../math/Matrix4", "../math/Euler", "../math/Quaternion", "../math/Math"], function (require, exports, EventDispatcher_1, Layers_1, Vector3_1, Matrix3_1, Matrix4_1, Euler_1, Quaternion_1, Math_1) {
+define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3", "../math/Matrix3", "../math/Matrix4", "../math/Euler", "../math/Quaternion", "../math/Math", "../cameras/Camera"], function (require, exports, EventDispatcher_1, Layers_1, Vector3_1, Matrix3_1, Matrix4_1, Euler_1, Quaternion_1, Math_1, Camera_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     let object3DId = 0;
@@ -118,14 +118,14 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             return vector.applyMatrix4(m1.getInverse(this.matrixWorld));
         }
         ;
-        lookAt(x, y, z) {
+        lookAt(x, y = 0, z = 0) {
             let m1 = new Matrix4_1.Matrix4();
             let vector = new Vector3_1.Vector3();
             if (x.isVector3)
                 vector.copy(x);
             else
                 vector.set(x, y, z);
-            if (this instanceof Canera)
+            if (this instanceof Camera_1.Camera)
                 m1.lookAt(this.position, vector, this.up);
             else
                 m1.lookAt(vector, this.position, this.up);
@@ -216,22 +216,20 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             this.getWorldQuaternion(quaternion);
             return result.set(0, 0, 1).applyQuaternion(quaternion);
         }
-        raycast() { }
+        raycast(raycaster, intersects) { }
         traverse(callback) {
             callback(this);
             let children = this.children;
-            for (let i = 0, l = children.length; i < l; i++) {
+            for (let i = 0, l = children.length; i < l; i++)
                 children[i].traverse(callback);
-            }
         }
         traverseVisible(callback) {
             if (this.visible === false)
                 return;
             callback(this);
             let children = this.children;
-            for (let i = 0, l = children.length; i < l; i++) {
+            for (let i = 0, l = children.length; i < l; i++)
                 children[i].traverseVisible(callback);
-            }
         }
         traverseAncestors(callback) {
             let parent = this.parent;
@@ -248,19 +246,16 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             if (this.matrixAutoUpdate)
                 this.updateMatrix();
             if (this.matrixWorldNeedsUpdate || force) {
-                if (this.parent === null) {
+                if (this.parent === null)
                     this.matrixWorld.copy(this.matrix);
-                }
-                else {
+                else
                     this.matrixWorld.multiplyMatrices(this.parent.matrixWorld, this.matrix);
-                }
                 this.matrixWorldNeedsUpdate = false;
                 force = true;
             }
             let children = this.children;
-            for (let i = 0, l = children.length; i < l; i++) {
+            for (let i = 0, l = children.length; i < l; i++)
                 children[i].updateMatrixWorld(force);
-            }
         }
         toJSON(meta) {
             let isRootObject = (meta === undefined || typeof meta === 'string');
@@ -293,11 +288,6 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             if (JSON.stringify(this.userData) !== '{}')
                 object.userData = this.userData;
             object.matrix = this.matrix.toArray();
-            function serialize(library, element) {
-                if (library[element.uuid] === undefined)
-                    library[element.uuid] = element.toJSON(meta);
-                return element.uuid;
-            }
             if (this.geometry !== undefined) {
                 object.geometry = serialize(meta.geometries, this.geometry);
                 let parameters = this.geometry.parameters;
@@ -347,6 +337,11 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             }
             output.object = object;
             return output;
+            function serialize(library, element) {
+                if (library[element.uuid] === undefined)
+                    library[element.uuid] = element.toJSON(meta);
+                return element.uuid;
+            }
             function extractFromCache(cache) {
                 let values = [];
                 for (let key in cache) {
@@ -360,9 +355,7 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
         clone(recursive) {
             return new Object3D().copy(this, recursive);
         }
-        copy(source, recursive) {
-            if (recursive === undefined)
-                recursive = true;
+        copy(source, recursive = true) {
             this.name = source.name;
             this.up.copy(source.up);
             this.position.copy(source.position);

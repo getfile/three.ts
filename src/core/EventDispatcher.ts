@@ -4,12 +4,16 @@
 
 class EventDispatcher
 {
-	private _listeners:Object; //{type:[]}
-	
+	private _listeners: Object; //{type:[]}
+
+	id: number;
+	uuid: string;
+	name: string;
+	type: string;
+
 	constructor() { }
 
-
-	addEventListener( type:string, listener:Function )
+	addEventListener( type: string, listener: Function )
 	{
 		if ( this._listeners === undefined ) this._listeners = {};
 
@@ -22,7 +26,7 @@ class EventDispatcher
 			listeners[ type ].push( listener );
 	}
 
-	hasEventListener( type:string, listener:Function ):boolean
+	hasEventListener( type: string, listener: Function ): boolean
 	{
 		if ( this._listeners === undefined ) return false;
 
@@ -31,7 +35,7 @@ class EventDispatcher
 		return listeners[ type ] !== undefined && listeners[ type ].indexOf( listener ) !== - 1;
 	}
 
-	removeEventListener( type:string, listener:Function )
+	removeEventListener( type: string, listener: Function )
 	{
 		if ( this._listeners === undefined ) return;
 

@@ -19,10 +19,6 @@ let bufferGeometryId = 1; // BufferGeometry uses odd numbers as Id
 
 class BufferGeometry extends EventDispatcher
 {
-	id;
-	uuid;
-	name;
-	type;
 
 	index;
 	attributes;
@@ -43,9 +39,7 @@ class BufferGeometry extends EventDispatcher
 		super();
 
 		this.id = bufferGeometryId += 2;
-
 		this.uuid = _Math.generateUUID();
-
 		this.name = '';
 		this.type = 'BufferGeometry';
 

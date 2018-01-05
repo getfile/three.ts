@@ -1,44 +1,45 @@
-import { Object3D } from '../core/Object3D.js';
-import { Color } from '../math/Color.js';
+import { Object3D } from '../core/Object3D';
+import { Color } from '../math/Color';
 
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author alteredq / http://alteredqualia.com/
  */
 
-function Light( color, intensity ) {
+class Light extends Object3D
+{
+	color;
+	intensity;
+	groundColor;
+	distance;
+	angle;
+	decay;
+	penumbra;
+	shadow;
 
-	Object3D.call( this );
+	constructor( color, intensity )
+	{
+		super();
 
-	this.type = 'Light';
+		this.type = 'Light';
+		this.color = new Color( color );
+		this.intensity = intensity !== undefined ? intensity : 1;
+		this.receiveShadow = undefined;
+	}
 
-	this.color = new Color( color );
-	this.intensity = intensity !== undefined ? intensity : 1;
-
-	this.receiveShadow = undefined;
-
-}
-
-Light.prototype = Object.assign( Object.create( Object3D.prototype ), {
-
-	constructor: Light,
-
-	isLight: true,
-
-	copy: function ( source ) {
-
-		Object3D.prototype.copy.call( this, source );
+	copy( source )
+	{
+		super.copy( source );
 
 		this.color.copy( source.color );
 		this.intensity = source.intensity;
 
 		return this;
+	}
 
-	},
-
-	toJSON: function ( meta ) {
-
-		var data = Object3D.prototype.toJSON.call( this, meta );
+	toJSON( meta )
+	{
+		var data = super.toJSON( meta );
 
 		data.object.color = this.color.getHex();
 		data.object.intensity = this.intensity;
@@ -53,10 +54,9 @@ Light.prototype = Object.assign( Object.create( Object3D.prototype ), {
 		if ( this.shadow !== undefined ) data.object.shadow = this.shadow.toJSON();
 
 		return data;
-
 	}
 
-} );
+}
 
 
 export { Light };

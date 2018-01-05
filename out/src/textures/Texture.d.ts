@@ -2,9 +2,6 @@ import { EventDispatcher } from '../core/EventDispatcher';
 declare class Texture extends EventDispatcher {
     static DEFAULT_IMAGE: any;
     static DEFAULT_MAPPING: number;
-    id: any;
-    uuid: string;
-    name: string;
     image: any;
     mipmaps: any;
     mapping: any;
@@ -14,7 +11,6 @@ declare class Texture extends EventDispatcher {
     minFilter: any;
     anisotropy: any;
     format: any;
-    type: any;
     offset: any;
     repeat: any;
     center: any;

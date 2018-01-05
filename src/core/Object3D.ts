@@ -20,10 +20,6 @@ let object3DId = 0;
 
 class Object3D extends EventDispatcher
 {
-	id: Object;
-	uuid: string;
-	name: string;
-	type: string;
 	parent: Object3D;
 	children: Array<Object3D>;
 	up: Vector3;
@@ -71,7 +67,7 @@ class Object3D extends EventDispatcher
 	{
 		super();
 
-		this.id = { value: object3DId++ };
+		this.id = object3DId++;
 
 		this.uuid = _Math.generateUUID();
 

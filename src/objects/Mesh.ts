@@ -40,7 +40,7 @@ class Mesh extends Object3D
 
 	copy( source )
 	{
-		Object3D.prototype.copy.call( this, source );
+		super.copy(source );
 		this.drawMode = source.drawMode;
 
 		if ( source.morphTargetInfluences !== undefined )

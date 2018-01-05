@@ -23,11 +23,6 @@ let geometryId = 0; // Geometry uses even numbers as Id
 
 class Geometry extends EventDispatcher
 {
-	id: Object;
-	uuid: string;
-	name: string;
-	type: string;
-
 	vertices;
 	colors;
 	faces;
@@ -55,8 +50,7 @@ class Geometry extends EventDispatcher
 	{
 		super();
 
-		this.id = { value: geometryId += 2 };
-
+		this.id = geometryId += 2;
 		this.uuid = _Math.generateUUID();
 		this.name = '';
 		this.type = 'Geometry';
@@ -788,9 +782,9 @@ class Geometry extends EventDispatcher
 			name:''
 		};
 
-		// standard Geometry serialization
-		data.uuid = this.uuid;
-		data.type = this.type;
+		// sta ndard Geometry serialization
+		data.u uid = this.uuid;
+		data.t ype = this.type;
 		if ( this.name !== '' ) data.name = this.name;
 
 		if ( this.parameters !== undefined )

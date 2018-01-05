@@ -53,7 +53,7 @@ class LOD extends Object3D
 		this.add( object );
 	}
 
-getObjectForDistance( distance )
+	getObjectForDistance( distance )
 	{
 		let levels = this.levels;
 		for ( var i = 1, l = levels.length; i < l; i++ )
@@ -105,7 +105,7 @@ getObjectForDistance( distance )
 
 	toJSON( meta )
 	{
-		let data = Object3D.prototype.toJSON.call( this, meta );
+		let data = super.toJSON( meta );
 		data.object.levels = [];
 		let levels = this.levels;
 		for ( let i = 0, l = levels.length; i < l; i++ )

@@ -1,0 +1,1 @@
+{"version":3,"file":"ImmediateRenderObject.js","sourceRoot":"","sources":["../../../../src/extras/objects/ImmediateRenderObject.ts"],"names":[],"mappings":";;;IAMA,2BAA4B,SAAQ,mBAAQ;QAI3C,YAAa,QAAQ;YAEpB,KAAK,EAAE,CAAC;YACR,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAC;YACzB,IAAI,CAAC,MAAM,GAAG,cAAoC,CAAC,CAAC;QAErD,CAAC;KACD;IAEQ,sDAAqB"}

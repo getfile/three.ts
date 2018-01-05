@@ -14,7 +14,7 @@ define(["require", "exports", "../core/Object3D", "../core/Face3", "../core/Buff
             this.drawMode = value;
         }
         copy(source) {
-            Object3D_1.Object3D.prototype.copy.call(this, source);
+            super.copy(source);
             this.drawMode = source.drawMode;
             if (source.morphTargetInfluences !== undefined)
                 this.morphTargetInfluences = source.morphTargetInfluences.slice();

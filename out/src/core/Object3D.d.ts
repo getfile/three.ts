@@ -29,6 +29,7 @@ declare class Object3D extends EventDispatcher {
     receiveShadow: boolean;
     frustumCulled: boolean;
     renderOrder: number;
+    geometry: any;
     material: any;
     userData: Object;
     static DefaultUp: Vector3;
@@ -55,7 +56,7 @@ declare class Object3D extends EventDispatcher {
     translateZ(distance: any): this;
     localToWorld(vector: any): any;
     worldToLocal(vector: any): any;
-    lookAt(x: any, y: any, z: any): void;
+    lookAt(x: any, y?: number, z?: number): void;
     add(object: any): this;
     remove(object: any): this;
     getObjectById(id: any): any;
@@ -66,7 +67,7 @@ declare class Object3D extends EventDispatcher {
     getWorldRotation(optionalTarget: any): any;
     getWorldScale(optionalTarget: any): any;
     getWorldDirection(optionalTarget: any): any;
-    raycast(): void;
+    raycast(raycaster: any, intersects: any): void;
     traverse(callback: any): void;
     traverseVisible(callback: any): void;
     traverseAncestors(callback: any): void;
@@ -74,6 +75,6 @@ declare class Object3D extends EventDispatcher {
     updateMatrixWorld(force: any): void;
     toJSON(meta: any): {};
     clone(recursive: any): Object3D;
-    copy(source: any, recursive: any): this;
+    copy(source: any, recursive?: boolean): this;
 }
 export { Object3D };

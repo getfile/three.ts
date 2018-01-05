@@ -8,6 +8,7 @@ define(["require", "exports", "../core/EventDispatcher", "../constants", "../con
             this.id = textureId++;
             this.uuid = Math_1._Math.generateUUID();
             this.name = '';
+            this.type = type + '';
             this.image = (image !== undefined ? image : Texture.DEFAULT_IMAGE);
             this.mipmaps = [];
             this.mapping = mapping;
@@ -17,7 +18,6 @@ define(["require", "exports", "../core/EventDispatcher", "../constants", "../con
             this.minFilter = minFilter;
             this.anisotropy = anisotropy;
             this.format = format;
-            this.type = type;
             this.offset = new Vector2_1.Vector2(0, 0);
             this.repeat = new Vector2_1.Vector2(1, 1);
             this.center = new Vector2_1.Vector2(0, 0);

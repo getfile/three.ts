@@ -23,9 +23,6 @@ class Texture extends EventDispatcher
 	static DEFAULT_IMAGE = undefined;
 	static DEFAULT_MAPPING: number = UVMapping;
 
-	id;
-	uuid: string;
-	name: string;
 	image;
 	mipmaps;
 	mapping;
@@ -35,7 +32,6 @@ class Texture extends EventDispatcher
 	minFilter;
 	anisotropy;
 	format;
-	type;
 	offset;
 	repeat;
 	center;
@@ -57,10 +53,9 @@ class Texture extends EventDispatcher
 		super();
 
 		this.id = textureId++;
-
 		this.uuid = _Math.generateUUID();
-
 		this.name = '';
+		this.type = type+'';
 
 		this.image = (image !== undefined ? image : Texture.DEFAULT_IMAGE);
 		this.mipmaps = [];
@@ -76,7 +71,6 @@ class Texture extends EventDispatcher
 		this.anisotropy = anisotropy;
 
 		this.format = format;
-		this.type = type;
 
 		this.offset = new Vector2( 0, 0 );
 		this.repeat = new Vector2( 1, 1 );

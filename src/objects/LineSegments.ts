@@ -6,7 +6,7 @@ import { Line } from './Line.js';
 
 class LineSegments extends Line
 {
-	constructor( geometry, material )
+	constructor( geometry?, material? )
 	{
 		super( geometry, material );
 		this.type = 'LineSegments';
