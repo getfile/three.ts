@@ -1,0 +1,1 @@
+{"version":3,"file":"AmbientLight.js","sourceRoot":"","sources":["../../../src/lights/AmbientLight.ts"],"names":[],"mappings":";;;IAMA,kBAAmB,SAAQ,aAAK;QAE/B,YAAa,KAAK,EAAE,SAAS;YAE5B,KAAK,CAAE,KAAK,EAAE,SAAS,CAAE,CAAC;YAC1B,IAAI,CAAC,IAAI,GAAG,cAAc,CAAC;YAC3B,IAAI,CAAC,UAAU,GAAG,SAAS,CAAC;QAC7B,CAAC;KACD;IAEQ,oCAAY"}
