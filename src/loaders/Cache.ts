@@ -2,45 +2,42 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Cache = {
+class Cache
+{
+	enabled;
+	files;
 
-	enabled: false,
-
-	files: {},
-
-	add: function ( key, file ) {
-
-		if ( this.enabled === false ) return;
-
-		// console.log( 'THREE.Cache', 'Adding key:', key );
-
-		this.files[ key ] = file;
-
-	},
-
-	get: function ( key ) {
-
-		if ( this.enabled === false ) return;
-
-		// console.log( 'THREE.Cache', 'Checking key:', key );
-
-		return this.files[ key ];
-
-	},
-
-	remove: function ( key ) {
-
-		delete this.files[ key ];
-
-	},
-
-	clear: function () {
-
+	constructor()
+	{
+		this.enabled = false;
 		this.files = {};
-
 	}
 
-};
+	add( key, file )
+	{
+		if ( this.enabled === false ) return;
+		// console.log( 'THREE.Cache', 'Adding key:', key );
+		this.files[ key ] = file;
+	}
+
+	get( key )
+	{
+		if ( this.enabled === false ) return;
+		// console.log( 'THREE.Cache', 'Checking key:', key );
+		return this.files[ key ];
+	}
+
+	remove( key )
+	{
+		delete this.files[ key ];
+	}
+
+	clear()
+	{
+		this.files = {};
+	}
+
+}
 
 
 export { Cache };
