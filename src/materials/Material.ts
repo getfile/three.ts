@@ -48,6 +48,15 @@ class Material extends EventDispatcher
 	visible;
 	userData;
 	needsUpdate;
+	
+	color
+	roughness;metalness;emissive;emissiveIntensity;specular;shininess;clearCoat;clearCoatRoughness;
+	map;alphaMap;lightMap;
+	bumpMap;bumpScale;normalMap;normalScale;displacementMap;displacementScale;displacementBias;
+	roughnessMap;metalnessMap;emissiveMap;specularMap;envMap;gradientMap;
+	size;sizeAttenuation;
+	rotation;linewidth;dashSize;gapSize;scale;
+	wireframe;wireframeLinewidth;wireframeLinecap;wireframeLinejoin;morphTargets;skinning;
 
 	constructor()
 	{
@@ -173,7 +182,7 @@ class Material extends EventDispatcher
 		// standard Material serialization
 		data.uuid = this.uuid;
 		data.type = this.type;
-
+		
 		if ( this.name !== '' ) data.name = this.name;
 		if ( this.color && this.color.isColor ) data.color = this.color.getHex();
 		if ( this.roughness !== undefined ) data.roughness = this.roughness;
@@ -203,6 +212,7 @@ class Material extends EventDispatcher
 			data.displacementScale = this.displacementScale;
 			data.displacementBias = this.displacementBias;
 		}
+
 		if ( this.roughnessMap && this.roughnessMap.isTexture ) data.roughnessMap = this.roughnessMap.toJSON( meta ).uuid;
 		if ( this.metalnessMap && this.metalnessMap.isTexture ) data.metalnessMap = this.metalnessMap.toJSON( meta ).uuid;
 		if ( this.emissiveMap && this.emissiveMap.isTexture ) data.emissiveMap = this.emissiveMap.toJSON( meta ).uuid;
