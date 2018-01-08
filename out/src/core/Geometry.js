@@ -5,7 +5,7 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
     class Geometry extends EventDispatcher_1.EventDispatcher {
         constructor() {
             super();
-            this.id = { value: geometryId += 2 };
+            this.id = geometryId += 2;
             this.uuid = Math_1._Math.generateUUID();
             this.name = '';
             this.type = 'Geometry';
@@ -468,8 +468,10 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
                 type: '',
                 name: ''
             };
-            data.uuid = this.uuid;
-            data.type = this.type;
+            data.u;
+            uid = this.uuid;
+            data.t;
+            ype = this.type;
             if (this.name !== '')
                 data.name = this.name;
             if (this.parameters !== undefined) {

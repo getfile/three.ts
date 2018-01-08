@@ -1,9 +1,5 @@
 import { EventDispatcher } from './EventDispatcher';
 declare class Geometry extends EventDispatcher {
-    id: Object;
-    uuid: string;
-    name: string;
-    type: string;
     vertices: any;
     colors: any;
     faces: any;

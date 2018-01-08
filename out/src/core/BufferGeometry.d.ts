@@ -1,9 +1,5 @@
 import { EventDispatcher } from './EventDispatcher';
 declare class BufferGeometry extends EventDispatcher {
-    id: any;
-    uuid: any;
-    name: any;
-    type: any;
     index: any;
     attributes: any;
     morphAttributes: any;

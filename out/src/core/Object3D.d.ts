@@ -6,10 +6,6 @@ import { Matrix4 } from '../math/Matrix4';
 import { Euler } from '../math/Euler';
 import { Quaternion } from '../math/Quaternion';
 declare class Object3D extends EventDispatcher {
-    id: Object;
-    uuid: string;
-    name: string;
-    type: string;
     parent: Object3D;
     children: Array<Object3D>;
     up: Vector3;

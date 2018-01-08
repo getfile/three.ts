@@ -9,7 +9,7 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             this.matrixWorld = new Matrix4_1.Matrix4();
             this.onBeforeRender = () => { };
             this.onAfterRender = () => { };
-            this.id = { value: object3DId++ };
+            this.id = object3DId++;
             this.uuid = Math_1._Math.generateUUID();
             this.name = '';
             this.type = 'Object3D';

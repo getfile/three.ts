@@ -11,6 +11,16 @@ define(["require", "exports", "../src/math/Math", "../src/core/Clock"], function
         console.info(c.getElapsedTime());
     }
     exports.main = main;
+    function createSquare(config) {
+        let newSquare = { color: "white", area: 100 };
+        if (config.color)
+            newSquare.color = config.color;
+        if (config.width)
+            newSquare.area = config.width * config.width;
+        return newSquare;
+    }
+    let mySquare = createSquare({ color: "red", width: 100 });
+    console.info(mySquare);
     main();
 });
 //# sourceMappingURL=main.js.map
