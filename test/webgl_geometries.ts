@@ -72,7 +72,6 @@
 				scene.add( object );
 
 				//
-
 				object = new THREE.Mesh( new THREE.CylinderGeometry( 25, 75, 100, 40, 5 ), material );
 				object.position.set( - 300, 0, - 200 );
 				scene.add( object );
