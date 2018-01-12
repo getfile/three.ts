@@ -177,4 +177,4 @@ class Panel
 	}
 }
 
-export { Stats as default };
+export { Stats };

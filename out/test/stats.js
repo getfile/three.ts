@@ -52,7 +52,7 @@ define(["require", "exports"], function (require, exports) {
             this.beginTime = this.end();
         }
     }
-    exports.default = Stats;
+    exports.Stats = Stats;
     ;
     class Panel {
         constructor(name, fg, bg) {

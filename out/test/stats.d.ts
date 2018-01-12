@@ -17,4 +17,4 @@ declare class Stats {
     end(): number;
     update(): void;
 }
-export { Stats as default };
+export { Stats };
