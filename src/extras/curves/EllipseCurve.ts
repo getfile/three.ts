@@ -26,7 +26,7 @@ class EllipseCurve extends Curve
 		this.aRotation = aRotation || 0;
 	}
 
-	getPoint( t, optionalTarget )
+	getPoint( t, optionalTarget? )
 	{
 		var point = optionalTarget || new Vector2();
 

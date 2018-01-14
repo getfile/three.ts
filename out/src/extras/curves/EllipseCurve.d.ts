@@ -9,7 +9,7 @@ declare class EllipseCurve extends Curve {
     aClockwise: any;
     aRotation: any;
     constructor(aX: any, aY: any, xRadius: any, yRadius: any, aStartAngle: any, aEndAngle: any, aClockwise: any, aRotation?: any);
-    getPoint(t: any, optionalTarget: any): any;
+    getPoint(t: any, optionalTarget?: any): any;
     copy(source: any): this;
     toJSON(): {
         metadata: {
