@@ -48,8 +48,8 @@ declare class Vector2 {
     lerp(v: any, alpha: any): Vector2;
     lerpVectors(v1: Vector2, v2: Vector2, alpha: number): Vector2;
     equals(v: any): boolean;
-    fromArray(array: Array<number>, offset: number): Vector2;
-    toArray(array: Array<number>, offset: number): Array<number>;
+    fromArray(array: Array<number>, offset?: number): Vector2;
+    toArray(array?: Array<number>, offset?: number): Array<number>;
     fromBufferAttribute(attribute: any, index: number): Vector2;
     rotateAround(center: Vector2, angle: number): Vector2;
 }

@@ -369,7 +369,7 @@ class Vector2
 		return ( ( v.x === this.x ) && ( v.y === this.y ) );
 	}
 
-	fromArray( array: Array<number>, offset: number ): Vector2
+	fromArray( array: Array<number>, offset?: number ): Vector2
 	{
 		if ( offset === undefined ) offset = 0;
 
@@ -379,7 +379,7 @@ class Vector2
 		return this;
 	}
 
-	toArray( array: Array<number>, offset: number ): Array<number>
+	toArray( array?: Array<number>, offset?: number ): Array<number>
 	{
 		if ( array === undefined ) array = [];
 		if ( offset === undefined ) offset = 0;
