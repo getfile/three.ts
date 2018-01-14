@@ -15,7 +15,7 @@ class Path extends CurvePath
 {
 	currentPoint;
 	
-	constructor( points )
+	constructor( points? )
 	{
 		super();
 		this.type = 'Path';

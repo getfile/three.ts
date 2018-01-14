@@ -1,7 +1,7 @@
 import { CurvePath } from './CurvePath';
 declare class Path extends CurvePath {
     currentPoint: any;
-    constructor(points: any);
+    constructor(points?: any);
     setFromPoints(points: any): void;
     moveTo(x: any, y: any): void;
     lineTo(x: any, y: any): void;
