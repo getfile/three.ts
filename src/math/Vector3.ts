@@ -580,7 +580,7 @@ class Vector3
 		return ( ( v.x === this.x ) && ( v.y === this.y ) && ( v.z === this.z ) );
 	}
 
-	fromArray( array, offset )
+	fromArray( array, offset? )
 	{
 		if ( offset === undefined ) offset = 0;
 
@@ -591,7 +591,7 @@ class Vector3
 		return this;
 	}
 
-	toArray( array, offset )
+	toArray( array?, offset? )
 	{
 		if ( array === undefined ) array = [];
 		if ( offset === undefined ) offset = 0;

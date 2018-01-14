@@ -67,8 +67,8 @@ declare class Vector3 {
     setFromMatrixScale(m: any): this;
     setFromMatrixColumn(m: Matrix4, index: any): this;
     equals(v: Vector3): boolean;
-    fromArray(array: any, offset: any): this;
-    toArray(array: any, offset: any): any;
+    fromArray(array: any, offset?: any): this;
+    toArray(array?: any, offset?: any): any;
     fromBufferAttribute(attribute: any, index: any): this;
 }
 export { Vector3 };
