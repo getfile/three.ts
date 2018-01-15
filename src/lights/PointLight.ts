@@ -9,7 +9,7 @@ import { LightShadow } from './LightShadow';
 
 class PointLight extends Light
 {
-	constructor( color, intensity, distance, decay )
+	constructor( color, intensity, distance?, decay? )
 	{
 		super( color, intensity );
 		this.type = 'PointLight';

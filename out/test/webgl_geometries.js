@@ -1,4 +1,4 @@
-define(["require", "exports", "./stats", ""], function (require, exports, stats_1, _1) {
+define(["require", "exports", "../src/constants", "../src/math/Vector2", "./stats", "../src/cameras/PerspectiveCamera", "../src/scenes/Scene", "../src/lights/AmbientLight", "../src/lights/PointLight", "../src/loaders/TextureLoader", "../src/materials/MeshPhongMaterial", "../src/objects/Mesh", "../src/geometries/BoxGeometry"], function (require, exports, Constants, Vector2_1, stats_1, PerspectiveCamera_1, Scene_1, AmbientLight_1, PointLight_1, TextureLoader_1, MeshPhongMaterial_1, Mesh_1, BoxGeometry_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     let camera, scene, renderer, stats;
@@ -6,59 +6,25 @@ define(["require", "exports", "./stats", ""], function (require, exports, stats_
     animate();
     function init() {
         let container = document.getElementById('container');
-        camera = new _1.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+        camera = new PerspectiveCamera_1.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
         camera.position.y = 400;
-        scene = new Scene();
+        scene = new Scene_1.Scene();
         let light, object;
-        let ambientLight = new AmbientLight(0xcccccc, 0.4);
+        let ambientLight = new AmbientLight_1.AmbientLight(0xcccccc, 0.4);
         scene.add(ambientLight);
-        let pointLight = new PointLight(0xffffff, 0.8);
+        let pointLight = new PointLight_1.PointLight(0xffffff, 0.8);
         camera.add(pointLight);
         scene.add(camera);
-        let map = new TextureLoader().load('textures/UV_Grid_Sm.jpg');
-        map.wrapS = map.wrapT = RepeatWrapping;
+        let map = new TextureLoader_1.TextureLoader().load('textures/UV_Grid_Sm.jpg');
+        map.wrapS = map.wrapT = Constants.RepeatWrapping;
         map.anisotropy = 16;
-        let material = new MeshPhongMaterial({ map: map, side: DoubleSide });
-        object = new Mesh(new SphereGeometry(75, 20, 10), material);
-        object.position.set(-300, 0, 200);
-        scene.add(object);
-        object = new Mesh(new IcosahedronGeometry(75, 1), material);
-        object.position.set(-100, 0, 200);
-        scene.add(object);
-        object = new Mesh(new OctahedronGeometry(75, 2), material);
-        object.position.set(100, 0, 200);
-        scene.add(object);
-        object = new Mesh(new TetrahedronGeometry(75, 0), material);
-        object.position.set(300, 0, 200);
-        scene.add(object);
-        object = new Mesh(new PlaneGeometry(100, 100, 4, 4), material);
-        object.position.set(-300, 0, 0);
-        scene.add(object);
-        object = new Mesh(new BoxGeometry(100, 100, 100, 4, 4, 4), material);
+        let material = new MeshPhongMaterial_1.MeshPhongMaterial({ map: map, side: Constants.DoubleSide });
+        object = new Mesh_1.Mesh(new BoxGeometry_1.BoxGeometry(100, 100, 100, 4, 4, 4), material);
         object.position.set(-100, 0, 0);
         scene.add(object);
-        object = new Mesh(new CircleGeometry(50, 20, 0, Math.PI * 2), material);
-        object.position.set(100, 0, 0);
-        scene.add(object);
-        object = new Mesh(new RingGeometry(10, 50, 20, 5, 0, Math.PI * 2), material);
-        object.position.set(300, 0, 0);
-        scene.add(object);
-        object = new Mesh(new CylinderGeometry(25, 75, 100, 40, 5), material);
-        object.position.set(-300, 0, -200);
-        scene.add(object);
         let points = [];
-        for (let i = 0; i < 50; i++) {
-            points.push(new Vector2(Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50, (i - 5) * 2));
-        }
-        object = new Mesh(new LatheGeometry(points, 20), material);
-        object.position.set(-100, 0, -200);
-        scene.add(object);
-        object = new Mesh(new TorusGeometry(50, 20, 20, 20), material);
-        object.position.set(100, 0, -200);
-        scene.add(object);
-        object = new Mesh(new TorusKnotGeometry(50, 10, 50, 20), material);
-        object.position.set(300, 0, -200);
-        scene.add(object);
+        for (let i = 0; i < 50; i++)
+            points.push(new Vector2_1.Vector2(Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50, (i - 5) * 2));
         renderer = new WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);

@@ -7,7 +7,7 @@ import { NearestFilter } from '../constants';
 
 class DataTexture extends Texture
 {
-	constructor( data, width, height, format, type, mapping, wrapS, wrapT, magFilter, minFilter, anisotropy, encoding )
+	constructor( data, width, height, format, type, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, anisotropy?, encoding? )
 	{
 		super( null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding );
 

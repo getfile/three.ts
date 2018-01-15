@@ -1,4 +1,7 @@
-declare function WebGLUtils(gl: any, extensions: any): {
-    convert: (p: any) => any;
-};
+declare class WebGLUtils {
+    gl: any;
+    extensions: any;
+    constructor(gl: any, extensions: any);
+    convert(p: any): any;
+}
 export { WebGLUtils };
