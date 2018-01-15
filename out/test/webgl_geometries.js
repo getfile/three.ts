@@ -1,4 +1,4 @@
-define(["require", "exports", "../src/constants", "../src/math/Vector2", "./stats", "../src/cameras/PerspectiveCamera", "../src/scenes/Scene", "../src/lights/AmbientLight", "../src/lights/PointLight", "../src/loaders/TextureLoader", "../src/materials/MeshPhongMaterial", "../src/objects/Mesh", "../src/geometries/BoxGeometry"], function (require, exports, Constants, Vector2_1, stats_1, PerspectiveCamera_1, Scene_1, AmbientLight_1, PointLight_1, TextureLoader_1, MeshPhongMaterial_1, Mesh_1, BoxGeometry_1) {
+define(["require", "exports", "../src/constants", "../src/math/Vector2", "./stats", "../src/cameras/PerspectiveCamera", "../src/scenes/Scene", "../src/lights/AmbientLight", "../src/lights/PointLight", "../src/loaders/TextureLoader", "../src/materials/MeshPhongMaterial", "../src/objects/Mesh", "../src/geometries/BoxGeometry", "../src/renderers/WebGLRenderer"], function (require, exports, Constants, Vector2_1, stats_1, PerspectiveCamera_1, Scene_1, AmbientLight_1, PointLight_1, TextureLoader_1, MeshPhongMaterial_1, Mesh_1, BoxGeometry_1, WebGLRenderer_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     let camera, scene, renderer, stats;
@@ -25,7 +25,7 @@ define(["require", "exports", "../src/constants", "../src/math/Vector2", "./stat
         let points = [];
         for (let i = 0; i < 50; i++)
             points.push(new Vector2_1.Vector2(Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50, (i - 5) * 2));
-        renderer = new WebGLRenderer({ antialias: true });
+        renderer = new WebGLRenderer_1.WebGLRenderer({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
         container.appendChild(renderer.domElement);

@@ -9,7 +9,7 @@ import { TextureLoader } from "../src/loaders/TextureLoader";
 import { MeshPhongMaterial } from "../src/materials/MeshPhongMaterial";
 import { Mesh } from "../src/objects/Mesh";
 import { BoxGeometry } from "../src/geometries/BoxGeometry";
-import {webglrenderer} from "../src/renderers/WebGLRenderer"
+import { WebGLRenderer } from "../src/renderers/WebGLRenderer"
 
 
 let camera: PerspectiveCamera, scene: Scene, renderer, stats;
