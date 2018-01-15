@@ -1,5 +1,4 @@
 declare class WebGLRenderer {
-    context: any;
     domElement: any;
     autoClear: any;
     autoClearColor: any;
@@ -73,10 +72,10 @@ declare class WebGLRenderer {
     parameters: any;
     onAnimationFrame: any;
     isAnimating: any;
-    constructor(parameters: any);
-    getTargetPixelRatio(): any;
     extensions: any;
     _premultipliedAlpha: any;
+    constructor(parameters: any);
+    getTargetPixelRatio(): any;
     initGLContext(): void;
     getContext(): any;
     getContextAttributes(): any;

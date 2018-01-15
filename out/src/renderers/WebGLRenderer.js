@@ -14,7 +14,6 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             this.spritesArray = [];
             this.flaresArray = [];
             this.domElement = this._canvas;
-            this.context = null;
             this.autoClear = true;
             this.autoClearColor = true;
             this.autoClearDepth = true;
@@ -31,40 +30,40 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             this.toneMappingWhitePoint = 1.0;
             this.maxMorphTargets = 8;
             this.maxMorphNormals = 4;
-            this._isContextLost = false,
-                this._currentRenderTarget = null,
-                this._currentFramebuffer = null,
-                this._currentMaterialId = -1,
-                this._currentGeometryProgram = '',
-                this._currentCamera = null,
-                this._currentArrayCamera = null,
-                this._currentViewport = new Vector4_1.Vector4(),
-                this._currentScissor = new Vector4_1.Vector4(),
-                this._currentScissorTest = null,
-                this._usedTextureUnits = 0,
-                this._width = this._canvas.width,
-                this._height = this._canvas.height,
-                this._pixelRatio = 1,
-                this._viewport = new Vector4_1.Vector4(0, 0, this._width, this._height),
-                this._scissor = new Vector4_1.Vector4(0, 0, this._width, this._height),
-                this._scissorTest = false,
-                this._frustum = new Frustum_1.Frustum(),
-                this._clipping = new WebGLClipping_1.WebGLClipping(),
-                this._clippingEnabled = false,
-                this._localClippingEnabled = false,
-                this._projScreenMatrix = new Matrix4_1.Matrix4(),
-                this._vector3 = new Vector3_1.Vector3(),
-                this._infoMemory = {
-                    geometries: 0,
-                    textures: 0
-                },
-                this._infoRender = {
-                    frame: 0,
-                    calls: 0,
-                    vertices: 0,
-                    faces: 0,
-                    points: 0
-                };
+            this._isContextLost = false;
+            this._currentRenderTarget = null;
+            this._currentFramebuffer = null;
+            this._currentMaterialId = -1;
+            this._currentGeometryProgram = '';
+            this._currentCamera = null;
+            this._currentArrayCamera = null;
+            this._currentViewport = new Vector4_1.Vector4();
+            this._currentScissor = new Vector4_1.Vector4();
+            this._currentScissorTest = null;
+            this._usedTextureUnits = 0;
+            this._width = this._canvas.width;
+            this._height = this._canvas.height;
+            this._pixelRatio = 1;
+            this._viewport = new Vector4_1.Vector4(0, 0, this._width, this._height);
+            this._scissor = new Vector4_1.Vector4(0, 0, this._width, this._height);
+            this._scissorTest = false;
+            this._frustum = new Frustum_1.Frustum();
+            this._clipping = new WebGLClipping_1.WebGLClipping();
+            this._clippingEnabled = false;
+            this._localClippingEnabled = false;
+            this._projScreenMatrix = new Matrix4_1.Matrix4();
+            this._vector3 = new Vector3_1.Vector3();
+            this._infoMemory = {
+                geometries: 0,
+                textures: 0
+            };
+            this._infoRender = {
+                frame: 0,
+                calls: 0,
+                vertices: 0,
+                faces: 0,
+                points: 0
+            };
             this.info = {
                 render: this._infoRender,
                 memory: this._infoMemory,
@@ -138,7 +137,6 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             this.flareRenderer = new WebGLFlareRenderer_1.WebGLFlareRenderer(this, this._gl, this.state, this.textures, this.capabilities);
             this.spriteRenderer = new WebGLSpriteRenderer_1.WebGLSpriteRenderer(this, this._gl, this.state, this.textures, this.capabilities);
             this.info.programs = this.programCache.programs;
-            this.context = this._gl;
         }
         getContext() {
             return this._gl;
@@ -275,9 +273,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
         releaseMaterialProgramReference(material) {
             let programInfo = this.properties.get(material).program;
             material.program = undefined;
-            if (programInfo !== undefined) {
+            if (programInfo !== undefined)
                 this.programCache.releaseProgram(programInfo);
-            }
         }
         renderObjectImmediate(object, program, material) {
             object.render(function (object) {
@@ -374,17 +371,14 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             }
             if (updateBuffers) {
                 this.setupVertexAttributes(material, program, geometry);
-                if (index !== null) {
+                if (index !== null)
                     this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, attribute.buffer);
-                }
             }
             let dataCount = 0;
-            if (index !== null) {
+            if (index !== null)
                 dataCount = index.count;
-            }
-            else if (position !== undefined) {
+            else if (position !== undefined)
                 dataCount = position.count;
-            }
             let rangeStart = geometry.drawRange.start * rangeFactor;
             let rangeCount = geometry.drawRange.count * rangeFactor;
             let groupStart = group !== null ? group.start * rangeFactor : 0;
@@ -418,27 +412,22 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 if (lineWidth === undefined)
                     lineWidth = 1;
                 this.state.setLineWidth(lineWidth * this.getTargetPixelRatio());
-                if (object.isLineSegments) {
+                if (object.isLineSegments)
                     renderer.setMode(this._gl.LINES);
-                }
-                else if (object.isLineLoop) {
+                else if (object.isLineLoop)
                     renderer.setMode(this._gl.LINE_LOOP);
-                }
-                else {
+                else
                     renderer.setMode(this._gl.LINE_STRIP);
-                }
             }
             else if (object.isPoints) {
                 renderer.setMode(this._gl.POINTS);
             }
             if (geometry && geometry.isInstancedBufferGeometry) {
-                if (geometry.maxInstancedCount > 0) {
+                if (geometry.maxInstancedCount > 0)
                     renderer.renderInstances(geometry, drawStart, drawCount);
-                }
             }
-            else {
+            else
                 renderer.render(drawStart, drawCount);
-            }
         }
         setupVertexAttributes(material, program, geometry, startIndex) {
             if (geometry && geometry.isInstancedBufferGeometry) {
@@ -472,9 +461,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                             let offset = geometryAttribute.offset;
                             if (data && data.isInstancedInterleavedBuffer) {
                                 this.state.enableAttributeAndDivisor(programAttribute, data.meshPerAttribute);
-                                if (geometry.maxInstancedCount === undefined) {
+                                if (geometry.maxInstancedCount === undefined)
                                     geometry.maxInstancedCount = data.meshPerAttribute * data.count;
-                                }
                             }
                             else {
                                 this.state.enableAttribute(programAttribute);
@@ -485,9 +473,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                         else {
                             if (geometryAttribute.isInstancedBufferAttribute) {
                                 this.state.enableAttributeAndDivisor(programAttribute, geometryAttribute.meshPerAttribute);
-                                if (geometry.maxInstancedCount === undefined) {
+                                if (geometry.maxInstancedCount === undefined)
                                     geometry.maxInstancedCount = geometryAttribute.meshPerAttribute * geometryAttribute.count;
-                                }
                             }
                             else {
                                 this.state.enableAttribute(programAttribute);
@@ -524,22 +511,19 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             scene.traverse(function (object) {
                 if (object.isLight) {
                     this.lightsArray.push(object);
-                    if (object.castShadow) {
+                    if (object.castShadow)
                         this.shadowsArray.push(object);
-                    }
                 }
             });
             this.lights.setup(this.lightsArray, this.shadowsArray, camera);
             scene.traverse(function (object) {
                 if (object.material) {
                     if (Array.isArray(object.material)) {
-                        for (let i = 0; i < object.material.length; i++) {
+                        for (let i = 0; i < object.material.length; i++)
                             this.initMaterial(object.material[i], scene.fog, object);
-                        }
                     }
-                    else {
+                    else
                         this.initMaterial(object.material, scene.fog, object);
-                    }
                 }
             });
         }
@@ -547,24 +531,20 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             if (this.isAnimating)
                 return;
             let device = this.vr.getDevice();
-            if (device && device.isPresenting) {
+            if (device && device.isPresenting)
                 device.requestAnimationFrame(this.loop);
-            }
-            else {
+            else
                 window.requestAnimationFrame(this.loop);
-            }
             this.isAnimating = true;
         }
         loop(time) {
             if (this.onAnimationFrame !== null)
                 this.onAnimationFrame(time);
             let device = this.vr.getDevice();
-            if (device && device.isPresenting) {
+            if (device && device.isPresenting)
                 device.requestAnimationFrame(this.loop);
-            }
-            else {
+            else
                 window.requestAnimationFrame(this.loop);
-            }
         }
         animate(callback) {
             this.onAnimationFrame = callback;
@@ -584,9 +564,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 scene.updateMatrixWorld();
             if (camera.parent === null)
                 camera.updateMatrixWorld();
-            if (this.vr.enabled) {
+            if (this.vr.enabled)
                 camera = this.vr.getCamera(camera);
-            }
             this._projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
             this._frustum.setFromMatrix(this._projScreenMatrix);
             this.lightsArray.length = 0;
@@ -598,9 +577,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             this.currentRenderList = this.renderLists.get(scene, camera);
             this.currentRenderList.init();
             this.projectObject(scene, camera, this.sortObjects);
-            if (this.sortObjects === true) {
+            if (this.sortObjects === true)
                 this.currentRenderList.sort();
-            }
             this.textures.updateVideoTextures();
             if (this._clippingEnabled)
                 this._clipping.beginShadows();
@@ -613,9 +591,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             this._infoRender.vertices = 0;
             this._infoRender.faces = 0;
             this._infoRender.points = 0;
-            if (renderTarget === undefined) {
+            if (renderTarget === undefined)
                 renderTarget = null;
-            }
             this.setRenderTarget(renderTarget);
             this.background.render(this.currentRenderList, scene, camera, forceClear);
             let opaqueObjects = this.currentRenderList.opaque;
@@ -635,16 +612,14 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             }
             this.spriteRenderer.render(this.spritesArray, scene, camera);
             this.flareRenderer.render(this.flaresArray, scene, camera, this._currentViewport);
-            if (renderTarget) {
+            if (renderTarget)
                 this.textures.updateRenderTargetMipmap(renderTarget);
-            }
             this.state.buffers.depth.setTest(true);
             this.state.buffers.depth.setMask(true);
             this.state.buffers.color.setMask(true);
             this.state.setPolygonOffset(false);
-            if (this.vr.enabled) {
+            if (this.vr.enabled)
                 this.vr.submitFrame();
-            }
         }
         projectObject(object, camera, sortObjects) {
             if (object.visible === false)
@@ -653,14 +628,12 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             if (visible) {
                 if (object.isLight) {
                     this.lightsArray.push(object);
-                    if (object.castShadow) {
+                    if (object.castShadow)
                         this.shadowsArray.push(object);
-                    }
                 }
                 else if (object.isSprite) {
-                    if (!object.frustumCulled || this._frustum.intersectsSprite(object)) {
+                    if (!object.frustumCulled || this._frustum.intersectsSprite(object))
                         this.spritesArray.push(object);
-                    }
                 }
                 else if (object.isLensFlare) {
                     this.flaresArray.push(object);
@@ -673,9 +646,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                     this.currentRenderList.push(object, null, object.material, this._vector3.z, null);
                 }
                 else if (object.isMesh || object.isLine || object.isPoints) {
-                    if (object.isSkinnedMesh) {
+                    if (object.isSkinnedMesh)
                         object.skeleton.update();
-                    }
                     if (!object.frustumCulled || this._frustum.intersectsObject(object)) {
                         if (sortObjects) {
                             this._vector3.setFromMatrixPosition(object.matrixWorld)
@@ -688,9 +660,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                             for (let i = 0, l = groups.length; i < l; i++) {
                                 let group = groups[i];
                                 let groupMaterial = material[group.materialIndex];
-                                if (groupMaterial && groupMaterial.visible) {
+                                if (groupMaterial && groupMaterial.visible)
                                     this.currentRenderList.push(object, geometry, groupMaterial, this._vector3.z, group);
-                                }
                             }
                         }
                         else if (material.visible)
@@ -742,9 +713,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 this._currentGeometryProgram = '';
                 this.renderObjectImmediate(object, program, material);
             }
-            else {
+            else
                 this.renderBufferDirect(camera, scene.fog, geometry, material, object, group);
-            }
             object.onAfterRender(this, scene, camera, geometry, material, group);
         }
         initMaterial(material, fog, object) {
@@ -792,17 +762,15 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             if (material.morphTargets) {
                 material.numSupportedMorphTargets = 0;
                 for (let i = 0; i < this.maxMorphTargets; i++) {
-                    if (programAttributes['morphTarget' + i] >= 0) {
+                    if (programAttributes['morphTarget' + i] >= 0)
                         material.numSupportedMorphTargets++;
-                    }
                 }
             }
             if (material.morphNormals) {
                 material.numSupportedMorphNormals = 0;
                 for (let i = 0; i < this.maxMorphNormals; i++) {
-                    if (programAttributes['morphNormal' + i] >= 0) {
+                    if (programAttributes['morphNormal' + i] >= 0)
                         material.numSupportedMorphNormals++;
-                    }
                 }
             }
             let uniforms = materialProperties.shader.uniforms;
@@ -924,9 +892,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                         p_uniforms.setValue(this._gl, 'boneTexture', skeleton.boneTexture);
                         p_uniforms.setValue(this._gl, 'boneTextureSize', skeleton.boneTextureSize);
                     }
-                    else {
+                    else
                         p_uniforms.setOptional(this._gl, skeleton, 'boneMatrices');
-                    }
                 }
             }
             if (refreshMaterial) {
@@ -935,9 +902,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 if (material.this.lights) {
                     this.markUniformsLightsNeedsUpdate(m_uniforms, refreshLights);
                 }
-                if (fog && material.fog) {
+                if (fog && material.fog)
                     this.refreshUniformsFog(m_uniforms, fog);
-                }
                 if (material.isMeshBasicMaterial) {
                     this.refreshUniformsCommon(m_uniforms, material);
                 }
@@ -947,21 +913,17 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 }
                 else if (material.isMeshPhongMaterial) {
                     this.refreshUniformsCommon(m_uniforms, material);
-                    if (material.isMeshToonMaterial) {
+                    if (material.isMeshToonMaterial)
                         this.refreshUniformsToon(m_uniforms, material);
-                    }
-                    else {
+                    else
                         this.refreshUniformsPhong(m_uniforms, material);
-                    }
                 }
                 else if (material.isMeshStandardMaterial) {
                     this.refreshUniformsCommon(m_uniforms, material);
-                    if (material.isMeshPhysicalMaterial) {
+                    if (material.isMeshPhysicalMaterial)
                         this.refreshUniformsPhysical(m_uniforms, material);
-                    }
-                    else {
+                    else
                         this.refreshUniformsStandard(m_uniforms, material);
-                    }
                 }
                 else if (material.isMeshDepthMaterial) {
                     this.refreshUniformsCommon(m_uniforms, material);
@@ -977,9 +939,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 }
                 else if (material.isLineBasicMaterial) {
                     this.refreshUniformsLine(m_uniforms, material);
-                    if (material.isLineDashedMaterial) {
+                    if (material.isLineDashedMaterial)
                         this.refreshUniformsDash(m_uniforms, material);
-                    }
                 }
                 else if (material.isPointsMaterial) {
                     this.refreshUniformsPoints(m_uniforms, material);
@@ -1001,21 +962,16 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
         }
         refreshUniformsCommon(uniforms, material) {
             uniforms.opacity.value = material.opacity;
-            if (material.color) {
+            if (material.color)
                 uniforms.diffuse.value = material.color;
-            }
-            if (material.emissive) {
+            if (material.emissive)
                 uniforms.emissive.value.copy(material.emissive).multiplyScalar(material.emissiveIntensity);
-            }
-            if (material.map) {
+            if (material.map)
                 uniforms.map.value = material.map;
-            }
-            if (material.alphaMap) {
+            if (material.alphaMap)
                 uniforms.alphaMap.value = material.alphaMap;
-            }
-            if (material.specularMap) {
+            if (material.specularMap)
                 uniforms.specularMap.value = material.specularMap;
-            }
             if (material.envMap) {
                 uniforms.envMap.value = material.envMap;
                 uniforms.flipEnvMap.value = (!(material.envMap && material.envMap.isCubeTexture)) ? 1 : -1;
@@ -1031,37 +987,27 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 uniforms.aoMapIntensity.value = material.aoMapIntensity;
             }
             let uvScaleMap;
-            if (material.map) {
+            if (material.map)
                 uvScaleMap = material.map;
-            }
-            else if (material.specularMap) {
+            else if (material.specularMap)
                 uvScaleMap = material.specularMap;
-            }
-            else if (material.displacementMap) {
+            else if (material.displacementMap)
                 uvScaleMap = material.displacementMap;
-            }
-            else if (material.normalMap) {
+            else if (material.normalMap)
                 uvScaleMap = material.normalMap;
-            }
-            else if (material.bumpMap) {
+            else if (material.bumpMap)
                 uvScaleMap = material.bumpMap;
-            }
-            else if (material.roughnessMap) {
+            else if (material.roughnessMap)
                 uvScaleMap = material.roughnessMap;
-            }
-            else if (material.metalnessMap) {
+            else if (material.metalnessMap)
                 uvScaleMap = material.metalnessMap;
-            }
-            else if (material.alphaMap) {
+            else if (material.alphaMap)
                 uvScaleMap = material.alphaMap;
-            }
-            else if (material.emissiveMap) {
+            else if (material.emissiveMap)
                 uvScaleMap = material.emissiveMap;
-            }
             if (uvScaleMap !== undefined) {
-                if (uvScaleMap.isWebGLRenderTarget) {
+                if (uvScaleMap.isWebGLRenderTarget)
                     uvScaleMap = uvScaleMap.texture;
-                }
                 if (uvScaleMap.matrixAutoUpdate === true) {
                     let offset = uvScaleMap.offset;
                     let repeat = uvScaleMap.repeat;
@@ -1104,21 +1050,18 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 uniforms.fogNear.value = fog.near;
                 uniforms.fogFar.value = fog.far;
             }
-            else if (fog.isFogExp2) {
+            else if (fog.isFogExp2)
                 uniforms.fogDensity.value = fog.density;
-            }
         }
         refreshUniformsLambert(uniforms, material) {
-            if (material.emissiveMap) {
+            if (material.emissiveMap)
                 uniforms.emissiveMap.value = material.emissiveMap;
-            }
         }
         refreshUniformsPhong(uniforms, material) {
             uniforms.specular.value = material.specular;
             uniforms.shininess.value = Math.max(material.shininess, 1e-4);
-            if (material.emissiveMap) {
+            if (material.emissiveMap)
                 uniforms.emissiveMap.value = material.emissiveMap;
-            }
             if (material.bumpMap) {
                 uniforms.bumpMap.value = material.bumpMap;
                 uniforms.bumpScale.value = material.bumpScale;
@@ -1135,22 +1078,18 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
         }
         refreshUniformsToon(uniforms, material) {
             this.refreshUniformsPhong(uniforms, material);
-            if (material.gradientMap) {
+            if (material.gradientMap)
                 uniforms.gradientMap.value = material.gradientMap;
-            }
         }
         refreshUniformsStandard(uniforms, material) {
             uniforms.roughness.value = material.roughness;
             uniforms.metalness.value = material.metalness;
-            if (material.roughnessMap) {
+            if (material.roughnessMap)
                 uniforms.roughnessMap.value = material.roughnessMap;
-            }
-            if (material.metalnessMap) {
+            if (material.metalnessMap)
                 uniforms.metalnessMap.value = material.metalnessMap;
-            }
-            if (material.emissiveMap) {
+            if (material.emissiveMap)
                 uniforms.emissiveMap.value = material.emissiveMap;
-            }
             if (material.bumpMap) {
                 uniforms.bumpMap.value = material.bumpMap;
                 uniforms.bumpScale.value = material.bumpScale;
@@ -1219,9 +1158,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
         }
         allocTextureUnit() {
             let textureUnit = this._usedTextureUnits;
-            if (textureUnit >= this.capabilities.maxTextures) {
+            if (textureUnit >= this.capabilities.maxTextures)
                 console.warn('THREE.WebGLRenderer: Trying to use ' + textureUnit + ' texture units while this GPU supports only ' + this.capabilities.maxTextures);
-            }
             this._usedTextureUnits += 1;
             return textureUnit;
         }
@@ -1266,9 +1204,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
         }
         setRenderTarget(renderTarget) {
             this._currentRenderTarget = renderTarget;
-            if (renderTarget && this.properties.get(renderTarget).__webglFramebuffer === undefined) {
+            if (renderTarget && this.properties.get(renderTarget).__webglFramebuffer === undefined)
                 this.textures.setupRenderTarget(renderTarget);
-            }
             let framebuffer = null;
             let isCube = false;
             if (renderTarget) {
@@ -1277,9 +1214,8 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                     framebuffer = __webglFramebuffer[renderTarget.activeCubeFace];
                     isCube = true;
                 }
-                else {
+                else
                     framebuffer = __webglFramebuffer;
-                }
                 this._currentViewport.copy(renderTarget.viewport);
                 this._currentScissor.copy(renderTarget.scissor);
                 this._currentScissorTest = renderTarget.scissorTest;
