@@ -7,7 +7,7 @@ import { CubeReflectionMapping } from '../constants';
 
 class CubeTexture extends Texture
 {
-	constructor( images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding )
+	constructor( images?, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, format?, type?, anisotropy?, encoding? )
 	{
 		images = images !== undefined ? images : [];
 		mapping = mapping !== undefined ? mapping : CubeReflectionMapping;

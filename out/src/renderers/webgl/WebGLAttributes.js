@@ -3,8 +3,8 @@ define(["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     class WebGLAttributes {
         constructor(gl) {
-            this.buffers = {};
             this.gl = gl;
+            this.buffers = {};
         }
         createBuffer(attribute, bufferType) {
             var array = attribute.array;
@@ -41,15 +41,12 @@ define(["require", "exports"], function (require, exports) {
             var array = attribute.array;
             var updateRange = attribute.updateRange;
             this.gl.bindBuffer(bufferType, buffer);
-            if (attribute.dynamic === false) {
+            if (attribute.dynamic === false)
                 this.gl.bufferData(bufferType, array, this.gl.STATIC_DRAW);
-            }
-            else if (updateRange.count === -1) {
+            else if (updateRange.count === -1)
                 this.gl.bufferSubData(bufferType, 0, array);
-            }
-            else if (updateRange.count === 0) {
+            else if (updateRange.count === 0)
                 console.error('THREE.WebGLObjects.updateBuffer: dynamic THREE.BufferAttribute marked as needsUpdate but updateRange.count is 0, ensure you are using set methods or updating manually.');
-            }
             else {
                 this.gl.bufferSubData(bufferType, updateRange.offset * array.BYTES_PER_ELEMENT, array.subarray(updateRange.offset, updateRange.offset + updateRange.count));
                 updateRange.count = -1;
@@ -58,21 +55,21 @@ define(["require", "exports"], function (require, exports) {
         get(attribute) {
             if (attribute.isInterleavedBufferAttribute)
                 attribute = attribute.data;
-            return buffers[attribute.uuid];
+            return this.buffers[attribute.uuid];
         }
         remove(attribute) {
             if (attribute.isInterleavedBufferAttribute)
                 attribute = attribute.data;
-            var data = buffers[attribute.uuid];
+            var data = this.buffers[attribute.uuid];
             if (data) {
                 this.gl.deleteBuffer(data.buffer);
-                delete buffers[attribute.uuid];
+                delete this.buffers[attribute.uuid];
             }
         }
         update(attribute, bufferType) {
             if (attribute.isInterleavedBufferAttribute)
                 attribute = attribute.data;
-            var data = buffers[attribute.uuid];
+            var data = this.buffers[attribute.uuid];
             if (data === undefined)
                 this.buffers[attribute.uuid] = this.createBuffer(attribute, bufferType);
             else if (data.version < attribute.version) {
@@ -82,10 +79,5 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.WebGLAttributes = WebGLAttributes;
-    return {
-        get: get,
-        remove: remove,
-        update: update
-    };
 });
 //# sourceMappingURL=WebGLAttributes.js.map

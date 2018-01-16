@@ -5,15 +5,17 @@
 class WebGLAttributes
 {
 	gl: WebGLRenderingContext;
+	buffers;
 
 	constructor( gl )
-	{ this.gl = gl; }
+	{
+		this.gl = gl;
+		this.buffers = {};
+	}
 
-	buffers = {};
 
 	createBuffer( attribute, bufferType )
 	{
-
 		var array = attribute.array;
 		var usage = attribute.dynamic ? this.gl.DYNAMIC_DRAW : this.gl.STATIC_DRAW;
 
@@ -51,75 +53,53 @@ class WebGLAttributes
 		};
 	}
 
-	updateBuffer( buffer, attribute, bufferType )
+	private updateBuffer( buffer, attribute, bufferType )
 	{
-
 		var array = attribute.array;
 		var updateRange = attribute.updateRange;
 
 		this.gl.bindBuffer( bufferType, buffer );
 
 		if ( attribute.dynamic === false )
-		{
-
 			this.gl.bufferData( bufferType, array, this.gl.STATIC_DRAW );
-
-		} else if ( updateRange.count === - 1 )
-		{
-
+		else if ( updateRange.count === - 1 )
 			// Not using update ranges
-
 			this.gl.bufferSubData( bufferType, 0, array );
-
-		} else if ( updateRange.count === 0 )
-		{
-
+		else if ( updateRange.count === 0 )
 			console.error( 'THREE.WebGLObjects.updateBuffer: dynamic THREE.BufferAttribute marked as needsUpdate but updateRange.count is 0, ensure you are using set methods or updating manually.' );
-
-		} else
+		else
 		{
-
 			this.gl.bufferSubData( bufferType, updateRange.offset * array.BYTES_PER_ELEMENT,
 				array.subarray( updateRange.offset, updateRange.offset + updateRange.count ) );
 
 			updateRange.count = - 1; // reset range
-
 		}
-
 	}
 
 	//
 	get( attribute )
 	{
-
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
-
-		return buffers[ attribute.uuid ];
-
+		return this.buffers[ attribute.uuid ];
 	}
 
 	remove( attribute )
 	{
-
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
 
-		var data = buffers[ attribute.uuid ];
+		var data = this.buffers[ attribute.uuid ];
 
 		if ( data )
 		{
-
 			this.gl.deleteBuffer( data.buffer );
-
-			delete buffers[ attribute.uuid ];
-
+			delete this.buffers[ attribute.uuid ];
 		}
-
 	}
 
 	update( attribute, bufferType )
 	{
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
-		var data = buffers[ attribute.uuid ];
+		var data = this.buffers[ attribute.uuid ];
 
 		if ( data === undefined )
 			this.buffers[ attribute.uuid ] = this.createBuffer( attribute, bufferType );
@@ -129,14 +109,6 @@ class WebGLAttributes
 			data.version = attribute.version;
 		}
 	}
-
-return {
-
-	get: get,
-	remove: remove,
-	update: update
-
-};
 
 }
 

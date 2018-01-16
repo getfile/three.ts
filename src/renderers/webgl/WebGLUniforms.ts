@@ -47,8 +47,8 @@
  *
  */
 
-import { CubeTexture } from '../../textures/CubeTexture.js';
-import { Texture } from '../../textures/Texture.js';
+import { CubeTexture } from '../../textures/CubeTexture';
+import { Texture } from '../../textures/Texture';
 
 var emptyTexture = new Texture();
 var emptyCubeTexture = new CubeTexture();
