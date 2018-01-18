@@ -8,8 +8,8 @@ import
 	RGBFormat, RGBAFormat, DepthFormat, DepthStencilFormat, //
 	UnsignedShortType, UnsignedIntType, UnsignedInt248Type, FloatType, HalfFloatType, //
 	ClampToEdgeWrapping, NearestMipMapLinearFilter, NearestMipMapNearestFilter
-} from '../../constants.js';
-import { _Math } from '../../math/Math.js';
+} from '../../constants';
+import { _Math } from '../../math/Math';
 
 class WebGLTextures
 {
@@ -22,7 +22,7 @@ class WebGLTextures
 	infoMemory;
 	_isWebGL2;
 	_videoTextures;
-	
+
 	constructor( _gl, extensions, state, properties, capabilities, utils, infoMemory ) 
 	{
 		this._gl = _gl;
@@ -33,7 +33,8 @@ class WebGLTextures
 		this.utils = utils;
 		this.infoMemory = infoMemory;
 
-		this._isWebGL2 = ( typeof WebGL2RenderingContext !== 'undefined' && this._gl instanceof window.WebGL2RenderingContext );
+//		this._isWebGL2 = ( typeof WebGL2RenderingContext !== 'undefined' && this._gl instanceof window.WebGL2RenderingContext );
+		this._isWebGL2 = false;
 		this._videoTextures = {};
 	}
 
@@ -47,7 +48,7 @@ class WebGLTextures
 
 			let scale = maxSize / Math.max( image.width, image.height );
 
-			let canvas:HTMLCanvasElement = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' ) as HTMLCanvasElement;
+			let canvas: HTMLCanvasElement = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' ) as HTMLCanvasElement;
 			canvas.width = Math.floor( image.width * scale );
 			canvas.height = Math.floor( image.height * scale );
 
@@ -70,7 +71,7 @@ class WebGLTextures
 	{
 		if ( image instanceof HTMLImageElement || image instanceof HTMLCanvasElement || image instanceof ImageBitmap )
 		{
-			let canvas:HTMLCanvasElement = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' ) as HTMLCanvasElement;
+			let canvas: HTMLCanvasElement = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' ) as HTMLCanvasElement;
 			canvas.width = _Math.floorPowerOfTwo( image.width );
 			canvas.height = _Math.floorPowerOfTwo( image.height );
 

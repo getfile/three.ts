@@ -50,8 +50,8 @@
 import { CubeTexture } from '../../textures/CubeTexture';
 import { Texture } from '../../textures/Texture';
 
-var emptyTexture = new Texture();
-var emptyCubeTexture = new CubeTexture();
+let emptyTexture = new Texture();
+let emptyCubeTexture = new CubeTexture();
 
 // --- Base for inner nodes (including the root) ---
 
@@ -71,26 +71,26 @@ class UniformContainer
 
 // Array Caches (provide typed arrays for temporary by size)
 
-var arrayCacheF32 = [];
-var arrayCacheI32 = [];
+let arrayCacheF32 = [];
+let arrayCacheI32 = [];
 
 // Float32Array caches used for uploading Matrix uniforms
 
-var mat4array = new Float32Array( 16 );
-var mat3array = new Float32Array( 9 );
+let mat4array = new Float32Array( 16 );
+let mat3array = new Float32Array( 9 );
 
 // Flattening for arrays of vectors and matrices
 
 function flatten( array, nBlocks, blockSize )
 {
 
-	var firstElem = array[ 0 ];
+	let firstElem = array[ 0 ];
 
 	if ( firstElem <= 0 || firstElem > 0 ) return array;
 	// unoptimized: ! isNaN( firstElem )
 	// see http://jacksondunstan.com/articles/983
 
-	var n = nBlocks * blockSize,
+	let n = nBlocks * blockSize,
 		r = arrayCacheF32[ n ];
 
 	if ( r === undefined )
@@ -106,7 +106,7 @@ function flatten( array, nBlocks, blockSize )
 
 		firstElem.toArray( r, 0 );
 
-		for ( var i = 1, offset = 0; i !== nBlocks; ++i )
+		for ( let i = 1, offset = 0; i !== nBlocks; ++i )
 		{
 
 			offset += blockSize;
@@ -125,7 +125,7 @@ function flatten( array, nBlocks, blockSize )
 function allocTexUnits( renderer, n )
 {
 
-	var r = arrayCacheI32[ n ];
+	let r = arrayCacheI32[ n ];
 
 	if ( r === undefined )
 	{
@@ -135,7 +135,7 @@ function allocTexUnits( renderer, n )
 
 	}
 
-	for ( var i = 0; i !== n; ++i )
+	for ( let i = 0; i !== n; ++i )
 		r[ i ] = renderer.allocTextureUnit();
 
 	return r;
@@ -271,7 +271,7 @@ function setValue4fm( gl, v )
 function setValueT1( gl, v, renderer )
 {
 
-	var unit = renderer.allocTextureUnit();
+	let unit = renderer.allocTextureUnit();
 	gl.uniform1i( this.addr, unit );
 	renderer.setTexture2D( v || emptyTexture, unit );
 
@@ -280,7 +280,7 @@ function setValueT1( gl, v, renderer )
 function setValueT6( gl, v, renderer )
 {
 
-	var unit = renderer.allocTextureUnit();
+	let unit = renderer.allocTextureUnit();
 	gl.uniform1i( this.addr, unit );
 	renderer.setTextureCube( v || emptyCubeTexture, unit );
 
@@ -404,12 +404,12 @@ function setValueM4a( gl, v )
 function setValueT1a( gl, v, renderer )
 {
 
-	var n = v.length,
+	let n = v.length,
 		units = allocTexUnits( renderer, n );
 
 	gl.uniform1iv( this.addr, units );
 
-	for ( var i = 0; i !== n; ++i )
+	for ( let i = 0; i !== n; ++i )
 	{
 
 		renderer.setTexture2D( v[ i ] || emptyTexture, units[ i ] );
@@ -421,12 +421,12 @@ function setValueT1a( gl, v, renderer )
 function setValueT6a( gl, v, renderer )
 {
 
-	var n = v.length,
+	let n = v.length,
 		units = allocTexUnits( renderer, n );
 
 	gl.uniform1iv( this.addr, units );
 
-	for ( var i = 0; i !== n; ++i )
+	for ( let i = 0; i !== n; ++i )
 	{
 
 		renderer.setTextureCube( v[ i ] || emptyCubeTexture, units[ i ] );
@@ -468,30 +468,27 @@ function getPureArraySetter( type )
 
 function SingleUniform( id, activeInfo, addr )
 {
-
 	this.id = id;
 	this.addr = addr;
 	this.setValue = getSingularSetter( activeInfo.type );
 
 	// this.path = activeInfo.name; // DEBUG
-
 }
 
 function PureArrayUniform( id, activeInfo, addr )
 {
-
 	this.id = id;
 	this.addr = addr;
 	this.size = activeInfo.size;
 	this.setValue = getPureArraySetter( activeInfo.type );
 
 	// this.path = activeInfo.name; // DEBUG
-
 }
 
 class StructuredUniform extends UniformContainer
 {
 	id;
+
 	constructor( id )
 	{
 		super(); // mix-in
@@ -502,11 +499,11 @@ class StructuredUniform extends UniformContainer
 	{
 		// Note: Don't need an extra 'renderer' parameter, since samplers
 		// are not allowed in structured uniforms.
-		var seq = this.seq;
+		let seq = this.seq;
 
-		for ( var i = 0, n = seq.length; i !== n; ++i )
+		for ( let i = 0, n = seq.length; i !== n; ++i )
 		{
-			var u = seq[ i ];
+			let u = seq[ i ];
 			u.setValue( gl, value[ u.id ] );
 		}
 	}
@@ -517,7 +514,7 @@ class StructuredUniform extends UniformContainer
 
 // Parser - builds up the property tree from the path strings
 
-var RePathPart = /([\w\d_]+)(\])?(\[|\.)?/g;
+let RePathPart = /([\w\d_]+)(\])?(\[|\.)?/g;
 
 // extracts
 // 	- the identifier (member name or array index)
@@ -539,7 +536,7 @@ function addUniform( container, uniformObject )
 function parseUniform( activeInfo, addr, container )
 {
 
-	var path = activeInfo.name,
+	let path = activeInfo.name,
 		pathLength = path.length;
 
 	// reset RegExp object, because of the early exit of a previous run
@@ -548,14 +545,14 @@ function parseUniform( activeInfo, addr, container )
 	for ( ; ; )
 	{
 
-		var match = RePathPart.exec( path ),
+		let match = RePathPart.exec( path ),
 			matchEnd = RePathPart.lastIndex,
-
-			id = match[ 1 ],
+			id: number,
+			ids = match[ 1 ],
 			idIsIndex = match[ 2 ] === ']',
 			subscript = match[ 3 ];
 
-		if ( idIsIndex ) id = id | 0; // convert to integer
+		if ( idIsIndex ) id = ids; // convert to integer
 
 		if ( subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength )
 		{
@@ -573,7 +570,7 @@ function parseUniform( activeInfo, addr, container )
 
 			// step into inner node / create it in case it doesn't exist
 
-			var map = container.map, next = map[ id ];
+			let map = container.map, next = map[ id ];
 
 			if ( next === undefined )
 			{
@@ -602,10 +599,10 @@ class WebGLUniforms extends UniformContainer
 
 		this.renderer = renderer;
 
-		var n = gl.getProgramParameter( program, gl.ACTIVE_UNIFORMS );
-		for ( var i = 0; i < n; ++i )
+		let n = gl.getProgramParameter( program, gl.ACTIVE_UNIFORMS );
+		for ( let i = 0; i < n; ++i )
 		{
-			var info = gl.getActiveUniform( program, i ),
+			let info = gl.getActiveUniform( program, i ),
 				path = info.name,
 				addr = gl.getUniformLocation( program, path );
 
@@ -615,21 +612,21 @@ class WebGLUniforms extends UniformContainer
 
 	setValue( gl, name, value )
 	{
-		var u = this.map[ name ];
+		let u = this.map[ name ];
 		if ( u !== undefined ) u.setValue( gl, value, this.renderer );
 	}
 
 	setOptional( gl, object, name )
 	{
-		var v = object[ name ];
+		let v = object[ name ];
 		if ( v !== undefined ) this.setValue( gl, name, v );
 	}
 
 	static upload( gl, seq, values, renderer )
 	{
-		for ( var i = 0, n = seq.length; i !== n; ++i )
+		for ( let i = 0, n = seq.length; i !== n; ++i )
 		{
-			var u = seq[ i ],
+			let u = seq[ i ],
 				v = values[ u.id ];
 
 			if ( v.needsUpdate !== false )
@@ -642,10 +639,10 @@ class WebGLUniforms extends UniformContainer
 
 	static seqWithValue( seq, values )
 	{
-		var r = [];
-		for ( var i = 0, n = seq.length; i !== n; ++i )
+		let r = [];
+		for ( let i = 0, n = seq.length; i !== n; ++i )
 		{
-			var u = seq[ i ];
+			let u = seq[ i ];
 			if ( u.id in values ) r.push( u );
 		}
 		return r;
