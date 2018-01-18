@@ -3,10 +3,13 @@ define(["require", "exports", "../../textures/CubeTexture", "../../textures/Text
     Object.defineProperty(exports, "__esModule", { value: true });
     var emptyTexture = new Texture_1.Texture();
     var emptyCubeTexture = new CubeTexture_1.CubeTexture();
-    function UniformContainer() {
-        this.seq = [];
-        this.map = {};
+    class UniformContainer {
+        constructor() {
+            this.seq = [];
+            this.map = {};
+        }
     }
+    exports.UniformContainer = UniformContainer;
     var arrayCacheF32 = [];
     var arrayCacheI32 = [];
     var mat4array = new Float32Array(16);
@@ -204,17 +207,19 @@ define(["require", "exports", "../../textures/CubeTexture", "../../textures/Text
         this.size = activeInfo.size;
         this.setValue = getPureArraySetter(activeInfo.type);
     }
-    function StructuredUniform(id) {
-        this.id = id;
-        UniformContainer.call(this);
-    }
-    StructuredUniform.prototype.setValue = function (gl, value) {
-        var seq = this.seq;
-        for (var i = 0, n = seq.length; i !== n; ++i) {
-            var u = seq[i];
-            u.setValue(gl, value[u.id]);
+    class StructuredUniform extends UniformContainer {
+        constructor(id) {
+            super();
+            this.id = id;
         }
-    };
+        setValue(gl, value) {
+            var seq = this.seq;
+            for (var i = 0, n = seq.length; i !== n; ++i) {
+                var u = seq[i];
+                u.setValue(gl, value[u.id]);
+            }
+        }
+    }
     var RePathPart = /([\w\d_]+)(\])?(\[|\.)?/g;
     function addUniform(container, uniformObject) {
         container.seq.push(uniformObject);
@@ -243,42 +248,44 @@ define(["require", "exports", "../../textures/CubeTexture", "../../textures/Text
             }
         }
     }
-    function WebGLUniforms(gl, program, renderer) {
-        UniformContainer.call(this);
-        this.renderer = renderer;
-        var n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
-        for (var i = 0; i < n; ++i) {
-            var info = gl.getActiveUniform(program, i), path = info.name, addr = gl.getUniformLocation(program, path);
-            parseUniform(info, addr, this);
+    class WebGLUniforms extends UniformContainer {
+        constructor(gl, program, renderer) {
+            super();
+            this.renderer = renderer;
+            var n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+            for (var i = 0; i < n; ++i) {
+                var info = gl.getActiveUniform(program, i), path = info.name, addr = gl.getUniformLocation(program, path);
+                parseUniform(info, addr, this);
+            }
+        }
+        setValue(gl, name, value) {
+            var u = this.map[name];
+            if (u !== undefined)
+                u.setValue(gl, value, this.renderer);
+        }
+        setOptional(gl, object, name) {
+            var v = object[name];
+            if (v !== undefined)
+                this.setValue(gl, name, v);
+        }
+        static upload(gl, seq, values, renderer) {
+            for (var i = 0, n = seq.length; i !== n; ++i) {
+                var u = seq[i], v = values[u.id];
+                if (v.needsUpdate !== false) {
+                    u.setValue(gl, v.value, renderer);
+                }
+            }
+        }
+        static seqWithValue(seq, values) {
+            var r = [];
+            for (var i = 0, n = seq.length; i !== n; ++i) {
+                var u = seq[i];
+                if (u.id in values)
+                    r.push(u);
+            }
+            return r;
         }
     }
     exports.WebGLUniforms = WebGLUniforms;
-    WebGLUniforms.prototype.setValue = function (gl, name, value) {
-        var u = this.map[name];
-        if (u !== undefined)
-            u.setValue(gl, value, this.renderer);
-    };
-    WebGLUniforms.prototype.setOptional = function (gl, object, name) {
-        var v = object[name];
-        if (v !== undefined)
-            this.setValue(gl, name, v);
-    };
-    WebGLUniforms.upload = function (gl, seq, values, renderer) {
-        for (var i = 0, n = seq.length; i !== n; ++i) {
-            var u = seq[i], v = values[u.id];
-            if (v.needsUpdate !== false) {
-                u.setValue(gl, v.value, renderer);
-            }
-        }
-    };
-    WebGLUniforms.seqWithValue = function (seq, values) {
-        var r = [];
-        for (var i = 0, n = seq.length; i !== n; ++i) {
-            var u = seq[i];
-            if (u.id in values)
-                r.push(u);
-        }
-        return r;
-    };
 });
 //# sourceMappingURL=WebGLUniforms.js.map

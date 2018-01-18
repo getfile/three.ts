@@ -87,7 +87,7 @@ declare class WebGLRenderer {
         width: any;
         height: any;
     };
-    setSize(width: any, height: any, updateStyle: any): void;
+    setSize(width: any, height: any, updateStyle?: boolean): void;
     getDrawingBufferSize(): {
         width: number;
         height: number;
@@ -119,7 +119,7 @@ declare class WebGLRenderer {
     start(): void;
     loop(time: any): void;
     animate(callback: any): void;
-    render(scene: any, camera: any, renderTarget: any, forceClear: any): void;
+    render(scene: any, camera: any, renderTarget?: any, forceClear?: any): void;
     projectObject(object: any, camera: any, sortObjects: any): void;
     renderObjects(renderList: any, scene: any, camera: any, overrideMaterial?: any): void;
     renderObject(object: any, scene: any, camera: any, geometry: any, material: any, group: any): void;

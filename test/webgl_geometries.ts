@@ -12,7 +12,10 @@ import { BoxGeometry } from "../src/geometries/BoxGeometry";
 import { WebGLRenderer } from "../src/renderers/WebGLRenderer"
 
 
-let camera: PerspectiveCamera, scene: Scene, renderer, stats;
+let camera: PerspectiveCamera;
+let scene: Scene;
+let renderer: WebGLRenderer;
+let stats: Stats;
 
 init();
 animate();
@@ -33,6 +36,7 @@ function init()
 
 	let pointLight = new PointLight( 0xffffff, 0.8 );
 	camera.add( pointLight );
+
 	scene.add( camera );
 
 	let map = new TextureLoader().load( 'textures/UV_Grid_Sm.jpg' );
@@ -40,8 +44,6 @@ function init()
 	map.anisotropy = 16;
 
 	let material = new MeshPhongMaterial( { map: map, side: Constants.DoubleSide } );
-
-	//
 
 	//	object = new Mesh( new SphereGeometry( 75, 20, 10 ), material );
 	//	object.position.set( - 300, 0, 200 );
@@ -111,36 +113,28 @@ function init()
 	container.appendChild( stats.dom );
 
 	//
-
 	window.addEventListener( 'resize', onWindowResize, false );
-
 }
 
 function onWindowResize()
 {
-
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
 //
-
 function animate()
 {
-
 	requestAnimationFrame( animate );
 
 	render();
 	stats.update();
-
 }
 
 function render()
 {
-
 	let timer = Date.now() * 0.0001;
 
 	camera.position.x = Math.cos( timer ) * 800;
@@ -158,6 +152,5 @@ function render()
 	} );
 
 	renderer.render( scene, camera );
-
 }
 

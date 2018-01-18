@@ -380,7 +380,7 @@ class WebGLRenderer
 		};
 	}
 
-	setSize( width, height, updateStyle )
+	setSize( width, height, updateStyle: boolean = false )
 	{
 		let device = this.vr.getDevice();
 		if ( device && device.isPresenting )
@@ -919,7 +919,7 @@ class WebGLRenderer
 
 	// Rendering
 
-	render( scene, camera, renderTarget, forceClear )
+	render( scene, camera, renderTarget?, forceClear?)
 	{
 		if ( !( camera && camera.isCamera ) )
 		{
@@ -967,11 +967,9 @@ class WebGLRenderer
 			this.currentRenderList.sort();
 
 		//
-
 		this.textures.updateVideoTextures();
 
 		//
-
 		if ( this._clippingEnabled ) this._clipping.beginShadows();
 
 		this.shadowMap.render( this.shadowsArray, scene, camera );
@@ -981,7 +979,6 @@ class WebGLRenderer
 		if ( this._clippingEnabled ) this._clipping.endShadows();
 
 		//
-
 		this._infoRender.frame++;
 		this._infoRender.calls = 0;
 		this._infoRender.vertices = 0;
@@ -994,11 +991,9 @@ class WebGLRenderer
 		this.setRenderTarget( renderTarget );
 
 		//
-
 		this.background.render( this.currentRenderList, scene, camera, forceClear );
 
 		// render scene
-
 		let opaqueObjects = this.currentRenderList.opaque;
 		let transparentObjects = this.currentRenderList.transparent;
 
@@ -1018,17 +1013,14 @@ class WebGLRenderer
 		}
 
 		// custom renderers
-
 		this.spriteRenderer.render( this.spritesArray, scene, camera );
 		this.flareRenderer.render( this.flaresArray, scene, camera, this._currentViewport );
 
 		// Generate mipmap if we're using any kind of mipmap filtering
-
 		if ( renderTarget )
 			this.textures.updateRenderTargetMipmap( renderTarget );
 
 		// Ensure depth buffer writing is enabled so it can be cleared on next render
-
 		this.state.buffers.depth.setTest( true );
 		this.state.buffers.depth.setMask( true );
 		this.state.buffers.color.setMask( true );

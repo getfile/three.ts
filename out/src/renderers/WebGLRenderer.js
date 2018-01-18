@@ -169,7 +169,7 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 height: this._height
             };
         }
-        setSize(width, height, updateStyle) {
+        setSize(width, height, updateStyle = false) {
             let device = this.vr.getDevice();
             if (device && device.isPresenting) {
                 console.warn('THREE.WebGLRenderer: Can\'t change size while VR device is presenting.');
