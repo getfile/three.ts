@@ -36,4 +36,4 @@ if (Object.assign === undefined) {
         return output;
     };
 }
-//# sourceMappingURL=polyfills.js.map
+//# sourceMappingURL=Polyfills.js.map

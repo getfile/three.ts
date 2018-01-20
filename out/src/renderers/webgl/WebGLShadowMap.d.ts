@@ -1,0 +1,30 @@
+declare class WebGLShadowMap {
+    private _renderer;
+    private _objects;
+    private _frustum;
+    private _projScreenMatrix;
+    private _shadowMapSize;
+    private _maxShadowMapSize;
+    private _lookTarget;
+    private _lightPositionWorld;
+    private _MorphingFlag;
+    private _SkinningFlag;
+    private _NumberOfMaterialVariants;
+    private _depthMaterials;
+    private _distanceMaterials;
+    private _materialCache;
+    cube2DViewPorts: any;
+    cubeUps: any;
+    cubeDirections: any;
+    enabled: any;
+    autoUpdate: any;
+    needsUpdate: any;
+    type: any;
+    renderReverseSided: any;
+    renderSingleSided: any;
+    constructor(_renderer: any, _objects: any, maxTextureSize: any);
+    render(lights: any, scene: any, camera: any): void;
+    getDepthMaterial(object: any, material: any, isPointLight: any, lightPositionWorld: any, shadowCameraNear: any, shadowCameraFar: any): any;
+    renderObject(object: any, camera: any, shadowCamera: any, isPointLight: any): void;
+}
+export { WebGLShadowMap };
