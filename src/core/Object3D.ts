@@ -49,7 +49,7 @@ class Object3D extends EventDispatcher
 	material;
 
 	userData: Object;
-	
+
 	static DefaultUp: Vector3 = new Vector3( 0, 1, 0 );
 	static DefaultMatrixAutoUpdate: boolean = true;
 
@@ -409,7 +409,7 @@ class Object3D extends EventDispatcher
 		this.matrixWorldNeedsUpdate = true;
 	}
 
-	updateMatrixWorld( force )
+	updateMatrixWorld( force: boolean = false )
 	{
 		if ( this.matrixAutoUpdate ) this.updateMatrix();
 

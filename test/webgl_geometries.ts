@@ -11,15 +11,6 @@ import { Mesh } from "../src/objects/Mesh";
 import { BoxGeometry } from "../src/geometries/BoxGeometry";
 import { WebGLRenderer } from "../src/renderers/WebGLRenderer"
 
-
-let camera: PerspectiveCamera;
-let scene: Scene;
-let renderer: WebGLRenderer;
-let stats: Stats;
-
-init();
-animate();
-
 function init()
 {
 	let container: HTMLElement = document.getElementById( 'container' );
@@ -154,3 +145,11 @@ function render()
 	renderer.render( scene, camera );
 }
 
+
+let camera: PerspectiveCamera;
+let scene: Scene;
+let renderer: WebGLRenderer;
+let stats: Stats;
+
+init();
+animate();

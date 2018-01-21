@@ -1,12 +1,6 @@
 define(["require", "exports", "../src/constants", "../src/math/Vector2", "./stats", "../src/cameras/PerspectiveCamera", "../src/scenes/Scene", "../src/lights/AmbientLight", "../src/lights/PointLight", "../src/loaders/TextureLoader", "../src/materials/MeshPhongMaterial", "../src/objects/Mesh", "../src/geometries/BoxGeometry", "../src/renderers/WebGLRenderer"], function (require, exports, Constants, Vector2_1, stats_1, PerspectiveCamera_1, Scene_1, AmbientLight_1, PointLight_1, TextureLoader_1, MeshPhongMaterial_1, Mesh_1, BoxGeometry_1, WebGLRenderer_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    let camera;
-    let scene;
-    let renderer;
-    let stats;
-    init();
-    animate();
     function init() {
         let container = document.getElementById('container');
         camera = new PerspectiveCamera_1.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
@@ -59,5 +53,11 @@ define(["require", "exports", "../src/constants", "../src/math/Vector2", "./stat
         });
         renderer.render(scene, camera);
     }
+    let camera;
+    let scene;
+    let renderer;
+    let stats;
+    init();
+    animate();
 });
 //# sourceMappingURL=webgl_geometries.js.map
