@@ -48,15 +48,16 @@ class Material extends EventDispatcher
 	visible;
 	userData;
 	needsUpdate;
-	
-	color
-	roughness;metalness;emissive;emissiveIntensity;specular;shininess;clearCoat;clearCoatRoughness;
-	map;alphaMap;lightMap;
-	bumpMap;bumpScale;normalMap;normalScale;displacementMap;displacementScale;displacementBias;
-	roughnessMap;metalnessMap;emissiveMap;specularMap;envMap;gradientMap;
-	size;sizeAttenuation;
-	rotation;linewidth;dashSize;gapSize;scale;
-	wireframe;wireframeLinewidth;wireframeLinecap;wireframeLinejoin;morphTargets;skinning;
+	reflectivity;
+
+	color;
+	roughness; metalness; emissive; emissiveIntensity; specular; shininess; clearCoat; clearCoatRoughness;
+	map; alphaMap; lightMap;
+	bumpMap; bumpScale; normalMap; normalScale; displacementMap; displacementScale; displacementBias;
+	roughnessMap; metalnessMap; emissiveMap; specularMap; envMap; gradientMap;
+	size; sizeAttenuation;
+	rotation; linewidth; dashSize; gapSize; scale;
+	wireframe; wireframeLinewidth; wireframeLinecap; wireframeLinejoin; morphTargets; skinning;
 
 	constructor()
 	{
@@ -166,12 +167,12 @@ class Material extends EventDispatcher
 		if ( isRoot )
 		{
 			meta = {
-				textures: {}
-					images: {}
+				textures: {},
+				images: {}
 			};
 		}
 
-		var data = {
+		var data: any = {
 			metadata: {
 				version: 4.5,
 				type: 'Material',
@@ -182,7 +183,7 @@ class Material extends EventDispatcher
 		// standard Material serialization
 		data.uuid = this.uuid;
 		data.type = this.type;
-		
+
 		if ( this.name !== '' ) data.name = this.name;
 		if ( this.color && this.color.isColor ) data.color = this.color.getHex();
 		if ( this.roughness !== undefined ) data.roughness = this.roughness;

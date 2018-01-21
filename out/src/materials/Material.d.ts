@@ -32,6 +32,7 @@ declare class Material extends EventDispatcher {
     visible: any;
     userData: any;
     needsUpdate: any;
+    reflectivity: any;
     color: any;
     roughness: any;
     metalness: any;
@@ -73,13 +74,7 @@ declare class Material extends EventDispatcher {
     constructor();
     onBeforeCompile(): void;
     setValues(values: any): void;
-    toJSON(meta: any): {
-        metadata: {
-            version: number;
-            type: string;
-            generator: string;
-        };
-    };
+    toJSON(meta: any): any;
     clone(): Material;
     copy(source: any): this;
     dispose(): void;

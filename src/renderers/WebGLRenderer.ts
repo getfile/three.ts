@@ -918,7 +918,6 @@ class WebGLRenderer
 	}
 
 	// Rendering
-
 	render( scene, camera, renderTarget?, forceClear?)
 	{
 		if ( !( camera && camera.isCamera ) )
@@ -936,11 +935,9 @@ class WebGLRenderer
 		this._currentCamera = null;
 
 		// update scene graph
-
 		if ( scene.autoUpdate === true ) scene.updateMatrixWorld();
 
 		// update camera matrices and frustum
-
 		if ( camera.parent === null ) camera.updateMatrixWorld();
 
 		if ( this.vr.enabled )
