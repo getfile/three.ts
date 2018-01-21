@@ -2,7 +2,7 @@ define(["require", "exports", "../geom/Sphere", "../geom/Ray", "../core/Object3D
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Line extends Object3D_1.Object3D {
-        constructor(geometry, material) {
+        constructor(geometry, material, data) {
             super();
             this.type = 'Line';
             this.geometry = geometry !== undefined ? geometry : new BufferGeometry_1.BufferGeometry();
