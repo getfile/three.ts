@@ -6,13 +6,10 @@ import
 	SubtractiveBlending,
 	MultiplyBlending,
 	CustomBlending,
-
 	FaceColors,
 	VertexColors,
-
 	DoubleSide,
 	BackSide,
-
 	MirroredRepeatWrapping,
 	RepeatWrapping
 } from '../constants';

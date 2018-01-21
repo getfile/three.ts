@@ -1,54 +1,48 @@
-import { Vector2 } from '../math/Vector2.js';
-import { FileLoader } from './FileLoader.js';
-import { DefaultLoadingManager } from './LoadingManager.js';
-import * as Materials from '../materials/Materials.js';
+import { Vector2 } from '../math/Vector2';
+import { FileLoader } from './FileLoader';
+import { DefaultLoadingManager } from './LoadingManager';
+import * as Materials from '../materials/Materials';
 
 /**
  * @author mrdoob / http://mrdoob.com/
  */
 
-function MaterialLoader( manager ) {
+class MaterialLoader
+{
+	manager;
+	textures;
 
-	this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
-	this.textures = {};
+	constructor( manager? )
+	{
+		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
+		this.textures = {};
+	}
 
-}
-
-Object.assign( MaterialLoader.prototype, {
-
-	load: function ( url, onLoad, onProgress, onError ) {
-
+	load( url, onLoad, onProgress, onError )
+	{
 		var scope = this;
-
 		var loader = new FileLoader( scope.manager );
-		loader.load( url, function ( text ) {
-
+		loader.load( url, function ( text )
+		{
 			onLoad( scope.parse( JSON.parse( text ) ) );
-
 		}, onProgress, onError );
+	}
 
-	},
-
-	setTextures: function ( value ) {
-
+	setTextures( value )
+	{
 		this.textures = value;
+	}
 
-	},
-
-	parse: function ( json ) {
-
+	parse( json )
+	{
 		var textures = this.textures;
 
-		function getTexture( name ) {
-
-			if ( textures[ name ] === undefined ) {
-
+		function getTexture( name )
+		{
+			if ( textures[ name ] === undefined )
 				console.warn( 'THREE.MaterialLoader: Undefined texture', name );
 
-			}
-
 			return textures[ name ];
-
 		}
 
 		var material = new Materials[ json.type ]();
@@ -97,43 +91,36 @@ Object.assign( MaterialLoader.prototype, {
 		if ( json.userData !== undefined ) material.userData = json.userData;
 
 		// Deprecated
-
 		if ( json.shading !== undefined ) material.flatShading = json.shading === 1; // THREE.FlatShading
 
 		// for PointsMaterial
-
 		if ( json.size !== undefined ) material.size = json.size;
 		if ( json.sizeAttenuation !== undefined ) material.sizeAttenuation = json.sizeAttenuation;
 
 		// maps
-
 		if ( json.map !== undefined ) material.map = getTexture( json.map );
 
-		if ( json.alphaMap !== undefined ) {
-
+		if ( json.alphaMap !== undefined )
+		{
 			material.alphaMap = getTexture( json.alphaMap );
 			material.transparent = true;
-
 		}
 
 		if ( json.bumpMap !== undefined ) material.bumpMap = getTexture( json.bumpMap );
 		if ( json.bumpScale !== undefined ) material.bumpScale = json.bumpScale;
 
 		if ( json.normalMap !== undefined ) material.normalMap = getTexture( json.normalMap );
-		if ( json.normalScale !== undefined ) {
-
+		if ( json.normalScale !== undefined )
+		{
 			var normalScale = json.normalScale;
 
-			if ( Array.isArray( normalScale ) === false ) {
-
+			if ( Array.isArray( normalScale ) === false )
+			{
 				// Blender exporter used to export a scalar. See #7459
-
 				normalScale = [ normalScale, normalScale ];
-
 			}
 
 			material.normalScale = new Vector2().fromArray( normalScale );
-
 		}
 
 		if ( json.displacementMap !== undefined ) material.displacementMap = getTexture( json.displacementMap );
@@ -161,10 +148,8 @@ Object.assign( MaterialLoader.prototype, {
 		if ( json.gradientMap !== undefined ) material.gradientMap = getTexture( json.gradientMap );
 
 		return material;
-
 	}
 
-} );
-
+}
 
 export { MaterialLoader };

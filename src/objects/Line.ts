@@ -13,7 +13,7 @@ import { LineSegments } from './LineSegments';
 
 class Line extends Object3D
 {
-	constructor( geometry, material )
+	constructor( geometry, material, data? )
 	{
 		super();
 		this.type = 'Line';
