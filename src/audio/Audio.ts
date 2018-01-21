@@ -3,80 +3,86 @@
  * @author Reece Aaron Lecrivain / http://reecenotes.com/
  */
 
-import { Object3D } from '../core/Object3D.js';
+import { Object3D } from '../core/Object3D';
 
-function Audio( listener ) {
+class Audio extends Object3D
+{
+	context;
+	gain;
+	autoplay;
+	buffer;
+	loop;
+	startTime;
+	offset;
+	playbackRate;
+	isPlaying;
+	hasPlaybackControl;
+	sourceType;
+	filters;
+	source;
 
-	Object3D.call( this );
+	constructor( listener )
+	{
+		super();
 
-	this.type = 'Audio';
+		this.type = 'Audio';
 
-	this.context = listener.context;
+		this.context = listener.context;
 
-	this.gain = this.context.createGain();
-	this.gain.connect( listener.getInput() );
+		this.gain = this.context.createGain();
+		this.gain.connect( listener.getInput() );
 
-	this.autoplay = false;
+		this.autoplay = false;
 
-	this.buffer = null;
-	this.loop = false;
-	this.startTime = 0;
-	this.offset = 0;
-	this.playbackRate = 1;
-	this.isPlaying = false;
-	this.hasPlaybackControl = true;
-	this.sourceType = 'empty';
+		this.buffer = null;
+		this.loop = false;
+		this.startTime = 0;
+		this.offset = 0;
+		this.playbackRate = 1;
+		this.isPlaying = false;
+		this.hasPlaybackControl = true;
+		this.sourceType = 'empty';
 
-	this.filters = [];
+		this.filters = [];
+	}
 
-}
-
-Audio.prototype = Object.assign( Object.create( Object3D.prototype ), {
-
-	constructor: Audio,
-
-	getOutput: function () {
-
+	getOutput()
+	{
 		return this.gain;
+	}
 
-	},
-
-	setNodeSource: function ( audioNode ) {
-
+	setNodeSource( audioNode )
+	{
 		this.hasPlaybackControl = false;
 		this.sourceType = 'audioNode';
 		this.source = audioNode;
 		this.connect();
 
 		return this;
+	}
 
-	},
-
-	setBuffer: function ( audioBuffer ) {
-
+	setBuffer( audioBuffer )
+	{
 		this.buffer = audioBuffer;
 		this.sourceType = 'buffer';
 
 		if ( this.autoplay ) this.play();
 
 		return this;
+	}
 
-	},
-
-	play: function () {
-
-		if ( this.isPlaying === true ) {
-
+	play()
+	{
+		if ( this.isPlaying === true )
+		{
 			console.warn( 'THREE.Audio: Audio is already playing.' );
 			return;
-
 		}
 
-		if ( this.hasPlaybackControl === false ) {
-
+		if ( this.hasPlaybackControl === false )
+		{
 			console.warn( 'THREE.Audio: this Audio has no playback control.' );
 			return;
-
 		}
 
 		var source = this.context.createBufferSource();
@@ -89,41 +95,35 @@ Audio.prototype = Object.assign( Object.create( Object3D.prototype ), {
 		source.start( this.startTime, this.offset );
 
 		this.isPlaying = true;
-
 		this.source = source;
 
 		return this.connect();
+	}
 
-	},
-
-	pause: function () {
-
-		if ( this.hasPlaybackControl === false ) {
-
+	pause()
+	{
+		if ( this.hasPlaybackControl === false )
+		{
 			console.warn( 'THREE.Audio: this Audio has no playback control.' );
 			return;
-
 		}
 
-		if ( this.isPlaying === true ) {
-
+		if ( this.isPlaying === true )
+		{
 			this.source.stop();
 			this.offset += ( this.context.currentTime - this.startTime ) * this.playbackRate;
 			this.isPlaying = false;
-
 		}
 
 		return this;
+	}
 
-	},
-
-	stop: function () {
-
-		if ( this.hasPlaybackControl === false ) {
-
+	stop()
+	{
+		if ( this.hasPlaybackControl === false )
+		{
 			console.warn( 'THREE.Audio: this Audio has no playback control.' );
 			return;
-
 		}
 
 		this.source.stop();
@@ -131,176 +131,128 @@ Audio.prototype = Object.assign( Object.create( Object3D.prototype ), {
 		this.isPlaying = false;
 
 		return this;
+	}
 
-	},
-
-	connect: function () {
-
-		if ( this.filters.length > 0 ) {
-
+	connect()
+	{
+		if ( this.filters.length > 0 )
+		{
 			this.source.connect( this.filters[ 0 ] );
 
-			for ( var i = 1, l = this.filters.length; i < l; i ++ ) {
-
+			for ( var i = 1, l = this.filters.length; i < l; i++ )
 				this.filters[ i - 1 ].connect( this.filters[ i ] );
 
-			}
-
 			this.filters[ this.filters.length - 1 ].connect( this.getOutput() );
-
-		} else {
-
+		} else
 			this.source.connect( this.getOutput() );
 
-		}
-
 		return this;
+	}
 
-	},
-
-	disconnect: function () {
-
-		if ( this.filters.length > 0 ) {
-
+	disconnect()
+	{
+		if ( this.filters.length > 0 )
+		{
 			this.source.disconnect( this.filters[ 0 ] );
-
-			for ( var i = 1, l = this.filters.length; i < l; i ++ ) {
-
+			for ( var i = 1, l = this.filters.length; i < l; i++ )
 				this.filters[ i - 1 ].disconnect( this.filters[ i ] );
-
-			}
-
 			this.filters[ this.filters.length - 1 ].disconnect( this.getOutput() );
-
-		} else {
-
+		} else
 			this.source.disconnect( this.getOutput() );
-
-		}
-
 		return this;
+	}
 
-	},
-
-	getFilters: function () {
-
+	getFilters()
+	{
 		return this.filters;
+	}
 
-	},
-
-	setFilters: function ( value ) {
-
-		if ( ! value ) value = [];
-
-		if ( this.isPlaying === true ) {
-
+	setFilters( value )
+	{
+		if ( !value ) value = [];
+		if ( this.isPlaying === true )
+		{
 			this.disconnect();
 			this.filters = value;
 			this.connect();
-
-		} else {
-
+		} else
 			this.filters = value;
 
-		}
-
 		return this;
+	}
 
-	},
-
-	getFilter: function () {
-
+	getFilter()
+	{
 		return this.getFilters()[ 0 ];
+	}
 
-	},
-
-	setFilter: function ( filter ) {
-
+	setFilter( filter )
+	{
 		return this.setFilters( filter ? [ filter ] : [] );
+	}
 
-	},
-
-	setPlaybackRate: function ( value ) {
-
-		if ( this.hasPlaybackControl === false ) {
-
+	setPlaybackRate( value )
+	{
+		if ( this.hasPlaybackControl === false )
+		{
 			console.warn( 'THREE.Audio: this Audio has no playback control.' );
 			return;
-
 		}
 
 		this.playbackRate = value;
-
-		if ( this.isPlaying === true ) {
-
+		if ( this.isPlaying === true )
 			this.source.playbackRate.setValueAtTime( this.playbackRate, this.context.currentTime );
 
-		}
-
 		return this;
+	}
 
-	},
-
-	getPlaybackRate: function () {
-
+	getPlaybackRate()
+	{
 		return this.playbackRate;
+	}
 
-	},
-
-	onEnded: function () {
-
+	onEnded()
+	{
 		this.isPlaying = false;
+	}
 
-	},
-
-	getLoop: function () {
-
-		if ( this.hasPlaybackControl === false ) {
-
+	getLoop()
+	{
+		if ( this.hasPlaybackControl === false )
+		{
 			console.warn( 'THREE.Audio: this Audio has no playback control.' );
 			return false;
-
 		}
 
 		return this.loop;
+	}
 
-	},
-
-	setLoop: function ( value ) {
-
-		if ( this.hasPlaybackControl === false ) {
-
+	setLoop( value )
+	{
+		if ( this.hasPlaybackControl === false )
+		{
 			console.warn( 'THREE.Audio: this Audio has no playback control.' );
 			return;
-
 		}
 
 		this.loop = value;
-
-		if ( this.isPlaying === true ) {
-
+		if ( this.isPlaying === true )
 			this.source.loop = this.loop;
 
-		}
-
 		return this;
-
-	},
-
-	getVolume: function () {
-
-		return this.gain.gain.value;
-
-	},
-
-	setVolume: function ( value ) {
-
-		this.gain.gain.value = value;
-
-		return this;
-
 	}
 
-} );
+	getVolume()
+	{
+		return this.gain.gain.value;
+	}
+
+	setVolume( value )
+	{
+		this.gain.gain.value = value;
+		return this;
+	}
+
+}
 
 export { Audio };
