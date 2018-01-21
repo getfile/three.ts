@@ -222,7 +222,7 @@ class Color
 				return this;
 			}
 		}
-		
+
 		if ( style && style.length > 0 )
 		{
 			// color keywords
@@ -430,10 +430,8 @@ class Color
 		return ( c.r === this.r ) && ( c.g === this.g ) && ( c.b === this.b );
 	}
 
-	fromArray( array: Array<number>, offset: number ): Color
+	fromArray( array: Array<number>, offset: number = 0 ): Color
 	{
-		if ( offset === undefined ) offset = 0;
-
 		this.r = array[ offset ];
 		this.g = array[ offset + 1 ];
 		this.b = array[ offset + 2 ];
@@ -441,10 +439,9 @@ class Color
 		return this;
 	}
 
-	toArray( array: Array<number>, offset: number ): Array<number>
+	toArray( array: Array<number>, offset: number = 0 ): Array<number>
 	{
 		if ( array === undefined ) array = [];
-		if ( offset === undefined ) offset = 0;
 
 		array[ offset ] = this.r;
 		array[ offset + 1 ] = this.g;

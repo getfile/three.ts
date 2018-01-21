@@ -29,6 +29,7 @@ class Loader
 	onLoadComplete;
 
 	handlers;
+	crossOrigin;
 	
 	constructor()
 	{
@@ -58,8 +59,6 @@ class Loader
 
 		return null;
 	}
-
-	crossOrigin;
 
 	initMaterials( materials, texturePath, crossOrigin )
 	{
@@ -131,7 +130,7 @@ class Loader
 		}
 
 		//
-		var json = {
+		var json:any = {
 			uuid: _Math.generateUUID(),
 			type: 'MeshLambertMaterial'
 		};

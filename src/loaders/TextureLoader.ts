@@ -14,13 +14,13 @@ class TextureLoader
 	crossOrigin;
 	path;
 
-	constructor( manager )
+	constructor( manager? )
 	{
 		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
 		this.crossOrigin = 'Anonymous';
 	}
 
-	load( url, onLoad, onProgress, onError )
+	load( url, onLoad?, onProgress?, onError? )
 	{
 		var texture = new Texture();
 

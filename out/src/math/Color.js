@@ -299,19 +299,15 @@ define(["require", "exports", "./Math"], function (require, exports, Math_1) {
         equals(c) {
             return (c.r === this.r) && (c.g === this.g) && (c.b === this.b);
         }
-        fromArray(array, offset) {
-            if (offset === undefined)
-                offset = 0;
+        fromArray(array, offset = 0) {
             this.r = array[offset];
             this.g = array[offset + 1];
             this.b = array[offset + 2];
             return this;
         }
-        toArray(array, offset) {
+        toArray(array, offset = 0) {
             if (array === undefined)
                 array = [];
-            if (offset === undefined)
-                offset = 0;
             array[offset] = this.r;
             array[offset + 1] = this.g;
             array[offset + 2] = this.b;

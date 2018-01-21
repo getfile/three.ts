@@ -36,8 +36,8 @@ declare class Color {
     multiplyScalar(s: number): Color;
     lerp(color: Color, alpha: number): Color;
     equals(c: Color): boolean;
-    fromArray(array: Array<number>, offset: number): Color;
-    toArray(array: Array<number>, offset: number): Array<number>;
+    fromArray(array: Array<number>, offset?: number): Color;
+    toArray(array: Array<number>, offset?: number): Array<number>;
     toJSON(): number;
 }
 export { HSL, Color };
