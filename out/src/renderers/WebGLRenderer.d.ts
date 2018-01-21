@@ -1,3 +1,6 @@
+import { WebGLBackground } from './webgl/WebGLBackground';
+import { WebGLExtensions } from './webgl/WebGLExtensions';
+import { Color } from '../math/Color';
 declare class WebGLRenderer {
     domElement: any;
     autoClear: any;
@@ -64,7 +67,7 @@ declare class WebGLRenderer {
     programCache: any;
     lights: any;
     renderLists: any;
-    background: any;
+    background: WebGLBackground;
     bufferRenderer: any;
     indexedBufferRenderer: any;
     flareRenderer: any;
@@ -72,7 +75,7 @@ declare class WebGLRenderer {
     parameters: any;
     onAnimationFrame: any;
     isAnimating: any;
-    extensions: any;
+    extensions: WebGLExtensions;
     _premultipliedAlpha: any;
     constructor(parameters: any);
     getTargetPixelRatio(): any;
@@ -96,11 +99,11 @@ declare class WebGLRenderer {
     setViewport(x: any, y: any, width: any, height: any): void;
     setScissor(x: any, y: any, width: any, height: any): void;
     setScissorTest(boolean: any): void;
-    getClearColor(): any;
+    getClearColor(): Color;
     setClearColor(): void;
-    getClearAlpha(): any;
+    getClearAlpha(): number;
     setClearAlpha(): void;
-    clear(color: any, depth: any, stencil: any): void;
+    clear(color?: boolean, depth?: boolean, stencil?: boolean): void;
     clearColor(): void;
     clearDepth(): void;
     clearStencil(): void;

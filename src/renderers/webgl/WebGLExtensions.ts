@@ -5,7 +5,7 @@
 class WebGLExtensions
 {
 	extensions;
-	gl;
+	gl: WebGLRenderingContext;
 
 	constructor( gl )
 	{

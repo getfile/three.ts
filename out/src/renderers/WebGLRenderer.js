@@ -214,21 +214,21 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             return this.background.getClearColor();
         }
         setClearColor() {
-            this.background.setClearColor.apply(this.background, arguments);
+            this.background.setClearColor(arguments);
         }
         getClearAlpha() {
             return this.background.getClearAlpha();
         }
         setClearAlpha() {
-            this.background.setClearAlpha.apply(this.background, arguments);
+            this.background.setClearAlpha(arguments);
         }
-        clear(color, depth, stencil) {
+        clear(color = true, depth = true, stencil = true) {
             let bits = 0;
-            if (color === undefined || color)
+            if (color)
                 bits |= this._gl.COLOR_BUFFER_BIT;
-            if (depth === undefined || depth)
+            if (depth)
                 bits |= this._gl.DEPTH_BUFFER_BIT;
-            if (stencil === undefined || stencil)
+            if (stencil)
                 bits |= this._gl.STENCIL_BUFFER_BIT;
             this._gl.clear(bits);
         }

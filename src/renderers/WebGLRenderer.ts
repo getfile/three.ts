@@ -31,6 +31,7 @@ import { Frustum } from '../geom/Frustum';
 import { Vector4 } from '../math/Vector4';
 import { WebGLUtils } from './webgl/WebGLUtils';
 import { Sphere } from "../geom/Sphere";
+import { Color } from '../math/Color';
 
 
 /**
@@ -103,7 +104,7 @@ class WebGLRenderer
 	lights;
 	renderLists;
 
-	background;
+	background: WebGLBackground;
 
 	bufferRenderer;
 	indexedBufferRenderer;
@@ -115,7 +116,7 @@ class WebGLRenderer
 	onAnimationFrame;
 	isAnimating;
 
-	extensions;
+	extensions:WebGLExtensions;
 	_premultipliedAlpha;
 
 
@@ -444,14 +445,14 @@ class WebGLRenderer
 
 	// Clearing
 
-	getClearColor()
+	getClearColor():Color
 	{
 		return this.background.getClearColor();
 	}
 
 	setClearColor()
 	{
-		this.background.setClearColor.apply( this.background, arguments );
+		this.background.setClearColor( arguments );
 	}
 
 	getClearAlpha()
@@ -461,16 +462,16 @@ class WebGLRenderer
 
 	setClearAlpha()
 	{
-		this.background.setClearAlpha.apply( this.background, arguments );
+		this.background.setClearAlpha( arguments );
 	}
 
-	clear( color, depth, stencil )
+	clear( color: boolean = true, depth: boolean = true, stencil: boolean = true )
 	{
-		let bits = 0;
+		let bits: GLbitfield = 0;
 
-		if ( color === undefined || color ) bits |= this._gl.COLOR_BUFFER_BIT;
-		if ( depth === undefined || depth ) bits |= this._gl.DEPTH_BUFFER_BIT;
-		if ( stencil === undefined || stencil ) bits |= this._gl.STENCIL_BUFFER_BIT;
+		if ( color ) bits |= this._gl.COLOR_BUFFER_BIT;
+		if ( depth ) bits |= this._gl.DEPTH_BUFFER_BIT;
+		if ( stencil ) bits |= this._gl.STENCIL_BUFFER_BIT;
 
 		this._gl.clear( bits );
 	}
@@ -502,7 +503,6 @@ class WebGLRenderer
 		this._canvas.removeEventListener( 'webglcontextrestored', this.onContextRestore, false );
 
 		this.renderLists.dispose();
-
 		this.vr.dispose();
 	}
 

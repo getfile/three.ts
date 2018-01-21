@@ -24,8 +24,8 @@ class WebGLBackground
 		this.premultipliedAlpha = premultipliedAlpha;
 	}
 
-	clearColor = new Color( 0x000000 );
-	clearAlpha = 0;
+	clearColor:Color = new Color( 0x000000 );
+	clearAlpha:number = 0;
 
 	planeCamera;
 	planeMesh;
@@ -102,7 +102,7 @@ class WebGLBackground
 		return this.clearColor;
 	}
 
-	setClearColor( color, alpha )
+	setClearColor( color, alpha? )
 	{
 		this.clearColor.set( color );
 		this.clearAlpha = alpha !== undefined ? alpha : 1;

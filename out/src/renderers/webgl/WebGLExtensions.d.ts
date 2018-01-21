@@ -1,6 +1,6 @@
 declare class WebGLExtensions {
     extensions: any;
-    gl: any;
+    gl: WebGLRenderingContext;
     constructor(gl: any);
     get(name: any): any;
 }
