@@ -4,37 +4,31 @@
 
 class Cache
 {
-	enabled;
-	files;
+	static enabled = false;
+	static files = {};
 
-	constructor()
+	static add( key, file )
 	{
-		this.enabled = false;
-		this.files = {};
-	}
-
-	add( key, file )
-	{
-		if ( this.enabled === false ) return;
+		if ( Cache.enabled === false ) return;
 		// console.log( 'THREE.Cache', 'Adding key:', key );
-		this.files[ key ] = file;
+		Cache.files[ key ] = file;
 	}
 
-	get( key )
+	static get( key )
 	{
-		if ( this.enabled === false ) return;
+		if ( Cache.enabled === false ) return;
 		// console.log( 'THREE.Cache', 'Checking key:', key );
-		return this.files[ key ];
+		return Cache.files[ key ];
 	}
 
-	remove( key )
+	static remove( key )
 	{
-		delete this.files[ key ];
+		delete Cache.files[ key ];
 	}
 
-	clear()
+	static clear()
 	{
-		this.files = {};
+		Cache.files = {};
 	}
 
 }

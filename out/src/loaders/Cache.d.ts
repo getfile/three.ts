@@ -1,10 +1,9 @@
 declare class Cache {
-    enabled: any;
-    files: any;
-    constructor();
-    add(key: any, file: any): void;
-    get(key: any): any;
-    remove(key: any): void;
-    clear(): void;
+    static enabled: boolean;
+    static files: {};
+    static add(key: any, file: any): void;
+    static get(key: any): any;
+    static remove(key: any): void;
+    static clear(): void;
 }
 export { Cache };

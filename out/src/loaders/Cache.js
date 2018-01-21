@@ -2,27 +2,25 @@ define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Cache {
-        constructor() {
-            this.enabled = false;
-            this.files = {};
-        }
-        add(key, file) {
-            if (this.enabled === false)
+        static add(key, file) {
+            if (Cache.enabled === false)
                 return;
-            this.files[key] = file;
+            Cache.files[key] = file;
         }
-        get(key) {
-            if (this.enabled === false)
+        static get(key) {
+            if (Cache.enabled === false)
                 return;
-            return this.files[key];
+            return Cache.files[key];
         }
-        remove(key) {
-            delete this.files[key];
+        static remove(key) {
+            delete Cache.files[key];
         }
-        clear() {
-            this.files = {};
+        static clear() {
+            Cache.files = {};
         }
     }
+    Cache.enabled = false;
+    Cache.files = {};
     exports.Cache = Cache;
 });
 //# sourceMappingURL=Cache.js.map
