@@ -19,7 +19,6 @@ let bufferGeometryId = 1; // BufferGeometry uses odd numbers as Id
 
 class BufferGeometry extends EventDispatcher
 {
-
 	index;
 	attributes;
 
@@ -133,7 +132,6 @@ class BufferGeometry extends EventDispatcher
 		if ( normal !== undefined )
 		{
 			let normalMatrix = new Matrix3().getNormalMatrix( matrix );
-
 			normalMatrix.applyToBufferAttribute( normal );
 			normal.needsUpdate = true;
 		}
@@ -258,7 +256,7 @@ class BufferGeometry extends EventDispatcher
 		let geometry = object.geometry;
 		if ( object.isMesh )
 		{
-			let direct = geometry.__directGeometry;
+			let direct:DirectGeometry = geometry.__directGeometry;
 			if ( geometry.elementsNeedUpdate === true )
 			{
 				direct = undefined;

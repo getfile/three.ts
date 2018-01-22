@@ -1,13 +1,12 @@
-define(["require", "exports", "../../constants", "../../math/Vector4"], function (require, exports, constants_1, Vector4_1) {
+define(["require", "exports", "../../constants", "../../math/Vector4"], function (require, exports, Constant, Vector4_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ColorBuffer {
         constructor(gl) {
             this.gl = gl;
             this.locked = false;
-            this.color = new Vector4_1.Vector4();
             this.currentColorMask = null;
-            this.currentColorClear = new Vector4_1.Vector4(0, 0, 0, 0);
+            this.currentColorClear = new Vector4_1.Vector4();
         }
         setMask(colorMask) {
             if (this.currentColorMask !== colorMask && !this.locked) {
@@ -18,16 +17,16 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
         setLocked(lock) {
             this.locked = lock;
         }
-        setClear(r, g, b, a, premultipliedAlpha) {
+        setClear(r, g, b, a, premultipliedAlpha = true) {
             if (premultipliedAlpha === true) {
                 r *= a;
                 g *= a;
                 b *= a;
             }
-            this.color.set(r, g, b, a);
-            if (this.currentColorClear.equals(this.color) === false) {
+            var color = new Vector4_1.Vector4(r, g, b, a);
+            if (this.currentColorClear.equals(color) === false) {
                 this.gl.clearColor(r, g, b, a);
-                this.currentColorClear.copy(this.color);
+                this.currentColorClear.copy(color);
             }
         }
         reset() {
@@ -36,6 +35,7 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
             this.currentColorClear.set(-1, 0, 0, 0);
         }
     }
+    exports.ColorBuffer = ColorBuffer;
     class DepthBuffer {
         constructor(gl, container) {
             this.gl = gl;
@@ -61,28 +61,28 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
             if (this.currentDepthFunc !== depthFunc) {
                 if (depthFunc) {
                     switch (depthFunc) {
-                        case constants_1.NeverDepth:
+                        case Constant.NeverDepth:
                             this.gl.depthFunc(this.gl.NEVER);
                             break;
-                        case constants_1.AlwaysDepth:
+                        case Constant.AlwaysDepth:
                             this.gl.depthFunc(this.gl.ALWAYS);
                             break;
-                        case constants_1.LessDepth:
+                        case Constant.LessDepth:
                             this.gl.depthFunc(this.gl.LESS);
                             break;
-                        case constants_1.LessEqualDepth:
+                        case Constant.LessEqualDepth:
                             this.gl.depthFunc(this.gl.LEQUAL);
                             break;
-                        case constants_1.EqualDepth:
+                        case Constant.EqualDepth:
                             this.gl.depthFunc(this.gl.EQUAL);
                             break;
-                        case constants_1.GreaterEqualDepth:
+                        case Constant.GreaterEqualDepth:
                             this.gl.depthFunc(this.gl.GEQUAL);
                             break;
-                        case constants_1.GreaterDepth:
+                        case Constant.GreaterDepth:
                             this.gl.depthFunc(this.gl.GREATER);
                             break;
-                        case constants_1.NotEqualDepth:
+                        case Constant.NotEqualDepth:
                             this.gl.depthFunc(this.gl.NOTEQUAL);
                             break;
                         default:
@@ -110,6 +110,7 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
             this.currentDepthClear = null;
         }
     }
+    exports.DepthBuffer = DepthBuffer;
     class StencilBuffer {
         constructor(gl, container) {
             this.gl = gl;
@@ -177,6 +178,7 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
             this.currentStencilClear = null;
         }
     }
+    exports.StencilBuffer = StencilBuffer;
     class WebGLState {
         constructor(gl, extensions, utils) {
             this.gl = gl;
@@ -224,12 +226,12 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
             this.depthBuffer.setClear(1);
             this.stencilBuffer.setClear(0);
             this.enable(this.gl.DEPTH_TEST);
-            this.depthBuffer.setFunc(constants_1.LessEqualDepth);
+            this.depthBuffer.setFunc(Constant.LessEqualDepth);
             this.setFlipSided(false);
-            this.setCullFace(constants_1.CullFaceBack);
+            this.setCullFace(Constant.CullFaceBack);
             this.enable(this.gl.CULL_FACE);
             this.enable(this.gl.BLEND);
-            this.setBlending(constants_1.NormalBlending);
+            this.setBlending(Constant.NormalBlending);
         }
         createTexture(type, target, count) {
             let data = new Uint8Array(4);
@@ -311,14 +313,14 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
             return false;
         }
         setBlending(blending, blendEquation, blendSrc, blendDst, blendEquationAlpha, blendSrcAlpha, blendDstAlpha, premultipliedAlpha) {
-            if (blending !== constants_1.NoBlending)
+            if (blending !== Constant.NoBlending)
                 this.enable(this.gl.BLEND);
             else
                 this.disable(this.gl.BLEND);
-            if (blending !== constants_1.CustomBlending) {
+            if (blending !== Constant.CustomBlending) {
                 if (blending !== this.currentBlending || premultipliedAlpha !== this.currentPremultipledAlpha) {
                     switch (blending) {
-                        case constants_1.AdditiveBlending:
+                        case Constant.AdditiveBlending:
                             if (premultipliedAlpha) {
                                 this.gl.blendEquationSeparate(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
                                 this.gl.blendFuncSeparate(this.gl.ONE, this.gl.ONE, this.gl.ONE, this.gl.ONE);
@@ -328,7 +330,7 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
                                 this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
                             }
                             break;
-                        case constants_1.SubtractiveBlending:
+                        case Constant.SubtractiveBlending:
                             if (premultipliedAlpha) {
                                 this.gl.blendEquationSeparate(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
                                 this.gl.blendFuncSeparate(this.gl.ZERO, this.gl.ZERO, this.gl.ONE_MINUS_SRC_COLOR, this.gl.ONE_MINUS_SRC_ALPHA);
@@ -338,7 +340,7 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
                                 this.gl.blendFunc(this.gl.ZERO, this.gl.ONE_MINUS_SRC_COLOR);
                             }
                             break;
-                        case constants_1.MultiplyBlending:
+                        case Constant.MultiplyBlending:
                             if (premultipliedAlpha) {
                                 this.gl.blendEquationSeparate(this.gl.FUNC_ADD, this.gl.FUNC_ADD);
                                 this.gl.blendFuncSeparate(this.gl.ZERO, this.gl.SRC_COLOR, this.gl.ZERO, this.gl.SRC_ALPHA);
@@ -387,16 +389,16 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
             this.currentPremultipledAlpha = premultipliedAlpha;
         }
         setMaterial(material, frontFaceCW) {
-            material.side === constants_1.DoubleSide
+            material.side === Constant.DoubleSide
                 ? this.disable(this.gl.CULL_FACE)
                 : this.enable(this.gl.CULL_FACE);
-            let flipSided = (material.side === constants_1.BackSide);
+            let flipSided = (material.side === Constant.BackSide);
             if (frontFaceCW)
                 flipSided = !flipSided;
             this.setFlipSided(flipSided);
             material.transparent === true
                 ? this.setBlending(material.blending, material.blendEquation, material.blendSrc, material.blendDst, material.blendEquationAlpha, material.blendSrcAlpha, material.blendDstAlpha, material.premultipliedAlpha)
-                : this.setBlending(constants_1.NoBlending);
+                : this.setBlending(Constant.NoBlending);
             this.depthBuffer.setFunc(material.depthFunc);
             this.depthBuffer.setTest(material.depthTest);
             this.depthBuffer.setMask(material.depthWrite);
@@ -413,12 +415,12 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
             }
         }
         setCullFace(cullFace) {
-            if (cullFace !== constants_1.CullFaceNone) {
+            if (cullFace !== Constant.CullFaceNone) {
                 this.enable(this.gl.CULL_FACE);
                 if (cullFace !== this.currentCullFace) {
-                    if (cullFace === constants_1.CullFaceBack)
+                    if (cullFace === Constant.CullFaceBack)
                         this.gl.cullFace(this.gl.BACK);
-                    else if (cullFace === constants_1.CullFaceFront)
+                    else if (cullFace === Constant.CullFaceFront)
                         this.gl.cullFace(this.gl.FRONT);
                     else
                         this.gl.cullFace(this.gl.FRONT_AND_BACK);

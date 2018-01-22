@@ -1,8 +1,60 @@
+import { Vector4 } from '../../math/Vector4';
+import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLUtils } from "./WebGLUtils";
+declare class ColorBuffer {
+    locked: boolean;
+    currentColorMask: boolean;
+    currentColorClear: Vector4;
+    gl: WebGLRenderingContext;
+    constructor(gl: any);
+    setMask(colorMask: boolean): void;
+    setLocked(lock: boolean): void;
+    setClear(r: any, g: any, b: any, a: any, premultipliedAlpha?: boolean): void;
+    reset(): void;
+}
+declare class DepthBuffer {
+    gl: WebGLRenderingContext;
+    container: WebGLState;
+    locked: boolean;
+    currentDepthMask: boolean;
+    currentDepthFunc: number;
+    currentDepthClear: number;
+    constructor(gl: any, container: any);
+    setTest(depthTest: any): void;
+    setMask(depthMask: boolean): void;
+    setFunc(depthFunc: number): void;
+    setLocked(lock: any): void;
+    setClear(depth: any): void;
+    reset(): void;
+}
+declare class StencilBuffer {
+    gl: WebGLRenderingContext;
+    container: WebGLState;
+    locked: any;
+    currentStencilMask: any;
+    currentStencilFunc: any;
+    currentStencilRef: any;
+    currentStencilFuncMask: any;
+    currentStencilFail: any;
+    currentStencilZFail: any;
+    currentStencilZPass: any;
+    currentStencilClear: any;
+    constructor(gl: any, container: any);
+    setTest(stencilTest: any): void;
+    setMask(stencilMask: any): void;
+    setFunc(stencilFunc: any, stencilRef: any, stencilMask: any): void;
+    setOp(stencilFail: any, stencilZFail: any, stencilZPass: any): void;
+    setLocked(lock: any): void;
+    setClear(stencil: any): void;
+    reset(): void;
+}
 declare class WebGLState {
-    gl: any;
-    extensions: any;
-    utils: any;
-    enabledAttributes: any;
+    gl: WebGLRenderingContext;
+    extensions: WebGLExtensions;
+    utils: WebGLUtils;
+    enabledAttributes: Uint8Array;
+    newAttributes: Uint8Array;
+    attributeDivisors: Uint8Array;
     capabilities: any;
     compressedTextureFormats: any;
     currentTextureSlot: any;
@@ -11,11 +63,11 @@ declare class WebGLState {
     currentBlending: any;
     currentFlipSided: any;
     currentCullFace: any;
-    colorBuffer: any;
-    depthBuffer: any;
-    stencilBuffer: any;
-    currentScissor: any;
-    currentViewport: any;
+    colorBuffer: ColorBuffer;
+    depthBuffer: DepthBuffer;
+    stencilBuffer: StencilBuffer;
+    currentScissor: Vector4;
+    currentViewport: Vector4;
     emptyTextures: any;
     maxTextures: any;
     currentLineWidth: any;
@@ -29,13 +81,15 @@ declare class WebGLState {
     currentBlendSrcAlpha: any;
     currentBlendDstAlpha: any;
     currentPremultipledAlpha: any;
-    newAttributes: any;
-    attributeDivisors: any;
-    buffers: any;
+    buffers: {
+        color: ColorBuffer;
+        depth: DepthBuffer;
+        stencil: StencilBuffer;
+    };
     constructor(gl: any, extensions: any, utils: any);
-    createTexture(type: any, target: any, count: any): any;
+    createTexture(type: any, target: any, count: number): WebGLTexture;
     initAttributes(): void;
-    enableAttribute(attribute: any): void;
+    enableAttribute(attribute: number): void;
     enableAttributeAndDivisor(attribute: any, meshPerAttribute: any): void;
     disableUnusedAttributes(): void;
     enable(id: any): void;
@@ -53,8 +107,8 @@ declare class WebGLState {
     bindTexture(webglType: any, webglTexture: any): void;
     compressedTexImage2D(): void;
     texImage2D(): void;
-    scissor(scissor: any): void;
-    viewport(viewport: any): void;
+    scissor(scissor: Vector4): void;
+    viewport(viewport: Vector4): void;
     reset(): void;
 }
-export { WebGLState };
+export { ColorBuffer, DepthBuffer, StencilBuffer, WebGLState };

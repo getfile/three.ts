@@ -68,7 +68,7 @@ declare class Object3D extends EventDispatcher {
     traverseVisible(callback: any): void;
     traverseAncestors(callback: any): void;
     updateMatrix(): void;
-    updateMatrixWorld(force: any): void;
+    updateMatrixWorld(force?: boolean): void;
     toJSON(meta: any): {};
     clone(recursive: any): Object3D;
     copy(source: any, recursive?: boolean): this;

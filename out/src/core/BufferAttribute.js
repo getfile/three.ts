@@ -9,7 +9,7 @@ define(["require", "exports", "../math/Vector4", "../math/Vector3", "../math/Vec
             this.name = '';
             this.array = array;
             this.itemSize = itemSize;
-            this.count = array !== undefined ? array.length / itemSize : 0;
+            this.count = (array !== undefined ? array.length / itemSize : 0);
             this.normalized = normalized;
             this.dynamic = false;
             this.updateRange = { offset: 0, count: -1 };
@@ -23,7 +23,7 @@ define(["require", "exports", "../math/Vector4", "../math/Vector3", "../math/Vec
         setArray(array) {
             if (Array.isArray(array))
                 throw new TypeError('THREE.BufferAttribute: array should be a Typed Array.');
-            this.count = array !== undefined ? array.length / this.itemSize : 0;
+            this.count = (array !== undefined ? array.length / this.itemSize : 0);
             this.array = array;
         }
         setDynamic(value) {
@@ -31,7 +31,7 @@ define(["require", "exports", "../math/Vector4", "../math/Vector3", "../math/Vec
             return this;
         }
         copy(source) {
-            this.array = new source.array.constructor(source.array);
+            this.array = new Float32Array(source.array);
             this.itemSize = source.itemSize;
             this.count = source.count;
             this.normalized = source.normalized;
@@ -115,9 +115,7 @@ define(["require", "exports", "../math/Vector4", "../math/Vector3", "../math/Vec
             }
             return this;
         }
-        set(value, offset) {
-            if (offset === undefined)
-                offset = 0;
+        set(value, offset = 0) {
             this.array.set(value, offset);
             return this;
         }

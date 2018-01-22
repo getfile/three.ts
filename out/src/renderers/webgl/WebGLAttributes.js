@@ -7,13 +7,13 @@ define(["require", "exports"], function (require, exports) {
             this.buffers = {};
         }
         createBuffer(attribute, bufferType) {
-            var array = attribute.array;
-            var usage = attribute.dynamic ? this.gl.DYNAMIC_DRAW : this.gl.STATIC_DRAW;
-            var buffer = this.gl.createBuffer();
+            let array = attribute.array;
+            let usage = attribute.dynamic ? this.gl.DYNAMIC_DRAW : this.gl.STATIC_DRAW;
+            let buffer = this.gl.createBuffer();
             this.gl.bindBuffer(bufferType, buffer);
             this.gl.bufferData(bufferType, array, usage);
             attribute.onUploadCallback();
-            var type = this.gl.FLOAT;
+            let type = this.gl.FLOAT;
             if (array instanceof Float32Array)
                 type = this.gl.FLOAT;
             else if (array instanceof Float64Array)
@@ -38,8 +38,8 @@ define(["require", "exports"], function (require, exports) {
             };
         }
         updateBuffer(buffer, attribute, bufferType) {
-            var array = attribute.array;
-            var updateRange = attribute.updateRange;
+            let array = attribute.array;
+            let updateRange = attribute.updateRange;
             this.gl.bindBuffer(bufferType, buffer);
             if (attribute.dynamic === false)
                 this.gl.bufferData(bufferType, array, this.gl.STATIC_DRAW);
@@ -60,7 +60,7 @@ define(["require", "exports"], function (require, exports) {
         remove(attribute) {
             if (attribute.isInterleavedBufferAttribute)
                 attribute = attribute.data;
-            var data = this.buffers[attribute.uuid];
+            let data = this.buffers[attribute.uuid];
             if (data) {
                 this.gl.deleteBuffer(data.buffer);
                 delete this.buffers[attribute.uuid];
@@ -69,7 +69,7 @@ define(["require", "exports"], function (require, exports) {
         update(attribute, bufferType) {
             if (attribute.isInterleavedBufferAttribute)
                 attribute = attribute.data;
-            var data = this.buffers[attribute.uuid];
+            let data = this.buffers[attribute.uuid];
             if (data === undefined)
                 this.buffers[attribute.uuid] = this.createBuffer(attribute, bufferType);
             else if (data.version < attribute.version) {

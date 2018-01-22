@@ -1,4 +1,4 @@
-define(["require", "exports", "../../constants.js"], function (require, exports, constants_js_1) {
+define(["require", "exports", "../../constants.js"], function (require, exports, Constant) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class WebGLUtils {
@@ -8,134 +8,134 @@ define(["require", "exports", "../../constants.js"], function (require, exports,
         }
         convert(p) {
             var extension;
-            if (p === constants_js_1.RepeatWrapping)
+            if (p === Constant.RepeatWrapping)
                 return this.gl.REPEAT;
-            if (p === constants_js_1.ClampToEdgeWrapping)
+            if (p === Constant.ClampToEdgeWrapping)
                 return this.gl.CLAMP_TO_EDGE;
-            if (p === constants_js_1.MirroredRepeatWrapping)
+            if (p === Constant.MirroredRepeatWrapping)
                 return this.gl.MIRRORED_REPEAT;
-            if (p === constants_js_1.NearestFilter)
+            if (p === Constant.NearestFilter)
                 return this.gl.NEAREST;
-            if (p === constants_js_1.NearestMipMapNearestFilter)
+            if (p === Constant.NearestMipMapNearestFilter)
                 return this.gl.NEAREST_MIPMAP_NEAREST;
-            if (p === constants_js_1.NearestMipMapLinearFilter)
+            if (p === Constant.NearestMipMapLinearFilter)
                 return this.gl.NEAREST_MIPMAP_LINEAR;
-            if (p === constants_js_1.LinearFilter)
+            if (p === Constant.LinearFilter)
                 return this.gl.LINEAR;
-            if (p === constants_js_1.LinearMipMapNearestFilter)
+            if (p === Constant.LinearMipMapNearestFilter)
                 return this.gl.LINEAR_MIPMAP_NEAREST;
-            if (p === constants_js_1.LinearMipMapLinearFilter)
+            if (p === Constant.LinearMipMapLinearFilter)
                 return this.gl.LINEAR_MIPMAP_LINEAR;
-            if (p === constants_js_1.UnsignedByteType)
+            if (p === Constant.UnsignedByteType)
                 return this.gl.UNSIGNED_BYTE;
-            if (p === constants_js_1.UnsignedShort4444Type)
+            if (p === Constant.UnsignedShort4444Type)
                 return this.gl.UNSIGNED_SHORT_4_4_4_4;
-            if (p === constants_js_1.UnsignedShort5551Type)
+            if (p === Constant.UnsignedShort5551Type)
                 return this.gl.UNSIGNED_SHORT_5_5_5_1;
-            if (p === constants_js_1.UnsignedShort565Type)
+            if (p === Constant.UnsignedShort565Type)
                 return this.gl.UNSIGNED_SHORT_5_6_5;
-            if (p === constants_js_1.ByteType)
+            if (p === Constant.ByteType)
                 return this.gl.BYTE;
-            if (p === constants_js_1.ShortType)
+            if (p === Constant.ShortType)
                 return this.gl.SHORT;
-            if (p === constants_js_1.UnsignedShortType)
+            if (p === Constant.UnsignedShortType)
                 return this.gl.UNSIGNED_SHORT;
-            if (p === constants_js_1.IntType)
+            if (p === Constant.IntType)
                 return this.gl.INT;
-            if (p === constants_js_1.UnsignedIntType)
+            if (p === Constant.UnsignedIntType)
                 return this.gl.UNSIGNED_INT;
-            if (p === constants_js_1.FloatType)
+            if (p === Constant.FloatType)
                 return this.gl.FLOAT;
-            if (p === constants_js_1.HalfFloatType) {
+            if (p === Constant.HalfFloatType) {
                 extension = this.extensions.get('OES_texture_half_float');
                 if (extension !== null)
                     return extension.HALF_FLOAT_OES;
             }
-            if (p === constants_js_1.AlphaFormat)
+            if (p === Constant.AlphaFormat)
                 return this.gl.ALPHA;
-            if (p === constants_js_1.RGBFormat)
+            if (p === Constant.RGBFormat)
                 return this.gl.RGB;
-            if (p === constants_js_1.RGBAFormat)
+            if (p === Constant.RGBAFormat)
                 return this.gl.RGBA;
-            if (p === constants_js_1.LuminanceFormat)
+            if (p === Constant.LuminanceFormat)
                 return this.gl.LUMINANCE;
-            if (p === constants_js_1.LuminanceAlphaFormat)
+            if (p === Constant.LuminanceAlphaFormat)
                 return this.gl.LUMINANCE_ALPHA;
-            if (p === constants_js_1.DepthFormat)
+            if (p === Constant.DepthFormat)
                 return this.gl.DEPTH_COMPONENT;
-            if (p === constants_js_1.DepthStencilFormat)
+            if (p === Constant.DepthStencilFormat)
                 return this.gl.DEPTH_STENCIL;
-            if (p === constants_js_1.AddEquation)
+            if (p === Constant.AddEquation)
                 return this.gl.FUNC_ADD;
-            if (p === constants_js_1.SubtractEquation)
+            if (p === Constant.SubtractEquation)
                 return this.gl.FUNC_SUBTRACT;
-            if (p === constants_js_1.ReverseSubtractEquation)
+            if (p === Constant.ReverseSubtractEquation)
                 return this.gl.FUNC_REVERSE_SUBTRACT;
-            if (p === constants_js_1.ZeroFactor)
+            if (p === Constant.ZeroFactor)
                 return this.gl.ZERO;
-            if (p === constants_js_1.OneFactor)
+            if (p === Constant.OneFactor)
                 return this.gl.ONE;
-            if (p === constants_js_1.SrcColorFactor)
+            if (p === Constant.SrcColorFactor)
                 return this.gl.SRC_COLOR;
-            if (p === constants_js_1.OneMinusSrcColorFactor)
+            if (p === Constant.OneMinusSrcColorFactor)
                 return this.gl.ONE_MINUS_SRC_COLOR;
-            if (p === constants_js_1.SrcAlphaFactor)
+            if (p === Constant.SrcAlphaFactor)
                 return this.gl.SRC_ALPHA;
-            if (p === constants_js_1.OneMinusSrcAlphaFactor)
+            if (p === Constant.OneMinusSrcAlphaFactor)
                 return this.gl.ONE_MINUS_SRC_ALPHA;
-            if (p === constants_js_1.DstAlphaFactor)
+            if (p === Constant.DstAlphaFactor)
                 return this.gl.DST_ALPHA;
-            if (p === constants_js_1.OneMinusDstAlphaFactor)
+            if (p === Constant.OneMinusDstAlphaFactor)
                 return this.gl.ONE_MINUS_DST_ALPHA;
-            if (p === constants_js_1.DstColorFactor)
+            if (p === Constant.DstColorFactor)
                 return this.gl.DST_COLOR;
-            if (p === constants_js_1.OneMinusDstColorFactor)
+            if (p === Constant.OneMinusDstColorFactor)
                 return this.gl.ONE_MINUS_DST_COLOR;
-            if (p === constants_js_1.SrcAlphaSaturateFactor)
+            if (p === Constant.SrcAlphaSaturateFactor)
                 return this.gl.SRC_ALPHA_SATURATE;
-            if (p === constants_js_1.RGB_S3TC_DXT1_Format || p === constants_js_1.RGBA_S3TC_DXT1_Format ||
-                p === constants_js_1.RGBA_S3TC_DXT3_Format || p === constants_js_1.RGBA_S3TC_DXT5_Format) {
+            if (p === Constant.RGB_S3TC_DXT1_Format || p === Constant.RGBA_S3TC_DXT1_Format ||
+                p === Constant.RGBA_S3TC_DXT3_Format || p === Constant.RGBA_S3TC_DXT5_Format) {
                 extension = this.extensions.get('WEBGL_compressed_texture_s3tc');
                 if (extension !== null) {
-                    if (p === constants_js_1.RGB_S3TC_DXT1_Format)
+                    if (p === Constant.RGB_S3TC_DXT1_Format)
                         return extension.COMPRESSED_RGB_S3TC_DXT1_EXT;
-                    if (p === constants_js_1.RGBA_S3TC_DXT1_Format)
+                    if (p === Constant.RGBA_S3TC_DXT1_Format)
                         return extension.COMPRESSED_RGBA_S3TC_DXT1_EXT;
-                    if (p === constants_js_1.RGBA_S3TC_DXT3_Format)
+                    if (p === Constant.RGBA_S3TC_DXT3_Format)
                         return extension.COMPRESSED_RGBA_S3TC_DXT3_EXT;
-                    if (p === constants_js_1.RGBA_S3TC_DXT5_Format)
+                    if (p === Constant.RGBA_S3TC_DXT5_Format)
                         return extension.COMPRESSED_RGBA_S3TC_DXT5_EXT;
                 }
             }
-            if (p === constants_js_1.RGB_PVRTC_4BPPV1_Format || p === constants_js_1.RGB_PVRTC_2BPPV1_Format ||
-                p === constants_js_1.RGBA_PVRTC_4BPPV1_Format || p === constants_js_1.RGBA_PVRTC_2BPPV1_Format) {
+            if (p === Constant.RGB_PVRTC_4BPPV1_Format || p === Constant.RGB_PVRTC_2BPPV1_Format ||
+                p === Constant.RGBA_PVRTC_4BPPV1_Format || p === Constant.RGBA_PVRTC_2BPPV1_Format) {
                 extension = this.extensions.get('WEBGL_compressed_texture_pvrtc');
                 if (extension !== null) {
-                    if (p === constants_js_1.RGB_PVRTC_4BPPV1_Format)
+                    if (p === Constant.RGB_PVRTC_4BPPV1_Format)
                         return extension.COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
-                    if (p === constants_js_1.RGB_PVRTC_2BPPV1_Format)
+                    if (p === Constant.RGB_PVRTC_2BPPV1_Format)
                         return extension.COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
-                    if (p === constants_js_1.RGBA_PVRTC_4BPPV1_Format)
+                    if (p === Constant.RGBA_PVRTC_4BPPV1_Format)
                         return extension.COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
-                    if (p === constants_js_1.RGBA_PVRTC_2BPPV1_Format)
+                    if (p === Constant.RGBA_PVRTC_2BPPV1_Format)
                         return extension.COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
                 }
             }
-            if (p === constants_js_1.RGB_ETC1_Format) {
+            if (p === Constant.RGB_ETC1_Format) {
                 extension = this.extensions.get('WEBGL_compressed_texture_etc1');
                 if (extension !== null)
                     return extension.COMPRESSED_RGB_ETC1_WEBGL;
             }
-            if (p === constants_js_1.MinEquation || p === constants_js_1.MaxEquation) {
+            if (p === Constant.MinEquation || p === Constant.MaxEquation) {
                 extension = this.extensions.get('EXT_blend_minmax');
                 if (extension !== null) {
-                    if (p === constants_js_1.MinEquation)
+                    if (p === Constant.MinEquation)
                         return extension.MIN_EXT;
-                    if (p === constants_js_1.MaxEquation)
+                    if (p === Constant.MaxEquation)
                         return extension.MAX_EXT;
                 }
             }
-            if (p === constants_js_1.UnsignedInt248Type) {
+            if (p === Constant.UnsignedInt248Type) {
                 extension = this.extensions.get('WEBGL_depth_texture');
                 if (extension !== null)
                     return extension.UNSIGNED_INT_24_8_WEBGL;

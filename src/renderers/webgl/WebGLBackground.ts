@@ -11,10 +11,16 @@ import { ShaderMaterial } from '../../materials/ShaderMaterial';
 import { Color } from '../../math/Color';
 import { Mesh } from '../../objects/Mesh';
 import { ShaderLib } from '../shaders/ShaderLib';
+import { WebGLRenderer } from "../WebGLRenderer";
+import { WebGLState } from "./WebGLState";
+import { WebGLGeometries } from "./WebGLGeometries";
 
 class WebGLBackground
 {
-	renderer; state; geometries; premultipliedAlpha;
+	renderer: WebGLRenderer;
+	state: WebGLState;
+	geometries: WebGLGeometries;
+	premultipliedAlpha;
 
 	constructor( renderer, state, geometries, premultipliedAlpha )
 	{
@@ -24,8 +30,8 @@ class WebGLBackground
 		this.premultipliedAlpha = premultipliedAlpha;
 	}
 
-	clearColor:Color = new Color( 0x000000 );
-	clearAlpha:number = 0;
+	clearColor: Color = new Color( 0x000000 );
+	clearAlpha: number = 0;
 
 	planeCamera;
 	planeMesh;
@@ -102,7 +108,7 @@ class WebGLBackground
 		return this.clearColor;
 	}
 
-	setClearColor( color, alpha? )
+	setClearColor( color, alpha?: number )
 	{
 		this.clearColor.set( color );
 		this.clearAlpha = alpha !== undefined ? alpha : 1;

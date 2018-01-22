@@ -12,16 +12,18 @@ class BufferAttribute
 {
 	uuid: string;
 	name: string;
-	array;
-	itemSize: number;
-	count: number;
+
+	array: Float32Array; //fix
+	itemSize: number; //item size
+	count: number; //item number
+
 	normalized: boolean;
 	dynamic: boolean;
 	updateRange: Object;
 	onUploadCallback: Function;
 	version: number;
 
-	constructor( array, itemSize, normalized: boolean = true )
+	constructor( array, itemSize: number, normalized: boolean = true )
 	{
 		if ( Array.isArray( array ) )
 			throw new TypeError( 'THREE.BufferAttribute: array should be a Typed Array.' );
@@ -31,7 +33,7 @@ class BufferAttribute
 
 		this.array = array;
 		this.itemSize = itemSize;
-		this.count = array !== undefined ? array.length / itemSize : 0;
+		this.count = ( array !== undefined ? array.length / itemSize : 0 );
 		this.normalized = normalized;
 
 		this.dynamic = false;
@@ -45,35 +47,34 @@ class BufferAttribute
 		if ( value === true ) this.version++;
 	}
 
-
 	setArray( array )
 	{
 		if ( Array.isArray( array ) )
 			throw new TypeError( 'THREE.BufferAttribute: array should be a Typed Array.' );
 
-		this.count = array !== undefined ? array.length / this.itemSize : 0;
+		this.count = ( array !== undefined ? array.length / this.itemSize : 0 );
 		this.array = array;
 	}
 
-	setDynamic( value )
+	setDynamic( value: boolean )
 	{
 		this.dynamic = value;
 		return this;
 	}
 
-	copy( source )
+	copy( source: BufferAttribute )
 	{
-		this.array = new source.array.constructor( source.array );
+		this.array = new Float32Array( source.array );
 		this.itemSize = source.itemSize;
 		this.count = source.count;
 		this.normalized = source.normalized;
-
 		this.dynamic = source.dynamic;
 
 		return this;
 	}
 
-	copyAt( index1, attribute, index2 )
+	//copy one element
+	copyAt( index1: number, attribute: BufferAttribute, index2: number )
 	{
 		index1 *= this.itemSize;
 		index2 *= attribute.itemSize;
@@ -88,7 +89,7 @@ class BufferAttribute
 		return this;
 	}
 
-	copyColorsArray( colors )
+	copyColorsArray( colors: Array<Color> )
 	{
 		let array = this.array, offset = 0;
 		for ( let i = 0, l = colors.length; i < l; i++ )
@@ -120,7 +121,7 @@ class BufferAttribute
 		return this;
 	}
 
-	copyVector2sArray( vectors )
+	copyVector2sArray( vectors: Array<Vector2> )
 	{
 		let array = this.array, offset = 0;
 		for ( let i = 0, l = vectors.length; i < l; i++ )
@@ -138,7 +139,7 @@ class BufferAttribute
 		return this;
 	}
 
-	copyVector3sArray( vectors )
+	copyVector3sArray( vectors: Array<Vector3> )
 	{
 		let array = this.array, offset = 0;
 		for ( let i = 0, l = vectors.length; i < l; i++ )
@@ -156,7 +157,7 @@ class BufferAttribute
 		return this;
 	}
 
-	copyVector4sArray( vectors )
+	copyVector4sArray( vectors: Array<Vector4> )
 	{
 		let array = this.array, offset = 0;
 		for ( let i = 0, l = vectors.length; i < l; i++ )
@@ -175,14 +176,13 @@ class BufferAttribute
 		return this;
 	}
 
-	set( value, offset )
+	set( value, offset: number = 0 )
 	{
-		if ( offset === undefined ) offset = 0;
 		this.array.set( value, offset );
 		return this;
 	}
 
-	getX( index )
+	getX( index: number )
 	{
 		return this.array[ index * this.itemSize ];
 	}
@@ -268,7 +268,7 @@ class BufferAttribute
 //
 class Int8BufferAttribute extends BufferAttribute
 {
-	constructor( array, itemSize, normalized:boolean = true )
+	constructor( array, itemSize, normalized: boolean = true )
 	{
 		super( new Int8Array( array ), itemSize, normalized );
 	}
@@ -276,7 +276,7 @@ class Int8BufferAttribute extends BufferAttribute
 
 class Uint8BufferAttribute extends BufferAttribute
 {
-	constructor( array, itemSize, normalized:boolean = true )
+	constructor( array, itemSize, normalized: boolean = true )
 	{
 		super( new Uint8Array( array ), itemSize, normalized );
 	}
@@ -284,7 +284,7 @@ class Uint8BufferAttribute extends BufferAttribute
 
 class Uint8ClampedBufferAttribute extends BufferAttribute
 {
-	constructor( array, itemSize, normalized:boolean = true )
+	constructor( array, itemSize, normalized: boolean = true )
 	{
 		super( new Uint8ClampedArray( array ), itemSize, normalized );
 	}
@@ -292,7 +292,7 @@ class Uint8ClampedBufferAttribute extends BufferAttribute
 
 class Int16BufferAttribute extends BufferAttribute
 {
-	constructor( array, itemSize, normalized:boolean = true )
+	constructor( array, itemSize, normalized: boolean = true )
 	{
 		super( new Int16Array( array ), itemSize, normalized );
 	}
@@ -300,7 +300,7 @@ class Int16BufferAttribute extends BufferAttribute
 
 class Uint16BufferAttribute extends BufferAttribute
 {
-	constructor( array, itemSize, normalized:boolean = true )
+	constructor( array, itemSize, normalized: boolean = true )
 	{
 		super( new Uint16Array( array ), itemSize, normalized );
 	}
@@ -308,7 +308,7 @@ class Uint16BufferAttribute extends BufferAttribute
 
 class Int32BufferAttribute extends BufferAttribute
 {
-	constructor( array, itemSize, normalized:boolean = true )
+	constructor( array, itemSize, normalized: boolean = true )
 	{
 		super( new Int32Array( array ), itemSize, normalized );
 	}
@@ -316,7 +316,7 @@ class Int32BufferAttribute extends BufferAttribute
 
 class Uint32BufferAttribute extends BufferAttribute
 {
-	constructor( array, itemSize, normalized:boolean = true )
+	constructor( array, itemSize, normalized: boolean = true )
 	{
 		super( new Uint32Array( array ), itemSize, normalized );
 	}
@@ -324,7 +324,7 @@ class Uint32BufferAttribute extends BufferAttribute
 
 class Float32BufferAttribute extends BufferAttribute
 {
-	constructor( array, itemSize, normalized:boolean = true )
+	constructor( array, itemSize, normalized: boolean = true )
 	{
 		super( new Float32Array( array ), itemSize, normalized );
 	}
@@ -332,7 +332,7 @@ class Float32BufferAttribute extends BufferAttribute
 
 class Float64BufferAttribute extends BufferAttribute
 {
-	constructor( array, itemSize, normalized:boolean = true )
+	constructor( array, itemSize, normalized: boolean = true )
 	{
 		super( new Float64Array( array ), itemSize, normalized );
 	}

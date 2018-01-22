@@ -1,11 +1,18 @@
-import { REVISION, RGBAFormat, HalfFloatType, FloatType, UnsignedByteType, FrontFaceDirectionCW, TriangleFanDrawMode, TriangleStripDrawMode, TrianglesDrawMode, NoColors, LinearToneMapping } from '../constants';
+import * as Constant from '../constants';
+import { Frustum } from '../geom/Frustum';
+import { Sphere } from "../geom/Sphere";
+import { Vector4 } from '../math/Vector4';
+import { Vector3 } from '../math/Vector3';
+import { Color } from '../math/Color';
 import { _Math } from '../math/Math';
 import { Matrix4 } from '../math/Matrix4';
+import { Camera } from "../cameras/Camera";
+import { Scene } from "../scenes/Scene";
 import { DataTexture } from '../textures/DataTexture';
-import { WebGLUniforms } from './webgl/WebGLUniforms';
 import { UniformsLib } from './shaders/UniformsLib';
 import { UniformsUtils } from './shaders/UniformsUtils';
 import { ShaderLib } from './shaders/ShaderLib';
+import { WebGLUniforms } from './webgl/WebGLUniforms';
 import { WebGLFlareRenderer } from './webgl/WebGLFlareRenderer';
 import { WebGLSpriteRenderer } from './webgl/WebGLSpriteRenderer';
 import { WebGLShadowMap } from './webgl/WebGLShadowMap';
@@ -25,13 +32,9 @@ import { WebGLState } from './webgl/WebGLState';
 import { WebGLCapabilities } from './webgl/WebGLCapabilities';
 import { WebVRManager } from './webvr/WebVRManager';
 import { WebGLExtensions } from './webgl/WebGLExtensions';
-import { Vector3 } from '../math/Vector3';
 import { WebGLClipping } from './webgl/WebGLClipping';
-import { Frustum } from '../geom/Frustum';
-import { Vector4 } from '../math/Vector4';
 import { WebGLUtils } from './webgl/WebGLUtils';
-import { Sphere } from "../geom/Sphere";
-import { Color } from '../math/Color';
+
 
 
 /**
@@ -47,8 +50,8 @@ class WebGLRenderer
 	domElement;
 	autoClear; autoClearColor; autoClearDepth; autoClearStencil;
 	sortObjects; clippingPlanes; localClippingEnabled;
-	gammaFactor; gammaInput; gammaOutput;
-	physicallyCorrectLights;
+	gammaFactor: number; gammaInput: boolean; gammaOutput: boolean;
+	physicallyCorrectLights: boolean;
 	toneMapping; toneMappingExposure; toneMappingWhitePoint;
 	maxMorphTargets; maxMorphNormals;
 
@@ -57,18 +60,19 @@ class WebGLRenderer
 	currentRenderList;
 	spritesArray;
 	flaresArray;
-	_gl;
-	_sphere;
-	_isContextLost;
+
+	_gl: WebGLRenderingContext;
+	_sphere: Sphere;
+	_isContextLost: boolean;
 
 	_currentRenderTarget;
-	_currentFramebuffer;
-	_currentMaterialId;
-	_currentGeometryProgram;
-	_currentCamera;
-	_currentArrayCamera;
-	_currentViewport;
-	_currentScissor;
+	_currentFramebuffer: WebGLFramebuffer;
+	_currentMaterialId: number;
+	_currentGeometryProgram: string;
+	_currentCamera: Camera;
+	_currentArrayCamera: Camera;
+	_currentViewport: Vector4;
+	_currentScissor: Vector4;
 	_currentScissorTest;
 	_usedTextureUnits;
 	_width;
@@ -88,41 +92,41 @@ class WebGLRenderer
 	info;
 	_canvas;
 
-	shadowMap;
+	shadowMap: WebGLShadowMap;
 	vr;
 	capabilities;
 	state;
 	utils;
 
-	properties;
-	textures;
-	attributes;
-	geometries;
-	objects;
-	morphtargets;
-	programCache;
-	lights;
-	renderLists;
+	properties: WebGLProperties;
+	textures: WebGLTextures;
+	attributes: WebGLAttributes;
+	geometries: WebGLGeometries;
 
+	objects: WebGLObjects;
+	morphtargets: WebGLMorphtargets;
+	programCache: WebGLPrograms;
+	lights: WebGLLights;
+	renderLists: WebGLRenderLists;
 	background: WebGLBackground;
 
-	bufferRenderer;
-	indexedBufferRenderer;
+	bufferRenderer: WebGLBufferRenderer;
+	indexedBufferRenderer: WebGLIndexedBufferRenderer;
 
-	flareRenderer;
-	spriteRenderer;
+	flareRenderer: WebGLFlareRenderer;
+	spriteRenderer: WebGLSpriteRenderer;
 
 	parameters;
 	onAnimationFrame;
 	isAnimating;
 
-	extensions:WebGLExtensions;
+	extensions: WebGLExtensions;
 	_premultipliedAlpha;
 
 
 	constructor( parameters )
 	{
-		console.log( 'THREE.WebGLRenderer', REVISION );
+		console.log( 'THREE.WebGLRenderer', Constant.REVISION );
 
 		this.parameters = parameters || {};
 
@@ -170,7 +174,7 @@ class WebGLRenderer
 		this.physicallyCorrectLights = false;
 
 		// tone mapping
-		this.toneMapping = LinearToneMapping;
+		this.toneMapping = Constant.LinearToneMapping;
 		this.toneMappingExposure = 1.0;
 		this.toneMappingWhitePoint = 1.0;
 
@@ -445,7 +449,7 @@ class WebGLRenderer
 
 	// Clearing
 
-	getClearColor():Color
+	getClearColor(): Color
 	{
 		return this.background.getClearColor();
 	}
@@ -619,7 +623,7 @@ class WebGLRenderer
 			this._gl.vertexAttribPointer( programAttributes.uv, 2, this._gl.FLOAT, false, 0, 0 );
 		}
 
-		if ( object.hasColors && material.vertexColors !== NoColors )
+		if ( object.hasColors && material.vertexColors !== Constant.NoColors )
 		{
 			this._gl.bindBuffer( this._gl.ARRAY_BUFFER, buffers.color );
 			this._gl.bufferData( this._gl.ARRAY_BUFFER, object.colorArray, this._gl.DYNAMIC_DRAW );
@@ -709,15 +713,15 @@ class WebGLRenderer
 			{
 				switch ( object.drawMode )
 				{
-					case TrianglesDrawMode:
+					case Constant.TrianglesDrawMode:
 						renderer.setMode( this._gl.TRIANGLES );
 						break;
 
-					case TriangleStripDrawMode:
+					case Constant.TriangleStripDrawMode:
 						renderer.setMode( this._gl.TRIANGLE_STRIP );
 						break;
 
-					case TriangleFanDrawMode:
+					case Constant.TriangleFanDrawMode:
 						renderer.setMode( this._gl.TRIANGLE_FAN );
 						break;
 				}
@@ -918,9 +922,9 @@ class WebGLRenderer
 	}
 
 	// Rendering
-	render( scene, camera, renderTarget?, forceClear?)
+	render( scene: Scene, camera: Camera, renderTarget?, forceClear?)
 	{
-		if ( !( camera && camera.isCamera ) )
+		if ( !( camera && camera instanceof Camera ) )
 		{
 			console.error( 'THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.' );
 			return;
@@ -1470,7 +1474,7 @@ class WebGLRenderer
 						let boneMatrices = new Float32Array( size * size * 4 ); // 4 floats per RGBA pixel
 						boneMatrices.set( skeleton.boneMatrices ); // copy current values
 
-						let boneTexture = new DataTexture( boneMatrices, size, size, RGBAFormat, FloatType );
+						let boneTexture = new DataTexture( boneMatrices, size, size, Constant.RGBAFormat, Constant.FloatType );
 
 						skeleton.boneMatrices = boneMatrices;
 						skeleton.boneTexture = boneTexture;
@@ -1868,7 +1872,7 @@ class WebGLRenderer
 	setFaceCulling( cullFace, frontFaceDirection )
 	{
 		this.state.setCullFace( cullFace );
-		this.state.setFlipSided( frontFaceDirection === FrontFaceDirectionCW );
+		this.state.setFlipSided( frontFaceDirection === Constant.FrontFaceDirectionCW );
 	}
 
 	// Textures
@@ -2026,15 +2030,15 @@ class WebGLRenderer
 				let textureFormat = texture.format;
 				let textureType = texture.type;
 
-				if ( textureFormat !== RGBAFormat && this.utils.convert( textureFormat ) !== this._gl.getParameter( this._gl.IMPLEMENTATION_COLOR_READ_FORMAT ) )
+				if ( textureFormat !== Constant.RGBAFormat && this.utils.convert( textureFormat ) !== this._gl.getParameter( this._gl.IMPLEMENTATION_COLOR_READ_FORMAT ) )
 				{
 					console.error( 'THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format.' );
 					return;
 				}
 
-				if ( textureType !== UnsignedByteType && this.utils.convert( textureType ) !== this._gl.getParameter( this._gl.IMPLEMENTATION_COLOR_READ_TYPE ) && // IE11, Edge and Chrome Mac < 52 (#9513)
-					!( textureType === FloatType && ( this.extensions.get( 'OES_texture_float' ) || this.extensions.get( 'WEBGL_color_buffer_float' ) ) ) && // Chrome Mac >= 52 and Firefox
-					!( textureType === HalfFloatType && this.extensions.get( 'EXT_color_buffer_half_float' ) ) )
+				if ( textureType !== Constant.UnsignedByteType && this.utils.convert( textureType ) !== this._gl.getParameter( this._gl.IMPLEMENTATION_COLOR_READ_TYPE ) && // IE11, Edge and Chrome Mac < 52 (#9513)
+					!( textureType === Constant.FloatType && ( this.extensions.get( 'OES_texture_float' ) || this.extensions.get( 'WEBGL_color_buffer_float' ) ) ) && // Chrome Mac >= 52 and Firefox
+					!( textureType === Constant.HalfFloatType && this.extensions.get( 'EXT_color_buffer_half_float' ) ) )
 				{
 					console.error( 'THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type.' );
 					return;

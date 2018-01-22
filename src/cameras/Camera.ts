@@ -43,7 +43,7 @@ class Camera extends Object3D
 		return result.set( 0, 0, - 1 ).applyQuaternion( quaternion );
 	}
 
-	updateMatrixWorld( force )
+	updateMatrixWorld( force? )
 	{
 		Object3D.prototype.updateMatrixWorld.call( this, force );
 		this.matrixWorldInverse.getInverse( this.matrixWorld );

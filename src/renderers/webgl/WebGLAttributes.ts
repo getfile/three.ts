@@ -5,7 +5,7 @@
 class WebGLAttributes
 {
 	gl: WebGLRenderingContext;
-	buffers;
+	buffers: Object; //uuid=>data
 
 	constructor( gl )
 	{
@@ -13,20 +13,18 @@ class WebGLAttributes
 		this.buffers = {};
 	}
 
-
-	createBuffer( attribute, bufferType )
+	createBuffer( attribute, bufferType:number )
 	{
-		var array = attribute.array;
-		var usage = attribute.dynamic ? this.gl.DYNAMIC_DRAW : this.gl.STATIC_DRAW;
+		let array = attribute.array;
+		let usage = attribute.dynamic ? this.gl.DYNAMIC_DRAW : this.gl.STATIC_DRAW;
 
-		var buffer = this.gl.createBuffer();
-
+		let buffer: WebGLBuffer = this.gl.createBuffer();
 		this.gl.bindBuffer( bufferType, buffer );
 		this.gl.bufferData( bufferType, array, usage );
 
 		attribute.onUploadCallback();
 
-		var type = this.gl.FLOAT;
+		let type: number = this.gl.FLOAT;
 
 		if ( array instanceof Float32Array )
 			type = this.gl.FLOAT;
@@ -55,8 +53,8 @@ class WebGLAttributes
 
 	private updateBuffer( buffer, attribute, bufferType )
 	{
-		var array = attribute.array;
-		var updateRange = attribute.updateRange;
+		let array = attribute.array;
+		let updateRange = attribute.updateRange;
 
 		this.gl.bindBuffer( bufferType, buffer );
 
@@ -87,7 +85,7 @@ class WebGLAttributes
 	{
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
 
-		var data = this.buffers[ attribute.uuid ];
+		let data = this.buffers[ attribute.uuid ];
 
 		if ( data )
 		{
@@ -99,7 +97,7 @@ class WebGLAttributes
 	update( attribute, bufferType )
 	{
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
-		var data = this.buffers[ attribute.uuid ];
+		let data = this.buffers[ attribute.uuid ];
 
 		if ( data === undefined )
 			this.buffers[ attribute.uuid ] = this.createBuffer( attribute, bufferType );

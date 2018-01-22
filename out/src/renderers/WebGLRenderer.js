@@ -1,9 +1,9 @@
-define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4", "../textures/DataTexture", "./webgl/WebGLUniforms", "./shaders/UniformsLib", "./shaders/UniformsUtils", "./shaders/ShaderLib", "./webgl/WebGLFlareRenderer", "./webgl/WebGLSpriteRenderer", "./webgl/WebGLShadowMap", "./webgl/WebGLAttributes", "./webgl/WebGLBackground", "./webgl/WebGLRenderLists", "./webgl/WebGLMorphtargets", "./webgl/WebGLIndexedBufferRenderer", "./webgl/WebGLBufferRenderer", "./webgl/WebGLGeometries", "./webgl/WebGLLights", "./webgl/WebGLObjects", "./webgl/WebGLPrograms", "./webgl/WebGLTextures", "./webgl/WebGLProperties", "./webgl/WebGLState", "./webgl/WebGLCapabilities", "./webvr/WebVRManager", "./webgl/WebGLExtensions", "../math/Vector3", "./webgl/WebGLClipping", "../geom/Frustum", "../math/Vector4", "./webgl/WebGLUtils", "../geom/Sphere"], function (require, exports, constants_1, Math_1, Matrix4_1, DataTexture_1, WebGLUniforms_1, UniformsLib_1, UniformsUtils_1, ShaderLib_1, WebGLFlareRenderer_1, WebGLSpriteRenderer_1, WebGLShadowMap_1, WebGLAttributes_1, WebGLBackground_1, WebGLRenderLists_1, WebGLMorphtargets_1, WebGLIndexedBufferRenderer_1, WebGLBufferRenderer_1, WebGLGeometries_1, WebGLLights_1, WebGLObjects_1, WebGLPrograms_1, WebGLTextures_1, WebGLProperties_1, WebGLState_1, WebGLCapabilities_1, WebVRManager_1, WebGLExtensions_1, Vector3_1, WebGLClipping_1, Frustum_1, Vector4_1, WebGLUtils_1, Sphere_1) {
+define(["require", "exports", "../constants", "../geom/Frustum", "../geom/Sphere", "../math/Vector4", "../math/Vector3", "../math/Math", "../math/Matrix4", "../cameras/Camera", "../textures/DataTexture", "./shaders/UniformsLib", "./shaders/UniformsUtils", "./shaders/ShaderLib", "./webgl/WebGLUniforms", "./webgl/WebGLFlareRenderer", "./webgl/WebGLSpriteRenderer", "./webgl/WebGLShadowMap", "./webgl/WebGLAttributes", "./webgl/WebGLBackground", "./webgl/WebGLRenderLists", "./webgl/WebGLMorphtargets", "./webgl/WebGLIndexedBufferRenderer", "./webgl/WebGLBufferRenderer", "./webgl/WebGLGeometries", "./webgl/WebGLLights", "./webgl/WebGLObjects", "./webgl/WebGLPrograms", "./webgl/WebGLTextures", "./webgl/WebGLProperties", "./webgl/WebGLState", "./webgl/WebGLCapabilities", "./webvr/WebVRManager", "./webgl/WebGLExtensions", "./webgl/WebGLClipping", "./webgl/WebGLUtils"], function (require, exports, Constant, Frustum_1, Sphere_1, Vector4_1, Vector3_1, Math_1, Matrix4_1, Camera_1, DataTexture_1, UniformsLib_1, UniformsUtils_1, ShaderLib_1, WebGLUniforms_1, WebGLFlareRenderer_1, WebGLSpriteRenderer_1, WebGLShadowMap_1, WebGLAttributes_1, WebGLBackground_1, WebGLRenderLists_1, WebGLMorphtargets_1, WebGLIndexedBufferRenderer_1, WebGLBufferRenderer_1, WebGLGeometries_1, WebGLLights_1, WebGLObjects_1, WebGLPrograms_1, WebGLTextures_1, WebGLProperties_1, WebGLState_1, WebGLCapabilities_1, WebVRManager_1, WebGLExtensions_1, WebGLClipping_1, WebGLUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class WebGLRenderer {
         constructor(parameters) {
-            console.log('THREE.WebGLRenderer', constants_1.REVISION);
+            console.log('THREE.WebGLRenderer', Constant.REVISION);
             this.parameters = parameters || {};
             this._canvas = parameters.canvas !== undefined ? parameters.canvas : document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas');
             this._premultipliedAlpha = parameters.premultipliedAlpha !== undefined ? parameters.premultipliedAlpha : true;
@@ -25,7 +25,7 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             this.gammaInput = false;
             this.gammaOutput = false;
             this.physicallyCorrectLights = false;
-            this.toneMapping = constants_1.LinearToneMapping;
+            this.toneMapping = Constant.LinearToneMapping;
             this.toneMappingExposure = 1.0;
             this.toneMappingWhitePoint = 1.0;
             this.maxMorphTargets = 8;
@@ -331,7 +331,7 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 this.state.enableAttribute(programAttributes.uv);
                 this._gl.vertexAttribPointer(programAttributes.uv, 2, this._gl.FLOAT, false, 0, 0);
             }
-            if (object.hasColors && material.vertexColors !== constants_1.NoColors) {
+            if (object.hasColors && material.vertexColors !== Constant.NoColors) {
                 this._gl.bindBuffer(this._gl.ARRAY_BUFFER, buffers.color);
                 this._gl.bufferData(this._gl.ARRAY_BUFFER, object.colorArray, this._gl.DYNAMIC_DRAW);
                 this.state.enableAttribute(programAttributes.color);
@@ -395,13 +395,13 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                 }
                 else {
                     switch (object.drawMode) {
-                        case constants_1.TrianglesDrawMode:
+                        case Constant.TrianglesDrawMode:
                             renderer.setMode(this._gl.TRIANGLES);
                             break;
-                        case constants_1.TriangleStripDrawMode:
+                        case Constant.TriangleStripDrawMode:
                             renderer.setMode(this._gl.TRIANGLE_STRIP);
                             break;
-                        case constants_1.TriangleFanDrawMode:
+                        case Constant.TriangleFanDrawMode:
                             renderer.setMode(this._gl.TRIANGLE_FAN);
                             break;
                     }
@@ -551,7 +551,7 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
             this.start();
         }
         render(scene, camera, renderTarget, forceClear) {
-            if (!(camera && camera.isCamera)) {
+            if (!(camera && camera instanceof Camera_1.Camera)) {
                 console.error('THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.');
                 return;
             }
@@ -884,7 +884,7 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                             size = Math.max(size, 4);
                             let boneMatrices = new Float32Array(size * size * 4);
                             boneMatrices.set(skeleton.boneMatrices);
-                            let boneTexture = new DataTexture_1.DataTexture(boneMatrices, size, size, constants_1.RGBAFormat, constants_1.FloatType);
+                            let boneTexture = new DataTexture_1.DataTexture(boneMatrices, size, size, Constant.RGBAFormat, Constant.FloatType);
                             skeleton.boneMatrices = boneMatrices;
                             skeleton.boneTexture = boneTexture;
                             skeleton.boneTextureSize = size;
@@ -1154,7 +1154,7 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
         }
         setFaceCulling(cullFace, frontFaceDirection) {
             this.state.setCullFace(cullFace);
-            this.state.setFlipSided(frontFaceDirection === constants_1.FrontFaceDirectionCW);
+            this.state.setFlipSided(frontFaceDirection === Constant.FrontFaceDirectionCW);
         }
         allocTextureUnit() {
             let textureUnit = this._usedTextureUnits;
@@ -1253,13 +1253,13 @@ define(["require", "exports", "../constants", "../math/Math", "../math/Matrix4",
                     let texture = renderTarget.texture;
                     let textureFormat = texture.format;
                     let textureType = texture.type;
-                    if (textureFormat !== constants_1.RGBAFormat && this.utils.convert(textureFormat) !== this._gl.getParameter(this._gl.IMPLEMENTATION_COLOR_READ_FORMAT)) {
+                    if (textureFormat !== Constant.RGBAFormat && this.utils.convert(textureFormat) !== this._gl.getParameter(this._gl.IMPLEMENTATION_COLOR_READ_FORMAT)) {
                         console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format.');
                         return;
                     }
-                    if (textureType !== constants_1.UnsignedByteType && this.utils.convert(textureType) !== this._gl.getParameter(this._gl.IMPLEMENTATION_COLOR_READ_TYPE) &&
-                        !(textureType === constants_1.FloatType && (this.extensions.get('OES_texture_float') || this.extensions.get('WEBGL_color_buffer_float'))) &&
-                        !(textureType === constants_1.HalfFloatType && this.extensions.get('EXT_color_buffer_half_float'))) {
+                    if (textureType !== Constant.UnsignedByteType && this.utils.convert(textureType) !== this._gl.getParameter(this._gl.IMPLEMENTATION_COLOR_READ_TYPE) &&
+                        !(textureType === Constant.FloatType && (this.extensions.get('OES_texture_float') || this.extensions.get('WEBGL_color_buffer_float'))) &&
+                        !(textureType === Constant.HalfFloatType && this.extensions.get('EXT_color_buffer_half_float'))) {
                         console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type.');
                         return;
                     }

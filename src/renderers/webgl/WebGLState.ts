@@ -2,27 +2,27 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessEqualDepth, LessDepth, AlwaysDepth, NeverDepth, CullFaceFront, CullFaceBack, CullFaceNone, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, NoBlending, NormalBlending, DoubleSide, BackSide } from '../../constants';
+import * as Constant from '../../constants';
 import { Vector4 } from '../../math/Vector4';
+import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLUtils } from "./WebGLUtils";
 
 class ColorBuffer
 {
-	locked;
-	color;
-	currentColorMask;
-	currentColorClear;
-	gl;
+	locked: boolean;
+	currentColorMask: boolean;
+	currentColorClear: Vector4;
+	gl: WebGLRenderingContext;
 
 	constructor( gl )
 	{
 		this.gl = gl;
 		this.locked = false;
-		this.color = new Vector4();
 		this.currentColorMask = null;
-		this.currentColorClear = new Vector4( 0, 0, 0, 0 );
+		this.currentColorClear = new Vector4();
 	}
 
-	setMask( colorMask )
+	setMask( colorMask: boolean )
 	{
 		if ( this.currentColorMask !== colorMask && !this.locked )
 		{
@@ -31,24 +31,24 @@ class ColorBuffer
 		}
 	}
 
-	setLocked( lock )
+	setLocked( lock: boolean )
 	{
 		this.locked = lock;
 	}
 
-	setClear( r, g, b, a, premultipliedAlpha )
+	setClear( r, g, b, a, premultipliedAlpha: boolean = true )
 	{
 		if ( premultipliedAlpha === true )
 		{
 			r *= a; g *= a; b *= a;
 		}
 
-		this.color.set( r, g, b, a );
+		var color = new Vector4( r, g, b, a );
 
-		if ( this.currentColorClear.equals( this.color ) === false )
+		if ( this.currentColorClear.equals( color ) === false )
 		{
 			this.gl.clearColor( r, g, b, a );
-			this.currentColorClear.copy( this.color );
+			this.currentColorClear.copy( color );
 		}
 	}
 
@@ -63,13 +63,13 @@ class ColorBuffer
 
 class DepthBuffer
 {
-	gl;
+	gl: WebGLRenderingContext;
 	container: WebGLState;
 
-	locked;
-	currentDepthMask;
-	currentDepthFunc;
-	currentDepthClear;
+	locked: boolean;
+	currentDepthMask: boolean;
+	currentDepthFunc: number;
+	currentDepthClear: number;
 
 	constructor( gl, container )
 	{
@@ -90,7 +90,7 @@ class DepthBuffer
 			this.container.disable( this.gl.DEPTH_TEST );
 	}
 
-	setMask( depthMask )
+	setMask( depthMask: boolean )
 	{
 		if ( this.currentDepthMask !== depthMask && !this.locked )
 		{
@@ -99,7 +99,7 @@ class DepthBuffer
 		}
 	}
 
-	setFunc( depthFunc )
+	setFunc( depthFunc: number )
 	{
 		if ( this.currentDepthFunc !== depthFunc )
 		{
@@ -107,35 +107,35 @@ class DepthBuffer
 			{
 				switch ( depthFunc )
 				{
-					case NeverDepth:
+					case Constant.NeverDepth:
 						this.gl.depthFunc( this.gl.NEVER );
 						break;
 
-					case AlwaysDepth:
+					case Constant.AlwaysDepth:
 						this.gl.depthFunc( this.gl.ALWAYS );
 						break;
 
-					case LessDepth:
+					case Constant.LessDepth:
 						this.gl.depthFunc( this.gl.LESS );
 						break;
 
-					case LessEqualDepth:
+					case Constant.LessEqualDepth:
 						this.gl.depthFunc( this.gl.LEQUAL );
 						break;
 
-					case EqualDepth:
+					case Constant.EqualDepth:
 						this.gl.depthFunc( this.gl.EQUAL );
 						break;
 
-					case GreaterEqualDepth:
+					case Constant.GreaterEqualDepth:
 						this.gl.depthFunc( this.gl.GEQUAL );
 						break;
 
-					case GreaterDepth:
+					case Constant.GreaterDepth:
 						this.gl.depthFunc( this.gl.GREATER );
 						break;
 
-					case NotEqualDepth:
+					case Constant.NotEqualDepth:
 						this.gl.depthFunc( this.gl.NOTEQUAL );
 						break;
 
@@ -175,7 +175,7 @@ class DepthBuffer
 
 class StencilBuffer
 {
-	gl;
+	gl: WebGLRenderingContext;
 	container: WebGLState;
 
 	locked;
@@ -278,11 +278,14 @@ class StencilBuffer
 
 class WebGLState
 {
-	gl;
-	extensions;
-	utils;
+	gl: WebGLRenderingContext;
+	extensions: WebGLExtensions;
+	utils: WebGLUtils;
 
-	enabledAttributes;
+	enabledAttributes: Uint8Array;
+	newAttributes: Uint8Array;
+	attributeDivisors: Uint8Array;
+
 	capabilities;
 	compressedTextureFormats;
 	currentTextureSlot;
@@ -292,18 +295,19 @@ class WebGLState
 	currentFlipSided;
 	currentCullFace;
 
-	colorBuffer;
-	depthBuffer;
-	stencilBuffer;
+	colorBuffer: ColorBuffer;
+	depthBuffer: DepthBuffer;
+	stencilBuffer: StencilBuffer;
 
-	currentScissor;
-	currentViewport;
+	currentScissor: Vector4;
+	currentViewport: Vector4;
 	emptyTextures;
 	maxTextures;
 	currentLineWidth;
 	lineWidthAvailable;
 	currentPolygonOffsetFactor;
 	currentPolygonOffsetUnits;
+
 	currentBlendEquation;
 	currentBlendSrc;
 	currentBlendDst;
@@ -311,10 +315,8 @@ class WebGLState
 	currentBlendSrcAlpha;
 	currentBlendDstAlpha;
 	currentPremultipledAlpha;
-	newAttributes;
-	attributeDivisors;
-	
-	buffers;
+
+	buffers: { color: ColorBuffer, depth: DepthBuffer, stencil: StencilBuffer };
 
 	constructor( gl, extensions, utils )
 	{
@@ -381,21 +383,20 @@ class WebGLState
 		this.stencilBuffer.setClear( 0 );
 
 		this.enable( this.gl.DEPTH_TEST );
-		this.depthBuffer.setFunc( LessEqualDepth );
+		this.depthBuffer.setFunc( Constant.LessEqualDepth );
 
 		this.setFlipSided( false );
-		this.setCullFace( CullFaceBack );
+		this.setCullFace( Constant.CullFaceBack );
 		this.enable( this.gl.CULL_FACE );
 
 		this.enable( this.gl.BLEND );
-		this.setBlending( NormalBlending );
-
+		this.setBlending( Constant.NormalBlending );
 	}
 
-	createTexture( type, target, count )
+	createTexture( type, target, count: number ): WebGLTexture
 	{
-		let data = new Uint8Array( 4 ); // 4 is required to match default unpack alignment of 4.
-		let texture = this.gl.createTexture();
+		let data: ArrayBufferView = new Uint8Array( 4 ); // 4 is required to match default unpack alignment of 4.
+		let texture: WebGLTexture = this.gl.createTexture();
 
 		this.gl.bindTexture( type, texture );
 		this.gl.texParameteri( type, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST );
@@ -414,7 +415,7 @@ class WebGLState
 			this.newAttributes[ i ] = 0;
 	}
 
-	enableAttribute( attribute )
+	enableAttribute( attribute: number )
 	{
 		this.newAttributes[ attribute ] = 1;
 
@@ -514,18 +515,18 @@ class WebGLState
 	setBlending( blending, blendEquation?, blendSrc?, blendDst?, blendEquationAlpha?, blendSrcAlpha?, blendDstAlpha?, premultipliedAlpha?)
 	{
 
-		if ( blending !== NoBlending )
+		if ( blending !== Constant.NoBlending )
 			this.enable( this.gl.BLEND );
 		else
 			this.disable( this.gl.BLEND );
 
-		if ( blending !== CustomBlending )
+		if ( blending !== Constant.CustomBlending )
 		{
 			if ( blending !== this.currentBlending || premultipliedAlpha !== this.currentPremultipledAlpha )
 			{
 				switch ( blending )
 				{
-					case AdditiveBlending:
+					case Constant.AdditiveBlending:
 						if ( premultipliedAlpha )
 						{
 							this.gl.blendEquationSeparate( this.gl.FUNC_ADD, this.gl.FUNC_ADD );
@@ -537,7 +538,7 @@ class WebGLState
 						}
 						break;
 
-					case SubtractiveBlending:
+					case Constant.SubtractiveBlending:
 						if ( premultipliedAlpha )
 						{
 							this.gl.blendEquationSeparate( this.gl.FUNC_ADD, this.gl.FUNC_ADD );
@@ -549,7 +550,7 @@ class WebGLState
 						}
 						break;
 
-					case MultiplyBlending:
+					case Constant.MultiplyBlending:
 						if ( premultipliedAlpha )
 						{
 							this.gl.blendEquationSeparate( this.gl.FUNC_ADD, this.gl.FUNC_ADD );
@@ -609,18 +610,18 @@ class WebGLState
 
 	setMaterial( material, frontFaceCW )
 	{
-		material.side === DoubleSide
+		material.side === Constant.DoubleSide
 			? this.disable( this.gl.CULL_FACE )
 			: this.enable( this.gl.CULL_FACE );
 
-		let flipSided = ( material.side === BackSide );
+		let flipSided = ( material.side === Constant.BackSide );
 		if ( frontFaceCW ) flipSided = !flipSided;
 
 		this.setFlipSided( flipSided );
 
 		material.transparent === true
 			? this.setBlending( material.blending, material.blendEquation, material.blendSrc, material.blendDst, material.blendEquationAlpha, material.blendSrcAlpha, material.blendDstAlpha, material.premultipliedAlpha )
-			: this.setBlending( NoBlending );
+			: this.setBlending( Constant.NoBlending );
 
 		this.depthBuffer.setFunc( material.depthFunc );
 		this.depthBuffer.setTest( material.depthTest );
@@ -646,14 +647,14 @@ class WebGLState
 
 	setCullFace( cullFace )
 	{
-		if ( cullFace !== CullFaceNone )
+		if ( cullFace !== Constant.CullFaceNone )
 		{
 			this.enable( this.gl.CULL_FACE );
 			if ( cullFace !== this.currentCullFace )
 			{
-				if ( cullFace === CullFaceBack )
+				if ( cullFace === Constant.CullFaceBack )
 					this.gl.cullFace( this.gl.BACK );
-				else if ( cullFace === CullFaceFront )
+				else if ( cullFace === Constant.CullFaceFront )
 					this.gl.cullFace( this.gl.FRONT );
 				else
 					this.gl.cullFace( this.gl.FRONT_AND_BACK );
@@ -750,7 +751,7 @@ class WebGLState
 	}
 
 	//
-	scissor( scissor )
+	scissor( scissor: Vector4 )
 	{
 		if ( this.currentScissor.equals( scissor ) === false )
 		{
@@ -759,7 +760,7 @@ class WebGLState
 		}
 	}
 
-	viewport( viewport )
+	viewport( viewport: Vector4 )
 	{
 		if ( this.currentViewport.equals( viewport ) === false )
 		{
@@ -795,4 +796,4 @@ class WebGLState
 
 }
 
-export { WebGLState };
+export { ColorBuffer, DepthBuffer, StencilBuffer, WebGLState };

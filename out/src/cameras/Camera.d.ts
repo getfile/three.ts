@@ -6,7 +6,7 @@ declare class Camera extends Object3D {
     constructor();
     copy(source: any, recursive?: boolean): this;
     getWorldDirection(optionalTarget: any): any;
-    updateMatrixWorld(force: any): void;
+    updateMatrixWorld(force?: any): void;
     clone(): Camera;
 }
 export { Camera };

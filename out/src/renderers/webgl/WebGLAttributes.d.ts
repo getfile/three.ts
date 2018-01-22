@@ -1,8 +1,8 @@
 declare class WebGLAttributes {
     gl: WebGLRenderingContext;
-    buffers: any;
+    buffers: Object;
     constructor(gl: any);
-    createBuffer(attribute: any, bufferType: any): {
+    createBuffer(attribute: any, bufferType: number): {
         buffer: WebGLBuffer;
         type: number;
         bytesPerElement: any;

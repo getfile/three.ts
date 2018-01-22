@@ -242,7 +242,7 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             this.matrix.compose(this.position, this.quaternion, this.scale);
             this.matrixWorldNeedsUpdate = true;
         }
-        updateMatrixWorld(force) {
+        updateMatrixWorld(force = false) {
             if (this.matrixAutoUpdate)
                 this.updateMatrix();
             if (this.matrixWorldNeedsUpdate || force) {
