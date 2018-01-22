@@ -53,12 +53,12 @@ class Object3D extends EventDispatcher
 	static DefaultUp: Vector3 = new Vector3( 0, 1, 0 );
 	static DefaultMatrixAutoUpdate: boolean = true;
 
-	onRotationChange()
+	onRotationChange = () =>
 	{
 		this.quaternion.setFromEuler( this.rotation, false );
 	}
 
-	onQuaternionChange()
+	onQuaternionChange = () =>
 	{
 		this.rotation.setFromQuaternion( this.quaternion, undefined, false );
 	}
@@ -108,8 +108,8 @@ class Object3D extends EventDispatcher
 		this.userData = {};
 	}
 
-	onBeforeRender: Function = () => { };
-	onAfterRender: Function = () => { };
+	onBeforeRender = () => { };
+	onAfterRender = () => { };
 
 	applyMatrix( matrix )
 	{
@@ -434,7 +434,7 @@ class Object3D extends EventDispatcher
 	{
 		// meta is a string when called from JSON.stringify
 		let isRootObject = ( meta === undefined || typeof meta === 'string' );
-		let output = {};
+		let output: any = {};
 
 		// meta is a hash used to collect geometries, materials.
 		// not providing it implies that this is the root object
@@ -443,11 +443,11 @@ class Object3D extends EventDispatcher
 		{
 			// initialize meta obj
 			meta = {
-				geometries: {}
-					materials: {}
-					textures: {}
-					images: {}
-					shapes: {}
+				geometries: {},
+				materials: {},
+				textures: {},
+				images: {},
+				shapes: {}
 			};
 
 			output.metadata = {
@@ -459,7 +459,7 @@ class Object3D extends EventDispatcher
 
 		// standard Object3D serialization
 
-		let object = {};
+		let object: any = {};
 
 		object.uuid = this.uuid;
 		object.type = this.type;

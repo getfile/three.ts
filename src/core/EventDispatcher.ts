@@ -4,7 +4,7 @@
 
 class EventDispatcher
 {
-	private _listeners: Object; //{type:[]}
+	private _listeners: Object; //{type=>[callback, callback, callback ... ], ...}
 
 	id: number;
 	uuid: string;
