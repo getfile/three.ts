@@ -97,9 +97,8 @@ define(["require", "exports", "./Vector3"], function (require, exports, Vector3_
         }
         ;
         makeRotationFromEuler(euler) {
-            if (!(euler && euler.isEuler)) {
+            if (!euler)
                 console.error('THREE.Matrix4: .makeRotationFromEuler() now expects a Euler rotation rather than a Vector3 and order.');
-            }
             let te = this.elements;
             let x = euler.x, y = euler.y, z = euler.z;
             let a = Math.cos(x), b = Math.sin(x);
@@ -188,7 +187,7 @@ define(["require", "exports", "./Vector3"], function (require, exports, Vector3_
         }
         makeRotationFromQuaternion(q) {
             let te = this.elements;
-            let x = q._x, y = q._y, z = q._z, w = q._w;
+            let x = q.x, y = q.y, z = q.z, w = q.w;
             let x2 = x + x, y2 = y + y, z2 = z + z;
             let xx = x * x2, xy = x * y2, xz = x * z2;
             let yy = y * y2, yz = y * z2, zz = z * z2;
@@ -223,12 +222,10 @@ define(["require", "exports", "./Vector3"], function (require, exports, Vector3_
             z.normalize();
             x.crossVectors(up, z);
             if (x.lengthSq() === 0) {
-                if (Math.abs(up.z) === 1) {
+                if (Math.abs(up.z) === 1)
                     z.x += 0.0001;
-                }
-                else {
+                else
                     z.z += 0.0001;
-                }
                 z.normalize();
                 x.crossVectors(up, z);
             }
@@ -382,12 +379,10 @@ define(["require", "exports", "./Vector3"], function (require, exports, Vector3_
             let det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
             if (det === 0) {
                 let msg = "THREE.Matrix4: .getInverse() can't invert matrix, determinant is 0";
-                if (throwOnDegenerate === true) {
+                if (throwOnDegenerate === true)
                     throw new Error(msg);
-                }
-                else {
+                else
                     console.warn(msg);
-                }
                 return this.identity();
             }
             let detInv = 1 / det;
@@ -508,9 +503,8 @@ define(["require", "exports", "./Vector3"], function (require, exports, Vector3_
             return this;
         }
         makePerspective(left, right, top, bottom, near, far) {
-            if (far === undefined) {
+            if (far === undefined)
                 console.warn('THREE.Matrix4: .makePerspective() has been redefined and has a new signature. Please check the docs.');
-            }
             let te = this.elements;
             let x = 2 * near / (right - left);
             let y = 2 * near / (top - bottom);
@@ -565,10 +559,9 @@ define(["require", "exports", "./Vector3"], function (require, exports, Vector3_
         equals(matrix) {
             let te = this.elements;
             let me = matrix.elements;
-            for (let i = 0; i < 16; i++) {
+            for (let i = 0; i < 16; i++)
                 if (te[i] !== me[i])
                     return false;
-            }
             return true;
         }
         fromArray(array, offset = 0) {

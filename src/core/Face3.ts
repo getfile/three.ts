@@ -13,23 +13,23 @@ class Face3
 	c;
 
 	color: Color;
-	vertexColors: Array<Color>;
-
 	normal: Vector3;
+
+	vertexColors: Array<Color>;
 	vertexNormals: Array<Vector3>;
 
 	materialIndex: number;
 
-	constructor( a, b, c, normal?: any, color?: any, materialIndex: number = 0 )
+	constructor( a: number = 0, b: number = 0, c: number = 0, normal?: Vector3 | Vector3[], color?: Color | Color[], materialIndex: number = 0 )
 	{
 		this.a = a;
 		this.b = b;
 		this.c = c;
 
-		this.normal = ( normal && normal instanceof Vector3 ) ? normal : new Vector3();
+		this.normal = ( normal instanceof Vector3 ) ? normal : new Vector3();
 		this.vertexNormals = Array.isArray( normal ) ? normal : [];
 
-		this.color = ( color && color instanceof Color ) ? color : new Color();
+		this.color = ( color instanceof Color ) ? color : new Color();
 		this.vertexColors = Array.isArray( color ) ? color : [];
 
 		this.materialIndex = materialIndex;

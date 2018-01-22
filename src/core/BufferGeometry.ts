@@ -1,13 +1,14 @@
 import { Vector3 } from '../math/Vector3';
+import { Matrix4 } from '../math/Matrix4';
+import { Matrix3 } from '../math/Matrix3';
+import { _Math } from '../math/Math';
 import { Box3 } from '../geom/Box3';
 import { Sphere } from '../geom/Sphere';
 import { EventDispatcher } from './EventDispatcher';
 import { BufferAttribute, Float32BufferAttribute, Uint16BufferAttribute, Uint32BufferAttribute } from './BufferAttribute';
+import { InterleavedBufferAttribute } from "./InterleavedBufferAttribute";
 import { DirectGeometry } from './DirectGeometry';
 import { Object3D } from './Object3D';
-import { Matrix4 } from '../math/Matrix4';
-import { Matrix3 } from '../math/Matrix3';
-import { _Math } from '../math/Math';
 import { arrayMax } from '../utils';
 
 /**
@@ -32,7 +33,7 @@ class BufferGeometry extends EventDispatcher
 	drawRange;
 
 	parameters;
-	
+
 	constructor()
 	{
 		super();
@@ -68,9 +69,9 @@ class BufferGeometry extends EventDispatcher
 			this.index = index;
 	}
 
-	addAttribute( name, attribute )
+	addAttribute( name, attribute: BufferAttribute | InterleavedBufferAttribute )
 	{
-		if ( !( attribute && attribute.isBufferAttribute ) && !( attribute && attribute.isInterleavedBufferAttribute ) )
+		if ( !( attribute instanceof BufferAttribute ) && !( attribute instanceof InterleavedBufferAttribute ) )
 		{
 			console.warn( 'THREE.BufferGeometry: .addAttribute() now expects ( name, attribute ).' );
 			this.addAttribute( name, new BufferAttribute( arguments[ 1 ], arguments[ 2 ] ) );
@@ -256,7 +257,7 @@ class BufferGeometry extends EventDispatcher
 		let geometry = object.geometry;
 		if ( object.isMesh )
 		{
-			let direct:DirectGeometry = geometry.__directGeometry;
+			let direct: DirectGeometry = geometry.__directGeometry;
 			if ( geometry.elementsNeedUpdate === true )
 			{
 				direct = undefined;
@@ -358,7 +359,7 @@ class BufferGeometry extends EventDispatcher
 		return this.fromDirectGeometry( geometry.__directGeometry );
 	}
 
-	fromDirectGeometry( geometry )
+	fromDirectGeometry( geometry: DirectGeometry )
 	{
 		let positions = new Float32Array( geometry.vertices.length * 3 );
 		this.addAttribute( 'position', new BufferAttribute( positions, 3 ).copyVector3sArray( geometry.vertices ) );

@@ -226,11 +226,11 @@ class Object3D extends EventDispatcher
 	};
 
 	// This method does not support objects with rotated and/or translated parent(s)
-	lookAt( x, y: number = 0, z: number = 0 )
+	lookAt( x: Vector3 | number, y: number = 0, z: number = 0 )
 	{
 		let m1 = new Matrix4();
 		let vector = new Vector3();
-		if ( x.isVector3 )
+		if ( x instanceof Vector3 )
 			vector.copy( x );
 		else
 			vector.set( x, y, z );

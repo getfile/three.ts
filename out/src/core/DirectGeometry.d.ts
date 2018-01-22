@@ -1,3 +1,4 @@
+import { Geometry } from "./Geometry";
 declare class DirectGeometry {
     indices: any;
     vertices: any;
@@ -18,6 +19,6 @@ declare class DirectGeometry {
     groupsNeedUpdate: boolean;
     constructor();
     computeGroups(geometry: any): void;
-    fromGeometry(geometry: any): this;
+    fromGeometry(geometry: Geometry): this;
 }
 export { DirectGeometry };

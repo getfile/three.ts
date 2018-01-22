@@ -7,6 +7,12 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             super();
             this.matrix = new Matrix4_1.Matrix4();
             this.matrixWorld = new Matrix4_1.Matrix4();
+            this.onRotationChange = () => {
+                this.quaternion.setFromEuler(this.rotation, false);
+            };
+            this.onQuaternionChange = () => {
+                this.rotation.setFromQuaternion(this.quaternion, undefined, false);
+            };
             this.onBeforeRender = () => { };
             this.onAfterRender = () => { };
             this.id = object3DId++;
@@ -35,12 +41,6 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             this.frustumCulled = true;
             this.renderOrder = 0;
             this.userData = {};
-        }
-        onRotationChange() {
-            this.quaternion.setFromEuler(this.rotation, false);
-        }
-        onQuaternionChange() {
-            this.rotation.setFromQuaternion(this.quaternion, undefined, false);
         }
         applyMatrix(matrix) {
             this.matrix.multiplyMatrices(matrix, this.matrix);

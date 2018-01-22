@@ -1,142 +1,109 @@
-import { _Math } from '../math/Math.js';
+import { _Math } from '../math/Math';
+import { InterleavedBuffer } from "./InterleavedBuffer";
 
 /**
  * @author benaadams / https://twitter.com/ben_a_adams
  */
 
-function InterleavedBufferAttribute( interleavedBuffer, itemSize, offset, normalized ) {
+class InterleavedBufferAttribute
+{
+	uuid: string;
+	data: InterleavedBuffer;
+	itemSize: number;
+	offset: number;
+	normalized: boolean;
 
-	this.uuid = _Math.generateUUID();
-
-	this.data = interleavedBuffer;
-	this.itemSize = itemSize;
-	this.offset = offset;
-
-	this.normalized = normalized === true;
-
-}
-
-Object.defineProperties( InterleavedBufferAttribute.prototype, {
-
-	count: {
-
-		get: function () {
-
-			return this.data.count;
-
-		}
-
-	},
-
-	array: {
-
-		get: function () {
-
-			return this.data.array;
-
-		}
-
+	constructor( interleavedBuffer: InterleavedBuffer, itemSize: number, offset: number, normalized: boolean )
+	{
+		this.uuid = _Math.generateUUID();
+		this.data = interleavedBuffer;
+		this.itemSize = itemSize;
+		this.offset = offset;
+		this.normalized = normalized;
 	}
 
-} );
+	get count()
+	{
+		return this.data.count;
+	}
 
-Object.assign( InterleavedBufferAttribute.prototype, {
+	get array()
+	{
+		return this.data.array;
+	}
 
-	isInterleavedBufferAttribute: true,
-
-	setX: function ( index, x ) {
-
+	setX( index: number, x: number )
+	{
 		this.data.array[ index * this.data.stride + this.offset ] = x;
-
 		return this;
+	}
 
-	},
-
-	setY: function ( index, y ) {
-
+	setY( index: number, y: number )
+	{
 		this.data.array[ index * this.data.stride + this.offset + 1 ] = y;
-
 		return this;
+	}
 
-	},
-
-	setZ: function ( index, z ) {
-
+	setZ( index: number, z: number )
+	{
 		this.data.array[ index * this.data.stride + this.offset + 2 ] = z;
-
 		return this;
+	}
 
-	},
-
-	setW: function ( index, w ) {
-
+	setW( index: number, w: number )
+	{
 		this.data.array[ index * this.data.stride + this.offset + 3 ] = w;
-
 		return this;
+	}
 
-	},
-
-	getX: function ( index ) {
-
+	getX( index: number )
+	{
 		return this.data.array[ index * this.data.stride + this.offset ];
+	}
 
-	},
-
-	getY: function ( index ) {
-
+	getY( index: number )
+	{
 		return this.data.array[ index * this.data.stride + this.offset + 1 ];
+	}
 
-	},
-
-	getZ: function ( index ) {
-
+	getZ( index: number )
+	{
 		return this.data.array[ index * this.data.stride + this.offset + 2 ];
+	}
 
-	},
-
-	getW: function ( index ) {
-
+	getW( index: number )
+	{
 		return this.data.array[ index * this.data.stride + this.offset + 3 ];
+	}
 
-	},
-
-	setXY: function ( index, x, y ) {
-
+	setXY( index: number, x: number, y: number )
+	{
 		index = index * this.data.stride + this.offset;
-
 		this.data.array[ index + 0 ] = x;
 		this.data.array[ index + 1 ] = y;
-
 		return this;
+	}
 
-	},
-
-	setXYZ: function ( index, x, y, z ) {
-
+	setXYZ( index: number, x: number, y: number, z: number )
+	{
 		index = index * this.data.stride + this.offset;
-
 		this.data.array[ index + 0 ] = x;
 		this.data.array[ index + 1 ] = y;
 		this.data.array[ index + 2 ] = z;
-
 		return this;
+	}
 
-	},
-
-	setXYZW: function ( index, x, y, z, w ) {
-
+	setXYZW( index: number, x: number, y: number, z: number, w: number )
+	{
 		index = index * this.data.stride + this.offset;
-
 		this.data.array[ index + 0 ] = x;
 		this.data.array[ index + 1 ] = y;
 		this.data.array[ index + 2 ] = z;
 		this.data.array[ index + 3 ] = w;
-
 		return this;
-
 	}
 
-} );
+}
 
 
 export { InterleavedBufferAttribute };

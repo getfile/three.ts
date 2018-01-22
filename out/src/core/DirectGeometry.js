@@ -1,4 +1,4 @@
-define(["require", "exports", "../math/Vector2.js"], function (require, exports, Vector2_js_1) {
+define(["require", "exports", "../math/Vector2"], function (require, exports, Vector2_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class DirectGeometry {
@@ -98,7 +98,7 @@ define(["require", "exports", "../math/Vector2.js"], function (require, exports,
                         this.uvs.push(vertexUvs[0], vertexUvs[1], vertexUvs[2]);
                     else {
                         console.warn('THREE.DirectGeometry.fromGeometry(): Undefined vertexUv ', i);
-                        this.uvs.push(new Vector2_js_1.Vector2(), new Vector2_js_1.Vector2(), new Vector2_js_1.Vector2());
+                        this.uvs.push(new Vector2_1.Vector2(), new Vector2_1.Vector2(), new Vector2_1.Vector2());
                     }
                 }
                 if (hasFaceVertexUv2 === true) {
@@ -107,7 +107,7 @@ define(["require", "exports", "../math/Vector2.js"], function (require, exports,
                         this.uvs2.push(vertexUvs[0], vertexUvs[1], vertexUvs[2]);
                     else {
                         console.warn('THREE.DirectGeometry.fromGeometry(): Undefined vertexUv2 ', i);
-                        this.uvs2.push(new Vector2_js_1.Vector2(), new Vector2_js_1.Vector2(), new Vector2_js_1.Vector2());
+                        this.uvs2.push(new Vector2_1.Vector2(), new Vector2_1.Vector2(), new Vector2_1.Vector2());
                     }
                 }
                 for (let j = 0; j < morphTargetsLength; j++) {

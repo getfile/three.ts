@@ -1,4 +1,7 @@
 import { Vector3 } from './Vector3';
+import { Quaternion } from "./Quaternion";
+import { Euler } from "./Euler";
+import { BufferAttribute } from "../core/BufferAttribute";
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -30,7 +33,10 @@ class Matrix4
 			console.error( 'THREE.Matrix4: the constructor no longer reads arguments. use .set() instead.' );
 	}
 
-	set( n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44 ): Matrix4
+	set( n11: number, n12: number, n13: number, n14: number, //
+		n21: number, n22: number, n23: number, n24: number, //
+		n31: number, n32: number, n33: number, n34: number, //
+		n41: number, n42: number, n43: number, n44: number ): Matrix4
 	{
 		let te = this.elements;
 
@@ -91,9 +97,8 @@ class Matrix4
 		return this;
 	}
 
-	makeBasis( xAxis, yAxis, zAxis )
+	makeBasis( xAxis: Vector3, yAxis: Vector3, zAxis: Vector3 )
 	{
-
 		this.set(
 			xAxis.x, yAxis.x, zAxis.x, 0,
 			xAxis.y, yAxis.y, zAxis.y, 0,
@@ -102,13 +107,11 @@ class Matrix4
 		);
 
 		return this;
-
 	}
 
-	extractRotation( m )
+	extractRotation( m: Matrix4 )
 	{
 		let v1 = new Vector3();
-
 		let te = this.elements;
 		let me = m.elements;
 
@@ -129,19 +132,12 @@ class Matrix4
 		te[ 10 ] = me[ 10 ] * scaleZ;
 
 		return this;
-
 	};
 
-
-	makeRotationFromEuler( euler )
+	makeRotationFromEuler( euler: Euler )
 	{
-
-		if ( !( euler && euler.isEuler ) )
-		{
-
+		if ( !euler )
 			console.error( 'THREE.Matrix4: .makeRotationFromEuler() now expects a Euler rotation rather than a Vector3 and order.' );
-
-		}
 
 		let te = this.elements;
 
@@ -152,7 +148,6 @@ class Matrix4
 
 		if ( euler.order === 'XYZ' )
 		{
-
 			let ae = a * e, af = a * f, be = b * e, bf = b * f;
 
 			te[ 0 ] = c * e;
@@ -169,7 +164,6 @@ class Matrix4
 
 		} else if ( euler.order === 'YXZ' )
 		{
-
 			let ce = c * e, cf = c * f, de = d * e, df = d * f;
 
 			te[ 0 ] = ce + df * b;
@@ -186,7 +180,6 @@ class Matrix4
 
 		} else if ( euler.order === 'ZXY' )
 		{
-
 			let ce = c * e, cf = c * f, de = d * e, df = d * f;
 
 			te[ 0 ] = ce - df * b;
@@ -203,7 +196,6 @@ class Matrix4
 
 		} else if ( euler.order === 'ZYX' )
 		{
-
 			let ae = a * e, af = a * f, be = b * e, bf = b * f;
 
 			te[ 0 ] = c * e;
@@ -220,7 +212,6 @@ class Matrix4
 
 		} else if ( euler.order === 'YZX' )
 		{
-
 			let ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
 			te[ 0 ] = c * e;
@@ -237,7 +228,6 @@ class Matrix4
 
 		} else if ( euler.order === 'XZY' )
 		{
-
 			let ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
 			te[ 0 ] = c * e;
@@ -251,7 +241,6 @@ class Matrix4
 			te[ 2 ] = bc * f - ad;
 			te[ 6 ] = b * e;
 			te[ 10 ] = bd * f + ac;
-
 		}
 
 		// last column
@@ -266,15 +255,13 @@ class Matrix4
 		te[ 15 ] = 1;
 
 		return this;
-
 	}
 
-	makeRotationFromQuaternion( q )
+	makeRotationFromQuaternion( q: Quaternion )
 	{
-
 		let te = this.elements;
 
-		let x = q._x, y = q._y, z = q._z, w = q._w;
+		let x = q.x, y = q.y, z = q.z, w = q.w;
 		let x2 = x + x, y2 = y + y, z2 = z + z;
 		let xx = x * x2, xy = x * y2, xz = x * z2;
 		let yy = y * y2, yz = y * z2, zz = z * z2;
@@ -304,12 +291,10 @@ class Matrix4
 		te[ 15 ] = 1;
 
 		return this;
-
 	}
 
-	lookAt( eye, target, up )
+	lookAt( eye: Vector3, target: Vector3, up: Vector3 )
 	{
-
 		let x = new Vector3();
 		let y = new Vector3();
 		let z = new Vector3();
@@ -320,11 +305,8 @@ class Matrix4
 
 		if ( z.lengthSq() === 0 )
 		{
-
 			// eye and target are in the same position
-
 			z.z = 1;
-
 		}
 
 		z.normalize();
@@ -332,24 +314,14 @@ class Matrix4
 
 		if ( x.lengthSq() === 0 )
 		{
-
 			// up and z are parallel
-
 			if ( Math.abs( up.z ) === 1 )
-			{
-
 				z.x += 0.0001;
-
-			} else
-			{
-
+			else
 				z.z += 0.0001;
-
-			}
 
 			z.normalize();
 			x.crossVectors( up, z );
-
 		}
 
 		x.normalize();
@@ -360,10 +332,9 @@ class Matrix4
 		te[ 2 ] = x.z; te[ 6 ] = y.z; te[ 10 ] = z.z;
 
 		return this;
-
 	}
 
-	multiply( m, n )
+	multiply( m: Matrix4, n: Matrix4 )
 	{
 		if ( n !== undefined )
 		{
@@ -374,12 +345,12 @@ class Matrix4
 		return this.multiplyMatrices( this, m );
 	}
 
-	premultiply( m )
+	premultiply( m: Matrix4 )
 	{
 		return this.multiplyMatrices( m, this );
 	}
 
-	multiplyMatrices( a, b )
+	multiplyMatrices( a: Matrix4, b: Matrix4 )
 	{
 		let ae = a.elements;
 		let be = b.elements;
@@ -416,12 +387,10 @@ class Matrix4
 		te[ 15 ] = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
 
 		return this;
-
 	}
 
-	multiplyScalar( s )
+	multiplyScalar( s: number )
 	{
-
 		let te = this.elements;
 
 		te[ 0 ] *= s; te[ 4 ] *= s; te[ 8 ] *= s; te[ 12 ] *= s;
@@ -432,13 +401,12 @@ class Matrix4
 		return this;
 	}
 
-	applyToBufferAttribute( attribute )
+	applyToBufferAttribute( attribute: BufferAttribute )
 	{
 		let v1 = new Vector3();
 
 		for ( let i = 0, l = attribute.count; i < l; i++ )
 		{
-
 			v1.x = attribute.getX( i );
 			v1.y = attribute.getY( i );
 			v1.z = attribute.getZ( i );
@@ -446,16 +414,13 @@ class Matrix4
 			v1.applyMatrix4( this );
 
 			attribute.setXYZ( i, v1.x, v1.y, v1.z );
-
 		}
 
 		return attribute;
-
 	}
 
 	determinant()
 	{
-
 		let te = this.elements;
 
 		let n11 = te[ 0 ], n12 = te[ 4 ], n13 = te[ 8 ], n14 = te[ 12 ];
@@ -465,7 +430,6 @@ class Matrix4
 
 		//TODO: make this more efficient
 		//( based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm )
-
 		return (
 			n41 * (
 				+ n14 * n23 * n32
@@ -499,14 +463,11 @@ class Matrix4
 				- n12 * n21 * n33
 				+ n12 * n23 * n31
 			)
-
 		);
-
 	}
 
 	transpose()
 	{
-
 		let te = this.elements;
 		let tmp;
 
@@ -519,25 +480,19 @@ class Matrix4
 		tmp = te[ 11 ]; te[ 11 ] = te[ 14 ]; te[ 14 ] = tmp;
 
 		return this;
-
 	}
 
-	setPosition( v )
+	setPosition( v: Vector3 )
 	{
-
 		let te = this.elements;
-
 		te[ 12 ] = v.x;
 		te[ 13 ] = v.y;
 		te[ 14 ] = v.z;
-
 		return this;
-
 	}
 
-	getInverse( m, throwOnDegenerate: boolean = true )
+	getInverse( m: Matrix4, throwOnDegenerate: boolean = true )
 	{
-
 		// based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
 		let te = this.elements,
 			me = m.elements,
@@ -553,26 +508,15 @@ class Matrix4
 			t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
 
 		let det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
-
 		if ( det === 0 )
 		{
-
 			let msg = "THREE.Matrix4: .getInverse() can't invert matrix, determinant is 0";
-
 			if ( throwOnDegenerate === true )
-			{
-
 				throw new Error( msg );
-
-			} else
-			{
-
+			else
 				console.warn( msg );
 
-			}
-
 			return this.identity();
-
 		}
 
 		let detInv = 1 / det;
@@ -598,12 +542,10 @@ class Matrix4
 		te[ 15 ] = ( n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32 - n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33 ) * detInv;
 
 		return this;
-
 	}
 
-	scale( v )
+	scale( v: Vector3 )
 	{
-
 		let te = this.elements;
 		let x = v.x, y = v.y, z = v.z;
 
@@ -613,97 +555,69 @@ class Matrix4
 		te[ 3 ] *= x; te[ 7 ] *= y; te[ 11 ] *= z;
 
 		return this;
-
 	}
 
 	getMaxScaleOnAxis()
 	{
-
 		let te = this.elements;
-
 		let scaleXSq = te[ 0 ] * te[ 0 ] + te[ 1 ] * te[ 1 ] + te[ 2 ] * te[ 2 ];
 		let scaleYSq = te[ 4 ] * te[ 4 ] + te[ 5 ] * te[ 5 ] + te[ 6 ] * te[ 6 ];
 		let scaleZSq = te[ 8 ] * te[ 8 ] + te[ 9 ] * te[ 9 ] + te[ 10 ] * te[ 10 ];
 
 		return Math.sqrt( Math.max( scaleXSq, scaleYSq, scaleZSq ) );
-
 	}
 
-	makeTranslation( x, y, z )
+	makeTranslation( x: number, y: number, z: number )
 	{
-
 		this.set(
-
 			1, 0, 0, x,
 			0, 1, 0, y,
 			0, 0, 1, z,
 			0, 0, 0, 1
-
 		);
 
 		return this;
-
 	}
 
-	makeRotationX( theta )
+	makeRotationX( theta: number )
 	{
-
 		let c = Math.cos( theta ), s = Math.sin( theta );
-
 		this.set(
-
 			1, 0, 0, 0,
 			0, c, - s, 0,
 			0, s, c, 0,
 			0, 0, 0, 1
-
 		);
-
 		return this;
-
 	}
 
-	makeRotationY( theta )
+	makeRotationY( theta: number )
 	{
-
 		let c = Math.cos( theta ), s = Math.sin( theta );
-
 		this.set(
-
 			c, 0, s, 0,
 			0, 1, 0, 0,
 			- s, 0, c, 0,
 			0, 0, 0, 1
-
 		);
-
 		return this;
-
 	}
 
-	makeRotationZ( theta )
+	makeRotationZ( theta: number )
 	{
-
 		let c = Math.cos( theta ), s = Math.sin( theta );
-
 		this.set(
-
 			c, - s, 0, 0,
 			s, c, 0, 0,
 			0, 0, 1, 0,
 			0, 0, 0, 1
-
 		);
-
 		return this;
-
 	}
 
-	makeRotationAxis( axis, angle )
+	makeRotationAxis( axis: Vector3, angle: number )
 	{
-
 		// Based on http://www.gamedev.net/reference/articles/article1199.asp
-
 		let c = Math.cos( angle );
 		let s = Math.sin( angle );
 		let t = 1 - c;
@@ -711,62 +625,46 @@ class Matrix4
 		let tx = t * x, ty = t * y;
 
 		this.set(
-
 			tx * x + c, tx * y - s * z, tx * z + s * y, 0,
 			tx * y + s * z, ty * y + c, ty * z - s * x, 0,
 			tx * z - s * y, ty * z + s * x, t * z * z + c, 0,
 			0, 0, 0, 1
-
 		);
 
 		return this;
-
 	}
 
-	makeScale( x, y, z )
+	makeScale( x: number, y: number, z: number )
 	{
-
 		this.set(
-
 			x, 0, 0, 0,
 			0, y, 0, 0,
 			0, 0, z, 0,
 			0, 0, 0, 1
-
 		);
-
 		return this;
-
 	}
 
-	makeShear( x, y, z )
+	makeShear( x: number, y: number, z: number )
 	{
-
 		this.set(
-
 			1, y, z, 0,
 			x, 1, z, 0,
 			x, y, 1, 0,
 			0, 0, 0, 1
-
 		);
-
 		return this;
-
 	}
 
-	compose( position, quaternion, scale )
+	compose( position: Vector3, quaternion: Quaternion, scale: Vector3 )
 	{
-
 		this.makeRotationFromQuaternion( quaternion );
 		this.scale( scale );
 		this.setPosition( position );
-
 		return this;
-
 	}
 
-	decompose( position, quaternion, scale )
+	decompose( position: Vector3, quaternion: Quaternion, scale: Vector3 )
 	{
 		let vector = new Vector3();
 		let matrix = new Matrix4();
@@ -813,15 +711,10 @@ class Matrix4
 		return this;
 	}
 
-	makePerspective( left, right, top, bottom, near, far )
+	makePerspective( left: number, right: number, top: number, bottom: number, near: number, far: number )
 	{
-
 		if ( far === undefined )
-		{
-
 			console.warn( 'THREE.Matrix4: .makePerspective() has been redefined and has a new signature. Please check the docs.' );
-
-		}
 
 		let te = this.elements;
 		let x = 2 * near / ( right - left );
@@ -838,12 +731,10 @@ class Matrix4
 		te[ 3 ] = 0; te[ 7 ] = 0; te[ 11 ] = - 1; te[ 15 ] = 0;
 
 		return this;
-
 	}
 
-	makeOrthographic( left, right, top, bottom, near, far )
+	makeOrthographic( left:number, right:number, top:number, bottom:number, near:number, far:number )
 	{
-
 		let te = this.elements;
 		let w = 1.0 / ( right - left );
 		let h = 1.0 / ( top - bottom );
@@ -861,15 +752,13 @@ class Matrix4
 		return this;
 	}
 
-	equals( matrix )
+	equals( matrix:Matrix4 )
 	{
 		let te = this.elements;
 		let me = matrix.elements;
 
 		for ( let i = 0; i < 16; i++ )
-		{
 			if ( te[ i ] !== me[ i ] ) return false;
-		}
 
 		return true;
 	}
@@ -881,7 +770,7 @@ class Matrix4
 		return this;
 	}
 
-	toArray( array?:Array<number>, offset:number=0 )
+	toArray( array?: Array<number>, offset: number = 0 )
 	{
 		if ( array === undefined ) array = [];
 

@@ -1,4 +1,7 @@
 import { EventDispatcher } from './EventDispatcher';
+import { BufferAttribute } from './BufferAttribute';
+import { InterleavedBufferAttribute } from "./InterleavedBufferAttribute";
+import { DirectGeometry } from './DirectGeometry';
 declare class BufferGeometry extends EventDispatcher {
     index: any;
     attributes: any;
@@ -11,7 +14,7 @@ declare class BufferGeometry extends EventDispatcher {
     constructor();
     getIndex(): any;
     setIndex(index: any): void;
-    addAttribute(name: any, attribute: any): this;
+    addAttribute(name: any, attribute: BufferAttribute | InterleavedBufferAttribute): this;
     getAttribute(name: any): any;
     removeAttribute(name: any): this;
     addGroup(start: any, count: any, materialIndex?: number): void;
@@ -29,7 +32,7 @@ declare class BufferGeometry extends EventDispatcher {
     setFromPoints(points: any): this;
     updateFromObject(object: any): this;
     fromGeometry(geometry: any): this;
-    fromDirectGeometry(geometry: any): this;
+    fromDirectGeometry(geometry: DirectGeometry): this;
     computeBoundingBox(): void;
     computeBoundingSphere(): void;
     computeFaceNormals(): void;

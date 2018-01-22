@@ -99,11 +99,11 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
             let tempUVs = [];
             let tempUVs2 = [];
             for (let i = 0, j = 0; i < positions.length; i += 3, j += 2) {
-                scope.vertices.push(new Vector3_1.Vector3(positions[i], positions[i + 1], positions[i + 2]));
+                this.vertices.push(new Vector3_1.Vector3(positions[i], positions[i + 1], positions[i + 2]));
                 if (normals !== undefined)
                     tempNormals.push(new Vector3_1.Vector3(normals[i], normals[i + 1], normals[i + 2]));
                 if (colors !== undefined)
-                    scope.colors.push(new Color_1.Color(colors[i], colors[i + 1], colors[i + 2]));
+                    this.colors.push(new Color_1.Color(colors[i], colors[i + 1], colors[i + 2]));
                 if (uvs !== undefined)
                     tempUVs.push(new Vector2_1.Vector2(uvs[j], uvs[j + 1]));
                 if (uvs2 !== undefined)
@@ -383,7 +383,8 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
             let v, key;
             let precisionPoints = 4;
             let precision = Math.pow(10, precisionPoints);
-            let i, il, face;
+            let i, il;
+            let face;
             let indices, j, jl;
             for (i = 0, il = this.vertices.length; i < il; i++) {
                 v = this.vertices[i];

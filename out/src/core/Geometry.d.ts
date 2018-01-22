@@ -1,4 +1,6 @@
 import { EventDispatcher } from './EventDispatcher';
+import { Vector3 } from '../math/Vector3';
+import { BufferGeometry } from "./BufferGeometry";
 declare class Geometry extends EventDispatcher {
     vertices: any;
     colors: any;
@@ -21,13 +23,13 @@ declare class Geometry extends EventDispatcher {
     parameters: any;
     constructor();
     applyMatrix(matrix: any): this;
-    rotateX(angle: any): this;
-    rotateY(angle: any): this;
-    rotateZ(angle: any): this;
-    translate(x: any, y: any, z: any): this;
-    scale(x: any, y: any, z: any): this;
-    lookAt(vector: any): void;
-    fromBufferGeometry(geometry: any): this;
+    rotateX(angle: number): this;
+    rotateY(angle: number): this;
+    rotateZ(angle: number): this;
+    translate(x: number, y: number, z: number): this;
+    scale(x: number, y: number, z: number): this;
+    lookAt(vector: Vector3): void;
+    fromBufferGeometry(geometry: BufferGeometry): this;
     center(): any;
     normalize(): this;
     computeFaceNormals(): void;

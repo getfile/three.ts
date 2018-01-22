@@ -30,11 +30,11 @@ declare class Object3D extends EventDispatcher {
     userData: Object;
     static DefaultUp: Vector3;
     static DefaultMatrixAutoUpdate: boolean;
-    onRotationChange(): void;
-    onQuaternionChange(): void;
+    onRotationChange: () => void;
+    onQuaternionChange: () => void;
     constructor();
-    onBeforeRender: Function;
-    onAfterRender: Function;
+    onBeforeRender: () => void;
+    onAfterRender: () => void;
     applyMatrix(matrix: any): void;
     applyQuaternion(q: any): this;
     setRotationFromAxisAngle(axis: any, angle: any): void;
@@ -69,7 +69,7 @@ declare class Object3D extends EventDispatcher {
     traverseAncestors(callback: any): void;
     updateMatrix(): void;
     updateMatrixWorld(force?: boolean): void;
-    toJSON(meta: any): {};
+    toJSON(meta: any): any;
     clone(recursive: any): Object3D;
     copy(source: any, recursive?: boolean): this;
 }

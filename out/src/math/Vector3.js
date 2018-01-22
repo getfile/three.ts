@@ -393,6 +393,5 @@ define(["require", "exports", "./Math", "./Matrix4", "./Quaternion"], function (
         }
     }
     exports.Vector3 = Vector3;
-    ;
 });
 //# sourceMappingURL=Vector3.js.map

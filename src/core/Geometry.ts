@@ -9,6 +9,7 @@ import { Matrix3 } from '../math/Matrix3';
 import { Matrix4 } from '../math/Matrix4';
 import { Color } from '../math/Color';
 import { _Math } from '../math/Math';
+import { BufferGeometry } from "./BufferGeometry";
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -87,13 +88,13 @@ class Geometry extends EventDispatcher
 
 		for ( let i = 0, il = this.vertices.length; i < il; i++ )
 		{
-			let vertex = this.vertices[ i ];
+			let vertex: Vector3 = this.vertices[ i ];
 			vertex.applyMatrix4( matrix );
 		}
 
 		for ( let i = 0, il = this.faces.length; i < il; i++ )
 		{
-			let face = this.faces[ i ];
+			let face: Face3 = this.faces[ i ];
 			face.normal.applyMatrix3( normalMatrix ).normalize();
 
 			for ( let j = 0, jl = face.vertexNormals.length; j < jl; j++ )
@@ -113,7 +114,7 @@ class Geometry extends EventDispatcher
 	}
 
 	// rotate geometry around world x-axis
-	rotateX( angle )
+	rotateX( angle: number )
 	{
 		let m1 = new Matrix4();
 		m1.makeRotationX( angle );
@@ -122,7 +123,7 @@ class Geometry extends EventDispatcher
 	}
 
 	// rotate geometry around world y-axis
-	rotateY( angle )
+	rotateY( angle: number )
 	{
 		let m1 = new Matrix4();
 		m1.makeRotationY( angle );
@@ -131,7 +132,7 @@ class Geometry extends EventDispatcher
 	}
 
 	// rotate geometry around world z-axis
-	rotateZ( angle )
+	rotateZ( angle: number )
 	{
 		let m1 = new Matrix4();
 		m1.makeRotationZ( angle );
@@ -140,7 +141,7 @@ class Geometry extends EventDispatcher
 	}
 
 	// translate geometry
-	translate( x, y, z )
+	translate( x: number, y: number, z: number )
 	{
 		let m1 = new Matrix4();
 		m1.makeTranslation( x, y, z );
@@ -149,7 +150,7 @@ class Geometry extends EventDispatcher
 	}
 
 	// scale geometry
-	scale( x, y, z )
+	scale( x: number, y: number, z: number )
 	{
 		let m1 = new Matrix4();
 		m1.makeScale( x, y, z );
@@ -157,7 +158,7 @@ class Geometry extends EventDispatcher
 		return this;
 	}
 
-	lookAt( vector )
+	lookAt( vector: Vector3 )
 	{
 		let obj = new Object3D();
 		obj.lookAt( vector );
@@ -165,7 +166,7 @@ class Geometry extends EventDispatcher
 		this.applyMatrix( obj.matrix );
 	}
 
-	fromBufferGeometry( geometry )
+	fromBufferGeometry( geometry: BufferGeometry )
 	{
 		let scope = this;
 
@@ -186,13 +187,13 @@ class Geometry extends EventDispatcher
 
 		for ( let i = 0, j = 0; i < positions.length; i += 3, j += 2 )
 		{
-			scope.vertices.push( new Vector3( positions[ i ], positions[ i + 1 ], positions[ i + 2 ] ) );
+			this.vertices.push( new Vector3( positions[ i ], positions[ i + 1 ], positions[ i + 2 ] ) );
 
 			if ( normals !== undefined )
 				tempNormals.push( new Vector3( normals[ i ], normals[ i + 1 ], normals[ i + 2 ] ) );
 
 			if ( colors !== undefined )
-				scope.colors.push( new Color( colors[ i ], colors[ i + 1 ], colors[ i + 2 ] ) );
+				this.colors.push( new Color( colors[ i ], colors[ i + 1 ], colors[ i + 2 ] ) );
 
 			if ( uvs !== undefined )
 				tempUVs.push( new Vector2( uvs[ j ], uvs[ j + 1 ] ) );
@@ -655,7 +656,8 @@ class Geometry extends EventDispatcher
 		let v, key;
 		let precisionPoints = 4; // number of decimal points, e.g. 4 for epsilon of 0.0001
 		let precision = Math.pow( 10, precisionPoints );
-		let i, il, face;
+		let i, il;
+		let face: Face3;
 		let indices, j, jl;
 
 		for ( i = 0, il = this.vertices.length; i < il; i++ )
@@ -777,9 +779,9 @@ class Geometry extends EventDispatcher
 				type: 'Geometry',
 				generator: 'Geometry.toJSON'
 			},
-			uuid:'',
-			type:'',
-			name:''
+			uuid: '',
+			type: '',
+			name: ''
 		};
 
 		// sta ndard Geometry serialization

@@ -9,6 +9,7 @@ import { Ray } from '../geom/Ray';
 import { Triangle } from '../geom/Triangle';
 import { DoubleSide, BackSide, TrianglesDrawMode } from '../constants';
 import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
+import { BufferAttribute } from "../core/BufferAttribute";
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -40,7 +41,7 @@ class Mesh extends Object3D
 
 	copy( source )
 	{
-		super.copy(source );
+		super.copy( source );
 		this.drawMode = source.drawMode;
 
 		if ( source.morphTargetInfluences !== undefined )
@@ -130,7 +131,7 @@ class Mesh extends Object3D
 			return uv1.clone();
 		}
 
-		function checkIntersection( object, material, raycaster, ray, pA, pB, pC, point )
+		function checkIntersection( object, material, raycaster, ray, pA, pB, pC, point ):any
 		{
 			let intersect;
 
@@ -155,7 +156,7 @@ class Mesh extends Object3D
 			};
 		}
 
-		function checkBufferGeometryIntersection( object, raycaster, ray, position, uv, a, b, c )
+		function checkBufferGeometryIntersection( object, raycaster, ray, position: BufferAttribute, uv, a: number, b: number, c: number )
 		{
 			vA.fromBufferAttribute( position, a );
 			vB.fromBufferAttribute( position, b );

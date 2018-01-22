@@ -6,6 +6,6 @@ declare class Scene extends Object3D {
     autoUpdate: any;
     constructor();
     copy(source: any, recursive: any): this;
-    toJSON(meta: any): {};
+    toJSON(meta: any): any;
 }
 export { Scene };

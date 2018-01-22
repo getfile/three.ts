@@ -306,11 +306,9 @@ define(["require", "exports", "./Vector3", "./Euler"], function (require, export
             this.onChangeCallback();
             return this;
         }
-        toArray(array, offset) {
+        toArray(array, offset = 0) {
             if (array === undefined)
                 array = [];
-            if (offset === undefined)
-                offset = 0;
             array[offset] = this._x;
             array[offset + 1] = this._y;
             array[offset + 2] = this._z;

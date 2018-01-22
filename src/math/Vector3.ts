@@ -2,6 +2,8 @@ import { _Math } from './Math';
 import { Matrix4 } from './Matrix4';
 import { Quaternion } from './Quaternion';
 
+import { BufferAttribute } from "../core/BufferAttribute";
+
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author kile / http://kile.stravaganza.org/
@@ -463,7 +465,7 @@ class Vector3
 		return this.crossVectors( this, v );
 	}
 
-	crossVectors( a, b )
+	crossVectors( a: Vector3, b: Vector3 )
 	{
 		let ax = a.x, ay = a.y, az = a.z;
 		let bx = b.x, by = b.y, bz = b.z;
@@ -580,7 +582,7 @@ class Vector3
 		return ( ( v.x === this.x ) && ( v.y === this.y ) && ( v.z === this.z ) );
 	}
 
-	fromArray( array, offset? )
+	fromArray( array, offset?)
 	{
 		if ( offset === undefined ) offset = 0;
 
@@ -591,7 +593,7 @@ class Vector3
 		return this;
 	}
 
-	toArray( array?, offset? )
+	toArray( array?, offset?)
 	{
 		if ( array === undefined ) array = [];
 		if ( offset === undefined ) offset = 0;
@@ -603,7 +605,7 @@ class Vector3
 		return array;
 	}
 
-	fromBufferAttribute( attribute, index )
+	fromBufferAttribute( attribute: BufferAttribute, index: number )
 	{
 		this.x = attribute.getX( index );
 		this.y = attribute.getY( index );
@@ -612,7 +614,7 @@ class Vector3
 		return this;
 	}
 
-};
+}
 
 
 export { Vector3 };

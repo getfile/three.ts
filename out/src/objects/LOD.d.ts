@@ -7,6 +7,6 @@ declare class LOD extends Object3D {
     getObjectForDistance(distance: any): any;
     raycast(raycaster: any, intersects: any): void;
     update(camera: any): void;
-    toJSON(meta: any): {};
+    toJSON(meta: any): any;
 }
 export { LOD };

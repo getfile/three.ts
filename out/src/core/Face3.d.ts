@@ -5,11 +5,11 @@ declare class Face3 {
     b: any;
     c: any;
     color: Color;
-    vertexColors: Array<Color>;
     normal: Vector3;
+    vertexColors: Array<Color>;
     vertexNormals: Array<Vector3>;
     materialIndex: number;
-    constructor(a: any, b: any, c: any, normal?: any, color?: any, materialIndex?: number);
+    constructor(a?: number, b?: number, c?: number, normal?: Vector3 | Vector3[], color?: Color | Color[], materialIndex?: number);
     clone(): Face3;
     copy(source: Face3): Face3;
 }

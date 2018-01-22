@@ -2,7 +2,8 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { Vector2 } from '../math/Vector2.js';
+import { Vector2 } from '../math/Vector2';
+import { Geometry } from "./Geometry";
 
 class DirectGeometry
 {
@@ -92,7 +93,7 @@ class DirectGeometry
 		this.groups = groups;
 	}
 
-	fromGeometry( geometry )
+	fromGeometry( geometry: Geometry )
 	{
 		let faces = geometry.faces;
 		let vertices = geometry.vertices;

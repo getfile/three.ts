@@ -1,3 +1,4 @@
+import { Matrix4 } from "./Matrix4";
 declare class Quaternion {
     private onChangeCallback;
     private _x;
@@ -15,7 +16,7 @@ declare class Quaternion {
     copy(quaternion: Quaternion): Quaternion;
     setFromEuler(euler: any, update?: boolean): this;
     setFromAxisAngle(axis: any, angle: any): this;
-    setFromRotationMatrix(m: any): this;
+    setFromRotationMatrix(m: Matrix4): this;
     setFromUnitVectors(vFrom: any, vTo: any): this;
     inverse(): this;
     conjugate(): this;
@@ -29,7 +30,7 @@ declare class Quaternion {
     slerp(qb: any, t: any): Quaternion;
     equals(quaternion: any): boolean;
     fromArray(array: any, offset: any): this;
-    toArray(array: any, offset: any): any;
+    toArray(array: any, offset?: number): any;
     onChange(callback: any): this;
 }
 export { Quaternion };

@@ -10,6 +10,6 @@ declare class Light extends Object3D {
     shadow: any;
     constructor(color: any, intensity: any);
     copy(source: any): this;
-    toJSON(meta: any): {};
+    toJSON(meta: any): any;
 }
 export { Light };

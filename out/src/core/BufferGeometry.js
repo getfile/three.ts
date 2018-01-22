@@ -1,4 +1,4 @@
-define(["require", "exports", "../math/Vector3", "../geom/Box3", "../geom/Sphere", "./EventDispatcher", "./BufferAttribute", "./DirectGeometry", "./Object3D", "../math/Matrix4", "../math/Matrix3", "../math/Math", "../utils"], function (require, exports, Vector3_1, Box3_1, Sphere_1, EventDispatcher_1, BufferAttribute_1, DirectGeometry_1, Object3D_1, Matrix4_1, Matrix3_1, Math_1, utils_1) {
+define(["require", "exports", "../math/Vector3", "../math/Matrix4", "../math/Matrix3", "../math/Math", "../geom/Box3", "../geom/Sphere", "./EventDispatcher", "./BufferAttribute", "./InterleavedBufferAttribute", "./DirectGeometry", "./Object3D", "../utils"], function (require, exports, Vector3_1, Matrix4_1, Matrix3_1, Math_1, Box3_1, Sphere_1, EventDispatcher_1, BufferAttribute_1, InterleavedBufferAttribute_1, DirectGeometry_1, Object3D_1, utils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     let bufferGeometryId = 1;
@@ -27,7 +27,7 @@ define(["require", "exports", "../math/Vector3", "../geom/Box3", "../geom/Sphere
                 this.index = index;
         }
         addAttribute(name, attribute) {
-            if (!(attribute && attribute.isBufferAttribute) && !(attribute && attribute.isInterleavedBufferAttribute)) {
+            if (!(attribute instanceof BufferAttribute_1.BufferAttribute) && !(attribute instanceof InterleavedBufferAttribute_1.InterleavedBufferAttribute)) {
                 console.warn('THREE.BufferGeometry: .addAttribute() now expects ( name, attribute ).');
                 this.addAttribute(name, new BufferAttribute_1.BufferAttribute(arguments[1], arguments[2]));
                 return;

@@ -1,5 +1,6 @@
 import { Vector3 } from './Vector3';
 import { Euler } from './Euler';
+import { Matrix4 } from "./Matrix4";
 
 /**
  * @author mikael emtinger / http://gomo.se/
@@ -132,7 +133,6 @@ class Quaternion
 		this.onChangeCallback();
 	}
 
-
 	set( x: number, y: number, z: number, w: number ): Quaternion
 	{
 		this._x = x;
@@ -250,7 +250,7 @@ class Quaternion
 		return this;
 	}
 
-	setFromRotationMatrix( m )
+	setFromRotationMatrix( m: Matrix4 )
 	{
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
 		// assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
@@ -404,7 +404,6 @@ class Quaternion
 	multiplyQuaternions( a, b )
 	{
 		// from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
-
 		let qax = a._x, qay = a._y, qaz = a._z, qaw = a._w;
 		let qbx = b._x, qby = b._y, qbz = b._z, qbw = b._w;
 
@@ -495,10 +494,9 @@ class Quaternion
 		return this;
 	}
 
-	toArray( array, offset )
+	toArray( array, offset: number = 0 )
 	{
 		if ( array === undefined ) array = [];
-		if ( offset === undefined ) offset = 0;
 
 		array[ offset ] = this._x;
 		array[ offset + 1 ] = this._y;
