@@ -84,9 +84,8 @@ define(["require", "exports", "./Vector3", "./Euler"], function (require, export
             return this;
         }
         setFromEuler(euler, update = true) {
-            if (!(euler && euler instanceof Euler_1.Euler)) {
+            if (!(euler instanceof Euler_1.Euler))
                 throw new Error('THREE.Quaternion: .setFromEuler() now expects an Euler rotation rather than a Vector3 and order.');
-            }
             let x = euler.x, y = euler.y, z = euler.z, order = euler.order;
             let cos = Math.cos;
             let sin = Math.sin;
@@ -132,7 +131,7 @@ define(["require", "exports", "./Vector3", "./Euler"], function (require, export
                 this._z = c1 * c2 * s3 + s1 * s2 * c3;
                 this._w = c1 * c2 * c3 + s1 * s2 * s3;
             }
-            if (update !== false)
+            if (update)
                 this.onChangeCallback();
             return this;
         }
@@ -180,11 +179,8 @@ define(["require", "exports", "./Vector3", "./Euler"], function (require, export
         }
         setFromUnitVectors(vFrom, vTo) {
             let v1 = new Vector3_1.Vector3();
-            let r;
+            let r = vFrom.dot(vTo) + 1;
             let EPS = 0.000001;
-            if (v1 === undefined)
-                v1 = new Vector3_1.Vector3();
-            r = vFrom.dot(vTo) + 1;
             if (r < EPS) {
                 r = 0;
                 if (Math.abs(vFrom.x) > Math.abs(vFrom.z))

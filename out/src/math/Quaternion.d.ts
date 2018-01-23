@@ -1,3 +1,5 @@
+import { Vector3 } from './Vector3';
+import { Euler } from './Euler';
 import { Matrix4 } from "./Matrix4";
 declare class Quaternion {
     private onChangeCallback;
@@ -6,7 +8,7 @@ declare class Quaternion {
     private _z;
     private _w;
     constructor(x?: number, y?: number, z?: number, w?: number);
-    slerpFlat(dst: any, dstOffset: any, src0: any, srcOffset0: any, src1: any, srcOffset1: any, t: any): void;
+    slerpFlat(dst: number[], dstOffset: number, src0: number[], srcOffset0: number, src1: number[], srcOffset1: number, t: number): void;
     x: number;
     y: number;
     z: number;
@@ -14,23 +16,23 @@ declare class Quaternion {
     set(x: number, y: number, z: number, w: number): Quaternion;
     clone(): Quaternion;
     copy(quaternion: Quaternion): Quaternion;
-    setFromEuler(euler: any, update?: boolean): this;
-    setFromAxisAngle(axis: any, angle: any): this;
+    setFromEuler(euler: Euler, update?: boolean): this;
+    setFromAxisAngle(axis: Vector3, angle: number): this;
     setFromRotationMatrix(m: Matrix4): this;
-    setFromUnitVectors(vFrom: any, vTo: any): this;
+    setFromUnitVectors(vFrom: Vector3, vTo: Vector3): this;
     inverse(): this;
     conjugate(): this;
-    dot(v: any): number;
+    dot(v: Quaternion): number;
     lengthSq(): number;
     length(): number;
     normalize(): this;
-    multiply(q: any): this;
-    premultiply(q: any): this;
-    multiplyQuaternions(a: any, b: any): this;
-    slerp(qb: any, t: any): Quaternion;
-    equals(quaternion: any): boolean;
-    fromArray(array: any, offset: any): this;
-    toArray(array: any, offset?: number): any;
+    multiply(q: Quaternion): this;
+    premultiply(q: Quaternion): this;
+    multiplyQuaternions(a: Quaternion, b: Quaternion): this;
+    slerp(qb: Quaternion, t: number): Quaternion;
+    equals(quaternion: Quaternion): boolean;
+    fromArray(array: number[], offset: number): this;
+    toArray(array: number[], offset?: number): number[];
     onChange(callback: any): this;
 }
 export { Quaternion };

@@ -1,4 +1,4 @@
-define(["require", "exports", "./Math", "./Matrix4", "./Quaternion"], function (require, exports, Math_1, Matrix4_1, Quaternion_1) {
+define(["require", "exports", "./Math", "./Matrix4", "./Euler", "./Quaternion"], function (require, exports, Math_1, Matrix4_1, Euler_1, Quaternion_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Vector3 {
@@ -138,9 +138,8 @@ define(["require", "exports", "./Math", "./Matrix4", "./Quaternion"], function (
         }
         applyEuler(euler) {
             let quaternion = new Quaternion_1.Quaternion();
-            if (!(euler && euler.isEuler)) {
+            if (!(euler instanceof Euler_1.Euler))
                 console.error('THREE.Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order.');
-            }
             return this.applyQuaternion(quaternion.setFromEuler(euler));
         }
         applyAxisAngle(axis, angle) {
@@ -367,19 +366,15 @@ define(["require", "exports", "./Math", "./Matrix4", "./Quaternion"], function (
         equals(v) {
             return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z));
         }
-        fromArray(array, offset) {
-            if (offset === undefined)
-                offset = 0;
+        fromArray(array, offset = 0) {
             this.x = array[offset];
             this.y = array[offset + 1];
             this.z = array[offset + 2];
             return this;
         }
-        toArray(array, offset) {
+        toArray(array, offset = 0) {
             if (array === undefined)
                 array = [];
-            if (offset === undefined)
-                offset = 0;
             array[offset] = this.x;
             array[offset + 1] = this.y;
             array[offset + 2] = this.z;

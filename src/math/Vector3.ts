@@ -1,6 +1,12 @@
 import { _Math } from './Math';
+import { Matrix3 } from './Matrix3';
 import { Matrix4 } from './Matrix4';
+import { Euler } from './Euler';
 import { Quaternion } from './Quaternion';
+
+import { Camera } from "../cameras/Camera";
+import { Spherical } from "../geom/Spherical";
+import { Cylindrical } from "../geom/Cylindrical";
 
 import { BufferAttribute } from "../core/BufferAttribute";
 
@@ -27,7 +33,7 @@ class Vector3
 		this.z = z;
 	}
 
-	set( x, y, z ): Vector3
+	set( x: number, y: number, z: number ): Vector3
 	{
 		this.x = x;
 		this.y = y;
@@ -36,7 +42,7 @@ class Vector3
 		return this;
 	}
 
-	setScalar( scalar ): Vector3
+	setScalar( scalar: number ): Vector3
 	{
 		this.x = scalar;
 		this.y = scalar;
@@ -45,19 +51,19 @@ class Vector3
 		return this;
 	}
 
-	setX( x ): Vector3
+	setX( x: number ): Vector3
 	{
 		this.x = x;
 		return this;
 	}
 
-	setY( y ): Vector3
+	setY( y: number ): Vector3
 	{
 		this.y = y;
 		return this;
 	}
 
-	setZ( z ): Vector3
+	setZ( z: number ): Vector3
 	{
 		this.z = z;
 		return this;
@@ -75,7 +81,7 @@ class Vector3
 		return this;
 	}
 
-	getComponent( index )
+	getComponent( index: number ): number
 	{
 		switch ( index )
 		{
@@ -115,7 +121,7 @@ class Vector3
 		return this;
 	}
 
-	addScalar( s ): Vector3
+	addScalar( s: number ): Vector3
 	{
 		this.x += s;
 		this.y += s;
@@ -157,7 +163,7 @@ class Vector3
 		return this;
 	}
 
-	subScalar( s ): Vector3
+	subScalar( s: number ): Vector3
 	{
 		this.x -= s;
 		this.y -= s;
@@ -190,12 +196,11 @@ class Vector3
 		return this;
 	}
 
-	multiplyScalar( scalar ): Vector3
+	multiplyScalar( scalar: number ): Vector3
 	{
 		this.x *= scalar;
 		this.y *= scalar;
 		this.z *= scalar;
-
 		return this;
 	}
 
@@ -204,30 +209,27 @@ class Vector3
 		this.x = a.x * b.x;
 		this.y = a.y * b.y;
 		this.z = a.z * b.z;
-
 		return this;
 	}
 
-	applyEuler( euler )
+	applyEuler( euler: Euler ): Vector3
 	{
 		let quaternion = new Quaternion();
 
-		if ( !( euler && euler.isEuler ) )
-		{
+		if ( !( euler instanceof Euler ) )
 			console.error( 'THREE.Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order.' );
-		}
 
 		return this.applyQuaternion( quaternion.setFromEuler( euler ) );
 	}
 
-	applyAxisAngle( axis, angle )
+	applyAxisAngle( axis: Vector3, angle: number ): Vector3
 	{
 		let quaternion = new Quaternion();
 
 		return this.applyQuaternion( quaternion.setFromAxisAngle( axis, angle ) );
 	}
 
-	applyMatrix3( m )
+	applyMatrix3( m: Matrix3 ): Vector3
 	{
 		let x = this.x, y = this.y, z = this.z;
 		let e = m.elements;
@@ -239,7 +241,7 @@ class Vector3
 		return this;
 	}
 
-	applyMatrix4( m )
+	applyMatrix4( m: Matrix4 ): Vector3
 	{
 		let x = this.x, y = this.y, z = this.z;
 		let e = m.elements;
@@ -253,7 +255,7 @@ class Vector3
 		return this;
 	}
 
-	applyQuaternion( q )
+	applyQuaternion( q: Quaternion ): Vector3
 	{
 		let x = this.x, y = this.y, z = this.z;
 		let qx = q.x, qy = q.y, qz = q.z, qw = q.w;
@@ -274,14 +276,14 @@ class Vector3
 		return this;
 	}
 
-	project( camera )
+	project( camera: Camera ): Vector3
 	{
 		let matrix = new Matrix4();
 		matrix.multiplyMatrices( camera.projectionMatrix, matrix.getInverse( camera.matrixWorld ) );
 		return this.applyMatrix4( matrix );
 	}
 
-	unproject( camera )
+	unproject( camera: Camera ): Vector3
 	{
 
 		let matrix = new Matrix4();
@@ -289,7 +291,7 @@ class Vector3
 		return this.applyMatrix4( matrix );
 	}
 
-	transformDirection( m )
+	transformDirection( m: Matrix4 ): Vector3
 	{
 		// input: THREE.Matrix4 affine matrix
 		// vector interpreted as a direction
@@ -304,7 +306,7 @@ class Vector3
 		return this.normalize();
 	}
 
-	divide( v )
+	divide( v: Vector3 ): Vector3
 	{
 		this.x /= v.x;
 		this.y /= v.y;
@@ -313,12 +315,12 @@ class Vector3
 		return this;
 	}
 
-	divideScalar( scalar )
+	divideScalar( scalar: number ): Vector3
 	{
 		return this.multiplyScalar( 1 / scalar );
 	}
 
-	min( v )
+	min( v: Vector3 ): Vector3
 	{
 		this.x = Math.min( this.x, v.x );
 		this.y = Math.min( this.y, v.y );
@@ -327,7 +329,7 @@ class Vector3
 		return this;
 	}
 
-	max( v )
+	max( v: Vector3 ): Vector3
 	{
 		this.x = Math.max( this.x, v.x );
 		this.y = Math.max( this.y, v.y );
@@ -336,7 +338,7 @@ class Vector3
 		return this;
 	}
 
-	clamp( min, max )
+	clamp( min: Vector3, max: Vector3 ): Vector3
 	{
 		// assumes min < max, componentwise
 
@@ -347,7 +349,7 @@ class Vector3
 		return this;
 	}
 
-	clampScalar( minVal, maxVal )
+	clampScalar( minVal: number, maxVal: number ): Vector3
 	{
 		let min = new Vector3();
 		let max = new Vector3();
@@ -358,14 +360,14 @@ class Vector3
 		return this.clamp( min, max );
 	}
 
-	clampLength( min, max )
+	clampLength( min: number, max: number ): Vector3
 	{
 		let length = this.length();
 
 		return this.divideScalar( length || 1 ).multiplyScalar( Math.max( min, Math.min( max, length ) ) );
 	}
 
-	floor()
+	floor(): Vector3
 	{
 		this.x = Math.floor( this.x );
 		this.y = Math.floor( this.y );
@@ -374,7 +376,7 @@ class Vector3
 		return this;
 	}
 
-	ceil()
+	ceil(): Vector3
 	{
 		this.x = Math.ceil( this.x );
 		this.y = Math.ceil( this.y );
@@ -383,7 +385,7 @@ class Vector3
 		return this;
 	}
 
-	round()
+	round(): Vector3
 	{
 		this.x = Math.round( this.x );
 		this.y = Math.round( this.y );
@@ -392,7 +394,7 @@ class Vector3
 		return this;
 	}
 
-	roundToZero()
+	roundToZero(): Vector3
 	{
 		this.x = ( this.x < 0 ) ? Math.ceil( this.x ) : Math.floor( this.x );
 		this.y = ( this.y < 0 ) ? Math.ceil( this.y ) : Math.floor( this.y );
@@ -401,7 +403,7 @@ class Vector3
 		return this;
 	}
 
-	negate()
+	negate(): Vector3
 	{
 		this.x = - this.x;
 		this.y = - this.y;
@@ -410,38 +412,38 @@ class Vector3
 		return this;
 	}
 
-	dot( v )
+	dot( v: Vector3 ): number
 	{
 		return this.x * v.x + this.y * v.y + this.z * v.z;
 	}
 
 	// TODO lengthSquared?
-	lengthSq()
+	lengthSq(): number
 	{
 		return this.x * this.x + this.y * this.y + this.z * this.z;
 	}
 
-	length()
+	length(): number
 	{
 		return Math.sqrt( this.x * this.x + this.y * this.y + this.z * this.z );
 	}
 
-	manhattanLength()
+	manhattanLength(): number
 	{
 		return Math.abs( this.x ) + Math.abs( this.y ) + Math.abs( this.z );
 	}
 
-	normalize()
+	normalize(): Vector3
 	{
 		return this.divideScalar( this.length() || 1 );
 	}
 
-	setLength( length )
+	setLength( length: number ): Vector3
 	{
 		return this.normalize().multiplyScalar( length );
 	}
 
-	lerp( v, alpha )
+	lerp( v: Vector3, alpha: number ): Vector3
 	{
 		this.x += ( v.x - this.x ) * alpha;
 		this.y += ( v.y - this.y ) * alpha;
@@ -450,12 +452,12 @@ class Vector3
 		return this;
 	}
 
-	lerpVectors( v1, v2, alpha )
+	lerpVectors( v1: Vector3, v2: Vector3, alpha: number ): Vector3
 	{
 		return this.subVectors( v2, v1 ).multiplyScalar( alpha ).add( v1 );
 	}
 
-	cross( v, w?: Vector3 )
+	cross( v: Vector3, w?: Vector3 ): Vector3
 	{
 		if ( w !== undefined )
 		{
@@ -465,7 +467,7 @@ class Vector3
 		return this.crossVectors( this, v );
 	}
 
-	crossVectors( a: Vector3, b: Vector3 )
+	crossVectors( a: Vector3, b: Vector3 ): Vector3
 	{
 		let ax = a.x, ay = a.y, az = a.z;
 		let bx = b.x, by = b.y, bz = b.z;
@@ -477,14 +479,14 @@ class Vector3
 		return this;
 	}
 
-	projectOnVector( vector )
+	projectOnVector( vector: Vector3 ): Vector3
 	{
 		let scalar = vector.dot( this ) / vector.lengthSq();
 
 		return this.copy( vector ).multiplyScalar( scalar );
 	}
 
-	projectOnPlane( planeNormal )
+	projectOnPlane( planeNormal: Vector3 ): Vector3
 	{
 		let v1 = new Vector3();
 
@@ -495,14 +497,14 @@ class Vector3
 
 	// reflect incident vector off plane orthogonal to normal
 	// normal is assumed to have unit length
-	reflect( normal )
+	reflect( normal: Vector3 ): Vector3
 	{
 		let v1 = new Vector3();
 
 		return this.sub( v1.copy( normal ).multiplyScalar( 2 * this.dot( normal ) ) );
 	}
 
-	angleTo( v )
+	angleTo( v: Vector3 ): number
 	{
 		let theta = this.dot( v ) / ( Math.sqrt( this.lengthSq() * v.lengthSq() ) );
 
@@ -511,24 +513,24 @@ class Vector3
 		return Math.acos( _Math.clamp( theta, - 1, 1 ) );
 	}
 
-	distanceTo( v )
+	distanceTo( v: Vector3 ): number
 	{
 		return Math.sqrt( this.distanceToSquared( v ) );
 	}
 
-	distanceToSquared( v )
+	distanceToSquared( v: Vector3 ): number
 	{
 		let dx = this.x - v.x, dy = this.y - v.y, dz = this.z - v.z;
 
 		return dx * dx + dy * dy + dz * dz;
 	}
 
-	manhattanDistanceTo( v )
+	manhattanDistanceTo( v: Vector3 ): number
 	{
 		return Math.abs( this.x - v.x ) + Math.abs( this.y - v.y ) + Math.abs( this.z - v.z );
 	}
 
-	setFromSpherical( s )
+	setFromSpherical( s: Spherical ): Vector3
 	{
 		let sinPhiRadius = Math.sin( s.phi ) * s.radius;
 
@@ -539,7 +541,7 @@ class Vector3
 		return this;
 	}
 
-	setFromCylindrical( c )
+	setFromCylindrical( c: Cylindrical ): Vector3
 	{
 		this.x = c.radius * Math.sin( c.theta );
 		this.y = c.y;
@@ -548,7 +550,7 @@ class Vector3
 		return this;
 	}
 
-	setFromMatrixPosition( m )
+	setFromMatrixPosition( m: Matrix4 ): Vector3
 	{
 		let e = m.elements;
 
@@ -559,7 +561,7 @@ class Vector3
 		return this;
 	}
 
-	setFromMatrixScale( m )
+	setFromMatrixScale( m: Matrix4 ): Vector3
 	{
 		let sx = this.setFromMatrixColumn( m, 0 ).length();
 		let sy = this.setFromMatrixColumn( m, 1 ).length();
@@ -572,7 +574,7 @@ class Vector3
 		return this;
 	}
 
-	setFromMatrixColumn( m: Matrix4, index )
+	setFromMatrixColumn( m: Matrix4, index: number ): Vector3
 	{
 		return this.fromArray( m.elements, index * 4 );
 	}
@@ -582,10 +584,8 @@ class Vector3
 		return ( ( v.x === this.x ) && ( v.y === this.y ) && ( v.z === this.z ) );
 	}
 
-	fromArray( array, offset?)
+	fromArray( array: number[], offset: number = 0 ): Vector3
 	{
-		if ( offset === undefined ) offset = 0;
-
 		this.x = array[ offset ];
 		this.y = array[ offset + 1 ];
 		this.z = array[ offset + 2 ];
@@ -593,10 +593,9 @@ class Vector3
 		return this;
 	}
 
-	toArray( array?, offset?)
+	toArray( array?: number[], offset: number = 0 ): number[]
 	{
 		if ( array === undefined ) array = [];
-		if ( offset === undefined ) offset = 0;
 
 		array[ offset ] = this.x;
 		array[ offset + 1 ] = this.y;
@@ -605,7 +604,7 @@ class Vector3
 		return array;
 	}
 
-	fromBufferAttribute( attribute: BufferAttribute, index: number )
+	fromBufferAttribute( attribute: BufferAttribute, index: number ): Vector3
 	{
 		this.x = attribute.getX( index );
 		this.y = attribute.getY( index );

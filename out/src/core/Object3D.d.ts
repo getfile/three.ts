@@ -52,7 +52,7 @@ declare class Object3D extends EventDispatcher {
     translateZ(distance: any): this;
     localToWorld(vector: any): any;
     worldToLocal(vector: any): any;
-    lookAt(x: any, y?: number, z?: number): void;
+    lookAt(x: Vector3 | number, y?: number, z?: number): void;
     add(object: any): this;
     remove(object: any): this;
     getObjectById(id: any): any;

@@ -121,7 +121,7 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
         lookAt(x, y = 0, z = 0) {
             let m1 = new Matrix4_1.Matrix4();
             let vector = new Vector3_1.Vector3();
-            if (x.isVector3)
+            if (x instanceof Vector3_1.Vector3)
                 vector.copy(x);
             else
                 vector.set(x, y, z);

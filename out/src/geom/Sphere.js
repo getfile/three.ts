@@ -14,16 +14,13 @@ define(["require", "exports", "./Box3", "../math/Vector3"], function (require, e
         setFromPoints(points, optionalCenter) {
             var box = new Box3_1.Box3();
             var center = this.center;
-            if (optionalCenter !== undefined) {
+            if (optionalCenter !== undefined)
                 center.copy(optionalCenter);
-            }
-            else {
+            else
                 box.setFromPoints(points).getCenter(center);
-            }
             var maxRadiusSq = 0;
-            for (var i = 0, il = points.length; i < il; i++) {
+            for (var i = 0, il = points.length; i < il; i++)
                 maxRadiusSq = Math.max(maxRadiusSq, center.distanceToSquared(points[i]));
-            }
             this.radius = Math.sqrt(maxRadiusSq);
             return this;
         }

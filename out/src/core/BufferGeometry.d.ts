@@ -1,18 +1,24 @@
+import { Vector3 } from '../math/Vector3';
+import { Box3 } from '../geom/Box3';
+import { Sphere } from '../geom/Sphere';
 import { EventDispatcher } from './EventDispatcher';
 import { BufferAttribute } from './BufferAttribute';
 import { InterleavedBufferAttribute } from "./InterleavedBufferAttribute";
 import { DirectGeometry } from './DirectGeometry';
 declare class BufferGeometry extends EventDispatcher {
-    index: any;
+    index: BufferAttribute;
     attributes: any;
     morphAttributes: any;
     groups: any;
-    boundingBox: any;
-    boundingSphere: any;
-    drawRange: any;
+    boundingBox: Box3;
+    boundingSphere: Sphere;
+    drawRange: {
+        start;
+        count;
+    };
     parameters: any;
     constructor();
-    getIndex(): any;
+    getIndex(): BufferAttribute;
     setIndex(index: any): void;
     addAttribute(name: any, attribute: BufferAttribute | InterleavedBufferAttribute): this;
     getAttribute(name: any): any;
@@ -27,7 +33,7 @@ declare class BufferGeometry extends EventDispatcher {
     translate(x: any, y: any, z: any): this;
     scale(x: any, y: any, z: any): this;
     lookAt(vector: any): void;
-    center(): any;
+    center(): Vector3;
     setFromObject(object: any): this;
     setFromPoints(points: any): this;
     updateFromObject(object: any): this;
@@ -52,7 +58,7 @@ declare class BufferGeometry extends EventDispatcher {
         data: any;
     };
     clone(): BufferGeometry;
-    copy(source: any): this;
+    copy(source: BufferGeometry): this;
     dispose(): void;
 }
 export { BufferGeometry };

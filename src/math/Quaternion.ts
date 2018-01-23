@@ -29,12 +29,10 @@ class Quaternion
 
 	//	slerp( qa, qb, qm, t )
 	//	{
-	//
 	//		return qm.copy( qa ).slerp( qb, t );
-	//
 	//	}
 
-	slerpFlat( dst, dstOffset, src0, srcOffset0, src1, srcOffset1, t )
+	slerpFlat( dst: number[], dstOffset: number, src0: number[], srcOffset0: number, src1: number[], srcOffset1: number, t: number )
 	{
 		// fuzz-free, array-based Quaternion SLERP operation
 		let x0 = src0[ srcOffset0 + 0 ],
@@ -59,13 +57,11 @@ class Quaternion
 			{
 				let sin = Math.sqrt( sqrSin ),
 					len = Math.atan2( sin, cos * dir );
-
 				s = Math.sin( s * len ) / sin;
 				t = Math.sin( t * len ) / sin;
 			}
 
 			let tDir = t * dir;
-
 			x0 = x0 * s + x1 * tDir;
 			y0 = y0 * s + y1 * tDir;
 			z0 = z0 * s + z1 * tDir;
@@ -75,7 +71,6 @@ class Quaternion
 			if ( s === 1 - t )
 			{
 				let f = 1 / Math.sqrt( x0 * x0 + y0 * y0 + z0 * z0 + w0 * w0 );
-
 				x0 *= f;
 				y0 *= f;
 				z0 *= f;
@@ -141,7 +136,6 @@ class Quaternion
 		this._w = w;
 
 		this.onChangeCallback();
-
 		return this;
 	}
 
@@ -158,23 +152,19 @@ class Quaternion
 		this._w = quaternion.w;
 
 		this.onChangeCallback();
-
 		return this;
 	}
 
-	setFromEuler( euler, update: boolean = true )
+	setFromEuler( euler: Euler, update: boolean = true )
 	{
-		if ( !( euler && euler instanceof Euler ) )
-		{
+		if ( !( euler instanceof Euler ) )
 			throw new Error( 'THREE.Quaternion: .setFromEuler() now expects an Euler rotation rather than a Vector3 and order.' );
-		}
 
 		let x = euler.x, y = euler.y, z = euler.z, order = euler.order;
 
 		// http://www.mathworks.com/matlabcentral/fileexchange/
 		// 	20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/
 		//	content/SpinCalc.m
-
 		let cos = Math.cos;
 		let sin = Math.sin;
 
@@ -229,12 +219,12 @@ class Quaternion
 			this._w = c1 * c2 * c3 + s1 * s2 * s3;
 		}
 
-		if ( update !== false ) this.onChangeCallback();
+		if ( update ) this.onChangeCallback();
 
 		return this;
 	}
 
-	setFromAxisAngle( axis, angle )
+	setFromAxisAngle( axis: Vector3, angle: number )
 	{
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
 		// assumes axis is normalized
@@ -246,7 +236,6 @@ class Quaternion
 		this._w = Math.cos( halfAngle );
 
 		this.onChangeCallback();
-
 		return this;
 	}
 
@@ -304,15 +293,11 @@ class Quaternion
 	}
 
 	// assumes direction vectors vFrom and vTo are normalized
-	setFromUnitVectors( vFrom, vTo )
+	setFromUnitVectors( vFrom: Vector3, vTo: Vector3 )
 	{
 		let v1 = new Vector3();
-		let r;
-
+		let r = vFrom.dot( vTo ) + 1;
 		let EPS = 0.000001;
-		if ( v1 === undefined ) v1 = new Vector3();
-
-		r = vFrom.dot( vTo ) + 1;
 
 		if ( r < EPS )
 		{
@@ -350,7 +335,7 @@ class Quaternion
 		return this;
 	}
 
-	dot( v )
+	dot( v: Quaternion )
 	{
 		return this._x * v._x + this._y * v._y + this._z * v._z + this._w * v._w;
 	}
@@ -387,21 +372,20 @@ class Quaternion
 		}
 
 		this.onChangeCallback();
-
 		return this;
 	}
 
-	multiply( q )
+	multiply( q: Quaternion )
 	{
 		return this.multiplyQuaternions( this, q );
 	}
 
-	premultiply( q )
+	premultiply( q: Quaternion )
 	{
 		return this.multiplyQuaternions( q, this );
 	}
 
-	multiplyQuaternions( a, b )
+	multiplyQuaternions( a: Quaternion, b: Quaternion )
 	{
 		// from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
 		let qax = a._x, qay = a._y, qaz = a._z, qaw = a._w;
@@ -413,11 +397,10 @@ class Quaternion
 		this._w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
 
 		this.onChangeCallback();
-
 		return this;
 	}
 
-	slerp( qb, t )
+	slerp( qb: Quaternion, t: number )
 	{
 		if ( t === 0 ) return this;
 		if ( t === 1 ) return this.copy( qb );
@@ -471,16 +454,15 @@ class Quaternion
 		this._z = ( z * ratioA + this._z * ratioB );
 
 		this.onChangeCallback();
-
 		return this;
 	}
 
-	equals( quaternion )
+	equals( quaternion: Quaternion )
 	{
 		return ( quaternion._x === this._x ) && ( quaternion._y === this._y ) && ( quaternion._z === this._z ) && ( quaternion._w === this._w );
 	}
 
-	fromArray( array, offset )
+	fromArray( array: number[], offset: number )
 	{
 		if ( offset === undefined ) offset = 0;
 
@@ -494,7 +476,7 @@ class Quaternion
 		return this;
 	}
 
-	toArray( array, offset: number = 0 )
+	toArray( array: number[], offset: number = 0 )
 	{
 		if ( array === undefined ) array = [];
 

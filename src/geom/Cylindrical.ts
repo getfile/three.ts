@@ -4,6 +4,7 @@
  * Ref: https://en.wikipedia.org/wiki/Cylindrical_coordinate_system
  *
  */
+import { Vector3 } from "../math/Vector3";
 
 class Cylindrical
 {
@@ -11,32 +12,27 @@ class Cylindrical
 	theta: number;
 	y: number;
 
-	constructor( radius?: number, theta?: number, y?: number )
+	constructor( radius: number = 1.0, theta: number = 0, y: number = 0 )
 	{
-
-		this.radius = ( radius !== undefined ) ? radius : 1.0; // distance from the origin to a point in the x-z plane
-		this.theta = ( theta !== undefined ) ? theta : 0; // counterclockwise angle in the x-z plane measured in radians from the positive z-axis
-		this.y = ( y !== undefined ) ? y : 0; // height above the x-z plane
-
-		return this;
-
+		this.radius = radius; // distance from the origin to a point in the x-z plane
+		this.theta = theta; // counterclockwise angle in the x-z plane measured in radians from the positive z-axis
+		this.y = y; // height above the x-z plane
 	}
 
-	set( radius, theta, y )
+	set( radius: number, theta: number, y: number ): Cylindrical
 	{
 		this.radius = radius;
 		this.theta = theta;
 		this.y = y;
-
 		return this;
 	}
 
-	clone()
+	clone(): Cylindrical
 	{
 		return new Cylindrical().copy( this );
 	}
 
-	copy( other )
+	copy( other: Cylindrical ): Cylindrical
 	{
 		this.radius = other.radius;
 		this.theta = other.theta;
@@ -45,7 +41,7 @@ class Cylindrical
 		return this;
 	}
 
-	setFromVector3( vec3 )
+	setFromVector3( vec3: Vector3 ): Cylindrical
 	{
 		this.radius = Math.sqrt( vec3.x * vec3.x + vec3.z * vec3.z );
 		this.theta = Math.atan2( vec3.x, vec3.z );

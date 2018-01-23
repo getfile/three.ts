@@ -2,11 +2,10 @@ define(["require", "exports", "../math/Math"], function (require, exports, Math_
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Spherical {
-        constructor(radius, phi, theta) {
-            this.radius = (radius !== undefined) ? radius : 1.0;
-            this.phi = (phi !== undefined) ? phi : 0;
-            this.theta = (theta !== undefined) ? theta : 0;
-            return this;
+        constructor(radius = 1.0, phi = 0, theta = 0) {
+            this.radius = radius;
+            this.phi = phi;
+            this.theta = theta;
         }
         set(radius, phi, theta) {
             this.radius = radius;

@@ -159,13 +159,13 @@ class Box3
 		return ( this.max.x < this.min.x ) || ( this.max.y < this.min.y ) || ( this.max.z < this.min.z );
 	}
 
-	getCenter( optionalTarget )
+	getCenter( optionalTarget?: Vector3 )
 	{
 		var result = optionalTarget || new Vector3();
 		return this.isEmpty() ? result.set( 0, 0, 0 ) : result.addVectors( this.min, this.max ).multiplyScalar( 0.5 );
 	}
 
-	getSize( optionalTarget )
+	getSize( optionalTarget?: Vector3 )
 	{
 		var result = optionalTarget || new Vector3();
 		return this.isEmpty() ? result.set( 0, 0, 0 ) : result.subVectors( this.max, this.min );
@@ -199,7 +199,7 @@ class Box3
 	// accounting for both the object's, and children's, world transforms
 	private traverse( node )
 	{
-		var  i, l;
+		var i, l;
 
 		var v1 = new Vector3();
 		var geometry = node.geometry;
@@ -235,8 +235,8 @@ class Box3
 	expandByObject( object )
 	{
 		// todo
-//		object.updateMatrixWorld( true );
-//		object.traverse( traverse );
+		//		object.updateMatrixWorld( true );
+		//		object.traverse( traverse );
 		return this;
 	};
 

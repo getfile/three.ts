@@ -13,8 +13,8 @@ declare class Box3 {
     copy(box: any): this;
     makeEmpty(): this;
     isEmpty(): boolean;
-    getCenter(optionalTarget: any): any;
-    getSize(optionalTarget: any): any;
+    getCenter(optionalTarget?: Vector3): Vector3;
+    getSize(optionalTarget?: Vector3): Vector3;
     expandByPoint(point: any): this;
     expandByVector(vector: any): this;
     expandByScalar(scalar: any): this;

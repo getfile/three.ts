@@ -2,11 +2,10 @@ define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Cylindrical {
-        constructor(radius, theta, y) {
-            this.radius = (radius !== undefined) ? radius : 1.0;
-            this.theta = (theta !== undefined) ? theta : 0;
-            this.y = (y !== undefined) ? y : 0;
-            return this;
+        constructor(radius = 1.0, theta = 0, y = 0) {
+            this.radius = radius;
+            this.theta = theta;
+            this.y = y;
         }
         set(radius, theta, y) {
             this.radius = radius;
