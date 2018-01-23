@@ -12,27 +12,27 @@ class Layers
 		this.mask = 1 | 0;
 	}
 
-	set( channel )
+	set( channel: number )
 	{
 		this.mask = 1 << channel | 0;
 	}
 
-	enable( channel )
+	enable( channel: number )
 	{
 		this.mask |= 1 << channel | 0;
 	}
 
-	toggle( channel )
+	toggle( channel: number )
 	{
 		this.mask ^= 1 << channel | 0;
 	}
 
-	disable( channel )
+	disable( channel: number )
 	{
 		this.mask &= ~( 1 << channel | 0 );
 	}
 
-	test( layers: Layers )
+	test( layers: Layers ): boolean
 	{
 		return ( this.mask & layers.mask ) !== 0;
 	}

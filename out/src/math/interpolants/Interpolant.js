@@ -3,12 +3,12 @@ define(["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     class Interpolant {
         constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
-            this.DefaultSettings_ = {};
+            this.defaultSettings_ = {};
             this.parameterPositions = parameterPositions;
-            this._cachedIndex = 0;
-            this.resultBuffer = resultBuffer !== undefined ? resultBuffer : new sampleValues.constructor(sampleSize);
             this.sampleValues = sampleValues;
             this.valueSize = sampleSize;
+            this.resultBuffer = resultBuffer !== undefined ? resultBuffer : new sampleValues.constructor(sampleSize);
+            this._cachedIndex = 0;
         }
         evaluate(t) {
             let pp = this.parameterPositions, i1 = this._cachedIndex, t1 = pp[i1], t0 = pp[i1 - 1];
@@ -86,7 +86,7 @@ define(["require", "exports"], function (require, exports) {
             return this.interpolate_(i1, t0, t, t1);
         }
         getSettings_() {
-            return this.settings || this.DefaultSettings_;
+            return this.settings || this.defaultSettings_;
         }
         copySampleValue_(index) {
             let result = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, offset = index * stride;
@@ -97,11 +97,7 @@ define(["require", "exports"], function (require, exports) {
         interpolate_(i1, t0, t, t1) {
             throw new Error('call to abstract method');
         }
-        intervalChanged_() {
-        }
-        beforeStart() {
-        }
-        afterEnd() {
+        intervalChanged_(i1, t0, t1) {
         }
     }
     exports.Interpolant = Interpolant;

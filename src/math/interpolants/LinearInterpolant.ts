@@ -13,7 +13,6 @@ class LinearInterpolant extends Interpolant
 
 	interpolate_( i1, t0, t, t1 )
 	{
-
 		var result = this.resultBuffer,
 			values = this.sampleValues,
 			stride = this.valueSize,

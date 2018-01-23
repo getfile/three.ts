@@ -32,7 +32,7 @@ class Quaternion
 	//		return qm.copy( qa ).slerp( qb, t );
 	//	}
 
-	slerpFlat( dst: number[], dstOffset: number, src0: number[], srcOffset0: number, src1: number[], srcOffset1: number, t: number )
+	static slerpFlat( dst: number[], dstOffset: number, src0: number[], srcOffset0: number, src1: number[], srcOffset1: number, t: number )
 	{
 		// fuzz-free, array-based Quaternion SLERP operation
 		let x0 = src0[ srcOffset0 + 0 ],

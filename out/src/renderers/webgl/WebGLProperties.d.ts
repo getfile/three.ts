@@ -1,8 +1,8 @@
-import { Object3D } from "../../core/Object3D";
+import { EventDispatcher } from "../../core/EventDispatcher";
 declare class WebGLProperties {
     properties: any;
     constructor();
-    get(object: Object3D): any;
+    get(object: EventDispatcher): any;
     remove(object: any): void;
     clear(): void;
 }

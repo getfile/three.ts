@@ -1,4 +1,4 @@
-define(["require", "exports", "../constants", "../geom/Frustum", "../geom/Sphere", "../math/Vector4", "../math/Vector3", "../math/Math", "../math/Matrix4", "../cameras/Camera", "../textures/DataTexture", "./shaders/UniformsLib", "./shaders/UniformsUtils", "./shaders/ShaderLib", "./webgl/WebGLUniforms", "./webgl/WebGLFlareRenderer", "./webgl/WebGLSpriteRenderer", "./webgl/WebGLShadowMap", "./webgl/WebGLAttributes", "./webgl/WebGLBackground", "./webgl/WebGLRenderLists", "./webgl/WebGLMorphtargets", "./webgl/WebGLIndexedBufferRenderer", "./webgl/WebGLBufferRenderer", "./webgl/WebGLGeometries", "./webgl/WebGLLights", "./webgl/WebGLObjects", "./webgl/WebGLPrograms", "./webgl/WebGLTextures", "./webgl/WebGLProperties", "./webgl/WebGLState", "./webgl/WebGLCapabilities", "./webvr/WebVRManager", "./webgl/WebGLExtensions", "./webgl/WebGLClipping", "./webgl/WebGLUtils"], function (require, exports, Constant, Frustum_1, Sphere_1, Vector4_1, Vector3_1, Math_1, Matrix4_1, Camera_1, DataTexture_1, UniformsLib_1, UniformsUtils_1, ShaderLib_1, WebGLUniforms_1, WebGLFlareRenderer_1, WebGLSpriteRenderer_1, WebGLShadowMap_1, WebGLAttributes_1, WebGLBackground_1, WebGLRenderLists_1, WebGLMorphtargets_1, WebGLIndexedBufferRenderer_1, WebGLBufferRenderer_1, WebGLGeometries_1, WebGLLights_1, WebGLObjects_1, WebGLPrograms_1, WebGLTextures_1, WebGLProperties_1, WebGLState_1, WebGLCapabilities_1, WebVRManager_1, WebGLExtensions_1, WebGLClipping_1, WebGLUtils_1) {
+define(["require", "exports", "../constants", "../geom/Frustum", "../geom/Sphere", "../math/Vector4", "../math/Vector3", "../math/Math", "../math/Matrix4", "../cameras/Camera", "../textures/DataTexture", "./shaders/UniformsLib", "./shaders/UniformsUtils", "./shaders/ShaderLib", "./webgl/WebGLUniforms", "./webgl/WebGLFlareRenderer", "./webgl/WebGLSpriteRenderer", "./webgl/WebGLShadowMap", "./webgl/WebGLAttributes", "./webgl/WebGLBackground", "./webgl/WebGLRenderLists", "./webgl/WebGLMorphtargets", "./webgl/WebGLIndexedBufferRenderer", "./webgl/WebGLBufferRenderer", "./webgl/WebGLGeometries", "./webgl/WebGLLights", "./webgl/WebGLObjects", "./webgl/WebGLPrograms", "./webgl/WebGLTextures", "./webgl/WebGLProperties", "./webgl/WebGLState", "./webgl/WebGLCapabilities", "./webvr/WebVRManager", "./webgl/WebGLExtensions", "./webgl/WebGLClipping", "./webgl/WebGLUtils", "./WebGLRenderTargetCube"], function (require, exports, Constant, Frustum_1, Sphere_1, Vector4_1, Vector3_1, Math_1, Matrix4_1, Camera_1, DataTexture_1, UniformsLib_1, UniformsUtils_1, ShaderLib_1, WebGLUniforms_1, WebGLFlareRenderer_1, WebGLSpriteRenderer_1, WebGLShadowMap_1, WebGLAttributes_1, WebGLBackground_1, WebGLRenderLists_1, WebGLMorphtargets_1, WebGLIndexedBufferRenderer_1, WebGLBufferRenderer_1, WebGLGeometries_1, WebGLLights_1, WebGLObjects_1, WebGLPrograms_1, WebGLTextures_1, WebGLProperties_1, WebGLState_1, WebGLCapabilities_1, WebVRManager_1, WebGLExtensions_1, WebGLClipping_1, WebGLUtils_1, WebGLRenderTargetCube_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class WebGLRenderer {
@@ -719,7 +719,7 @@ define(["require", "exports", "../constants", "../geom/Frustum", "../geom/Sphere
         }
         initMaterial(material, fog, object) {
             let materialProperties = this.properties.get(material);
-            let parameters = this.programCache.getParameters(material, this.lights.this.state, this.shadowsArray, fog, this._clipping.numPlanes, this._clipping.numIntersection, object);
+            let parameters = this.programCache.getParameters(material, this.lights.state, this.shadowsArray, fog, this._clipping.numPlanes, this._clipping.numIntersection, object);
             let code = this.programCache.getProgramCode(material, parameters);
             let program = materialProperties.program;
             let programChange = true;
@@ -782,20 +782,20 @@ define(["require", "exports", "../constants", "../geom/Frustum", "../geom/Sphere
                 uniforms.clippingPlanes = this._clipping.uniform;
             }
             materialProperties.fog = fog;
-            materialProperties.lightsHash = this.lights.this.state.hash;
+            materialProperties.lightsHash = this.lights.state.hash;
             if (material.this.lights) {
-                uniforms.ambientLightColor.value = this.lights.this.state.ambient;
-                uniforms.directionalLights.value = this.lights.this.state.directional;
-                uniforms.spotLights.value = this.lights.this.state.spot;
-                uniforms.rectAreaLights.value = this.lights.this.state.rectArea;
-                uniforms.pointLights.value = this.lights.this.state.point;
-                uniforms.hemisphereLights.value = this.lights.this.state.hemi;
-                uniforms.directionalShadowMap.value = this.lights.this.state.directionalShadowMap;
-                uniforms.directionalShadowMatrix.value = this.lights.this.state.directionalShadowMatrix;
-                uniforms.spotShadowMap.value = this.lights.this.state.spotShadowMap;
-                uniforms.spotShadowMatrix.value = this.lights.this.state.spotShadowMatrix;
-                uniforms.pointShadowMap.value = this.lights.this.state.pointShadowMap;
-                uniforms.pointShadowMatrix.value = this.lights.this.state.pointShadowMatrix;
+                uniforms.ambientLightColor.value = this.lights.state.ambient;
+                uniforms.directionalLights.value = this.lights.state.directional;
+                uniforms.spotLights.value = this.lights.state.spot;
+                uniforms.rectAreaLights.value = this.lights.state.rectArea;
+                uniforms.pointLights.value = this.lights.state.point;
+                uniforms.hemisphereLights.value = this.lights.state.hemi;
+                uniforms.directionalShadowMap.value = this.lights.state.directionalShadowMap;
+                uniforms.directionalShadowMatrix.value = this.lights.state.directionalShadowMatrix;
+                uniforms.spotShadowMap.value = this.lights.state.spotShadowMap;
+                uniforms.spotShadowMatrix.value = this.lights.state.spotShadowMatrix;
+                uniforms.pointShadowMap.value = this.lights.state.pointShadowMap;
+                uniforms.pointShadowMatrix.value = this.lights.state.pointShadowMatrix;
             }
             let progUniforms = materialProperties.program.getUniforms(), uniformsList = WebGLUniforms_1.WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
             materialProperties.uniformsList = uniformsList;
@@ -1208,10 +1208,11 @@ define(["require", "exports", "../constants", "../geom/Frustum", "../geom/Sphere
                 this.textures.setupRenderTarget(renderTarget);
             let framebuffer = null;
             let isCube = false;
+            let targetCube = renderTarget;
             if (renderTarget) {
                 let __webglFramebuffer = this.properties.get(renderTarget).__webglFramebuffer;
-                if (renderTarget.isWebGLRenderTargetCube) {
-                    framebuffer = __webglFramebuffer[renderTarget.activeCubeFace];
+                if (renderTarget instanceof WebGLRenderTargetCube_1.WebGLRenderTargetCube) {
+                    framebuffer = __webglFramebuffer[targetCube.activeCubeFace];
                     isCube = true;
                 }
                 else
@@ -1234,7 +1235,7 @@ define(["require", "exports", "../constants", "../geom/Frustum", "../geom/Sphere
             this.state.setScissorTest(this._currentScissorTest);
             if (isCube) {
                 let textureProperties = this.properties.get(renderTarget.texture);
-                this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_CUBE_MAP_POSITIVE_X + renderTarget.activeCubeFace, textureProperties.__webglTexture, renderTarget.activeMipMapLevel);
+                this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_CUBE_MAP_POSITIVE_X + targetCube.activeCubeFace, textureProperties.__webglTexture, targetCube.activeMipMapLevel);
             }
         }
         readRenderTargetPixels(renderTarget, x, y, width, height, buffer) {

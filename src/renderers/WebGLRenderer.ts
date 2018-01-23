@@ -34,6 +34,8 @@ import { WebVRManager } from './webvr/WebVRManager';
 import { WebGLExtensions } from './webgl/WebGLExtensions';
 import { WebGLClipping } from './webgl/WebGLClipping';
 import { WebGLUtils } from './webgl/WebGLUtils';
+import { WebGLRenderTarget } from './WebGLRenderTarget';
+import { WebGLRenderTargetCube } from './WebGLRenderTargetCube';
 
 
 
@@ -55,9 +57,9 @@ class WebGLRenderer
 	toneMapping; toneMappingExposure; toneMappingWhitePoint;
 	maxMorphTargets; maxMorphNormals;
 
+	currentRenderList;
 	lightsArray;
 	shadowsArray;
-	currentRenderList;
 	spritesArray;
 	flaresArray;
 
@@ -65,7 +67,7 @@ class WebGLRenderer
 	_sphere: Sphere;
 	_isContextLost: boolean;
 
-	_currentRenderTarget;
+	_currentRenderTarget: WebGLRenderTarget;
 	_currentFramebuffer: WebGLFramebuffer;
 	_currentMaterialId: number;
 	_currentGeometryProgram: string;
@@ -676,7 +678,7 @@ class WebGLRenderer
 		{
 			attribute = this.attributes.get( index );
 			renderer = this.indexedBufferRenderer;
-			renderer.setIndex( attribute );
+			( renderer as WebGLIndexedBufferRenderer ).setIndex( attribute );
 		}
 
 		if ( updateBuffers )
@@ -1212,7 +1214,7 @@ class WebGLRenderer
 	{
 		let materialProperties = this.properties.get( material );
 		let parameters = this.programCache.getParameters(
-			material, this.lights.this.state, this.shadowsArray, fog, this._clipping.numPlanes, this._clipping.numIntersection, object );
+			material, this.lights.state, this.shadowsArray, fog, this._clipping.numPlanes, this._clipping.numIntersection, object );
 		let code = this.programCache.getProgramCode( material, parameters );
 		let program = materialProperties.program;
 		let programChange = true;
@@ -1299,24 +1301,24 @@ class WebGLRenderer
 
 		// store the light setup it was created for
 
-		materialProperties.lightsHash = this.lights.this.state.hash;
+		materialProperties.lightsHash = this.lights.state.hash;
 
 		if ( material.this.lights )
 		{
 			// wire up the material to this renderer's lighting this.state
-			uniforms.ambientLightColor.value = this.lights.this.state.ambient;
-			uniforms.directionalLights.value = this.lights.this.state.directional;
-			uniforms.spotLights.value = this.lights.this.state.spot;
-			uniforms.rectAreaLights.value = this.lights.this.state.rectArea;
-			uniforms.pointLights.value = this.lights.this.state.point;
-			uniforms.hemisphereLights.value = this.lights.this.state.hemi;
+			uniforms.ambientLightColor.value = this.lights.state.ambient;
+			uniforms.directionalLights.value = this.lights.state.directional;
+			uniforms.spotLights.value = this.lights.state.spot;
+			uniforms.rectAreaLights.value = this.lights.state.rectArea;
+			uniforms.pointLights.value = this.lights.state.point;
+			uniforms.hemisphereLights.value = this.lights.state.hemi;
 
-			uniforms.directionalShadowMap.value = this.lights.this.state.directionalShadowMap;
-			uniforms.directionalShadowMatrix.value = this.lights.this.state.directionalShadowMatrix;
-			uniforms.spotShadowMap.value = this.lights.this.state.spotShadowMap;
-			uniforms.spotShadowMatrix.value = this.lights.this.state.spotShadowMatrix;
-			uniforms.pointShadowMap.value = this.lights.this.state.pointShadowMap;
-			uniforms.pointShadowMatrix.value = this.lights.this.state.pointShadowMatrix;
+			uniforms.directionalShadowMap.value = this.lights.state.directionalShadowMap;
+			uniforms.directionalShadowMatrix.value = this.lights.state.directionalShadowMatrix;
+			uniforms.spotShadowMap.value = this.lights.state.spotShadowMap;
+			uniforms.spotShadowMatrix.value = this.lights.state.spotShadowMatrix;
+			uniforms.pointShadowMap.value = this.lights.state.pointShadowMap;
+			uniforms.pointShadowMatrix.value = this.lights.state.pointShadowMatrix;
 			// TODO (abelnation): add area lights shadow info to uniforms
 		}
 
@@ -1956,7 +1958,7 @@ class WebGLRenderer
 		return this._currentRenderTarget;
 	}
 
-	setRenderTarget( renderTarget )
+	setRenderTarget( renderTarget: WebGLRenderTarget )
 	{
 		this._currentRenderTarget = renderTarget;
 
@@ -1965,14 +1967,15 @@ class WebGLRenderer
 
 		let framebuffer = null;
 		let isCube = false;
+		let targetCube: WebGLRenderTargetCube = renderTarget as WebGLRenderTargetCube;
 
 		if ( renderTarget )
 		{
 			let __webglFramebuffer = this.properties.get( renderTarget ).__webglFramebuffer;
 
-			if ( renderTarget.isWebGLRenderTargetCube )
+			if ( renderTarget instanceof WebGLRenderTargetCube )
 			{
-				framebuffer = __webglFramebuffer[ renderTarget.activeCubeFace ];
+				framebuffer = __webglFramebuffer[ targetCube.activeCubeFace ];
 				isCube = true;
 			} else
 				framebuffer = __webglFramebuffer;
@@ -2000,7 +2003,7 @@ class WebGLRenderer
 		if ( isCube )
 		{
 			let textureProperties = this.properties.get( renderTarget.texture );
-			this._gl.framebufferTexture2D( this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_CUBE_MAP_POSITIVE_X + renderTarget.activeCubeFace, textureProperties.__webglTexture, renderTarget.activeMipMapLevel );
+			this._gl.framebufferTexture2D( this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_CUBE_MAP_POSITIVE_X + targetCube.activeCubeFace, textureProperties.__webglTexture, targetCube.activeMipMapLevel );
 		}
 	}
 

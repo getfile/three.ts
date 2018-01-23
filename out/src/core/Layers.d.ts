@@ -1,10 +1,10 @@
 declare class Layers {
     mask: number;
     constructor();
-    set(channel: any): void;
-    enable(channel: any): void;
-    toggle(channel: any): void;
-    disable(channel: any): void;
+    set(channel: number): void;
+    enable(channel: number): void;
+    toggle(channel: number): void;
+    disable(channel: number): void;
     test(layers: Layers): boolean;
 }
 export { Layers };

@@ -9,8 +9,8 @@ class AudioContext
 
 	static getContext()
 	{
-		if ( this.context === undefined )
-			AudioContext.context = new ( window.AudioContext || window.webkitAudioContext )();
+		if ( AudioContext.context === undefined )
+			AudioContext.context = new ( window['AudioContext'] || window['webkitAudioContext'] )();
 
 		return AudioContext.context;
 	}

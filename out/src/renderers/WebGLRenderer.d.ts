@@ -19,6 +19,7 @@ import { WebGLPrograms } from './webgl/WebGLPrograms';
 import { WebGLTextures } from './webgl/WebGLTextures';
 import { WebGLProperties } from './webgl/WebGLProperties';
 import { WebGLExtensions } from './webgl/WebGLExtensions';
+import { WebGLRenderTarget } from './WebGLRenderTarget';
 declare class WebGLRenderer {
     domElement: any;
     autoClear: any;
@@ -37,15 +38,15 @@ declare class WebGLRenderer {
     toneMappingWhitePoint: any;
     maxMorphTargets: any;
     maxMorphNormals: any;
+    currentRenderList: any;
     lightsArray: any;
     shadowsArray: any;
-    currentRenderList: any;
     spritesArray: any;
     flaresArray: any;
     _gl: WebGLRenderingContext;
     _sphere: Sphere;
     _isContextLost: boolean;
-    _currentRenderTarget: any;
+    _currentRenderTarget: WebGLRenderTarget;
     _currentFramebuffer: WebGLFramebuffer;
     _currentMaterialId: number;
     _currentGeometryProgram: string;
@@ -165,8 +166,8 @@ declare class WebGLRenderer {
     setTexture2D(texture: any, slot: any): void;
     setTexture(texture: any, slot: any): void;
     setTextureCube(texture: any, slot: any): void;
-    getRenderTarget(): any;
-    setRenderTarget(renderTarget: any): void;
+    getRenderTarget(): WebGLRenderTarget;
+    setRenderTarget(renderTarget: WebGLRenderTarget): void;
     readRenderTargetPixels(renderTarget: any, x: any, y: any, width: any, height: any, buffer: any): void;
 }
 export { WebGLRenderer };

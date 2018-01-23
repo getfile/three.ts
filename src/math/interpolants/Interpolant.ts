@@ -23,42 +23,40 @@
 class Interpolant
 {
 	parameterPositions;
-	private _cachedIndex: number;
+	sampleValues;
+	valueSize: number;
+
+	defaultSettings_ = {};
+	settings; // optional, subclass-specific settings structure
 
 	resultBuffer;
-	sampleValues;
-	valueSize;
 
-	constructor( parameterPositions, sampleValues, sampleSize, resultBuffer )
+	private _cachedIndex: number;
+
+	constructor( parameterPositions, sampleValues, sampleSize: number, resultBuffer?)
 	{
 		this.parameterPositions = parameterPositions;
-		this._cachedIndex = 0;
-
-		this.resultBuffer = resultBuffer !== undefined ? resultBuffer : new sampleValues.constructor( sampleSize );
 		this.sampleValues = sampleValues;
 		this.valueSize = sampleSize;
+
+		this.resultBuffer = resultBuffer !== undefined ? resultBuffer : new sampleValues.constructor( sampleSize );
+
+		this._cachedIndex = 0;
 	}
 
-	evaluate( t )
+	evaluate( t:number )
 	{
 		let pp = this.parameterPositions,
-			i1 = this._cachedIndex,
+			i1:number = this._cachedIndex,
 
 			t1 = pp[ i1 ],
 			t0 = pp[ i1 - 1 ];
 
 		validate_interval: {
-
 			seek: {
-
 				let right;
-
 				linear_scan: {
-
 					//- See http://jsperf.com/comparison-to-undefined/3
-					//- slower code:
-					//-
-					//- 				if ( t >= t1 || t1 === undefined ) {
 					forward_scan: if ( !( t < t1 ) )
 					{
 						for ( let giveUpAt = i1 + 2; ; )
@@ -68,7 +66,6 @@ class Interpolant
 								if ( t < t0 ) break forward_scan;
 
 								// after end
-
 								i1 = pp.length;
 								this._cachedIndex = i1;
 								return this.afterEnd_( i1 - 1, t, t0 );
@@ -91,8 +88,6 @@ class Interpolant
 						break linear_scan;
 					}
 
-					//- slower code:
-					//-					if ( t < t0 || t0 === undefined ) {
 					if ( !( t >= t0 ) )
 					{
 						// looping?
@@ -173,16 +168,12 @@ class Interpolant
 		return this.interpolate_( i1, t0, t, t1 );
 	}
 
-	DefaultSettings_ = {};
-
-	settings; // optional, subclass-specific settings structure
 	// Note: The indirection allows central control of many interpolants.
-
 	// --- Protected interface
 
 	getSettings_()
 	{
-		return this.settings || this.DefaultSettings_;
+		return this.settings || this.defaultSettings_;
 	}
 
 	copySampleValue_( index )
@@ -206,17 +197,9 @@ class Interpolant
 		// implementations shall return this.resultBuffer
 	}
 
-	intervalChanged_( /* i1, t0, t1 */ )
+	intervalChanged_(i1, t0, t1 )
 	{
 		// empty
-	}
-
-	beforeStart()
-	{
-	}
-
-	afterEnd()
-	{
 	}
 
 }

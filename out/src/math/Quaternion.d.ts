@@ -8,7 +8,7 @@ declare class Quaternion {
     private _z;
     private _w;
     constructor(x?: number, y?: number, z?: number, w?: number);
-    slerpFlat(dst: number[], dstOffset: number, src0: number[], srcOffset0: number, src1: number[], srcOffset1: number, t: number): void;
+    static slerpFlat(dst: number[], dstOffset: number, src0: number[], srcOffset0: number, src1: number[], srcOffset1: number, t: number): void;
     x: number;
     y: number;
     z: number;

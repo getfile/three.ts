@@ -44,18 +44,9 @@ declare class Geometry extends EventDispatcher {
     mergeVertices(): number;
     setFromPoints(points: any): this;
     sortFacesByMaterialIndex(): void;
-    toJSON(): {
-        metadata: {
-            version: number;
-            type: string;
-            generator: string;
-        };
-        uuid: string;
-        type: string;
-        name: string;
-    };
+    toJSON(): any;
     clone(): Geometry;
-    copy(source: any): this;
+    copy(source: Geometry): this;
     dispose(): void;
 }
 export { Geometry };

@@ -469,10 +469,8 @@ define(["require", "exports", "./EventDispatcher", "./Face3", "./Object3D", "../
                 type: '',
                 name: ''
             };
-            data.u;
-            uid = this.uuid;
-            data.t;
-            ype = this.type;
+            data.uuid = this.uuid;
+            data.type = this.type;
             if (this.name !== '')
                 data.name = this.name;
             if (this.parameters !== undefined) {

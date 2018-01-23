@@ -9,7 +9,7 @@ define(["require", "exports", "./Vector3", "./Euler"], function (require, export
             this._z = z;
             this._w = w;
         }
-        slerpFlat(dst, dstOffset, src0, srcOffset0, src1, srcOffset1, t) {
+        static slerpFlat(dst, dstOffset, src0, srcOffset0, src1, srcOffset1, t) {
             let x0 = src0[srcOffset0 + 0], y0 = src0[srcOffset0 + 1], z0 = src0[srcOffset0 + 2], w0 = src0[srcOffset0 + 3], x1 = src1[srcOffset1 + 0], y1 = src1[srcOffset1 + 1], z1 = src1[srcOffset1 + 2], w1 = src1[srcOffset1 + 3];
             if (w0 !== w1 || x0 !== x1 || y0 !== y1 || z0 !== z1) {
                 let s = 1 - t, cos = x0 * x1 + y0 * y1 + z0 * z1 + w0 * w1, dir = (cos >= 0 ? 1 : -1), sqrSin = 1 - cos * cos;
