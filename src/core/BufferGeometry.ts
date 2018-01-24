@@ -21,8 +21,7 @@ let bufferGeometryId = 1; // BufferGeometry uses odd numbers as Id
 class BufferGeometry extends EventDispatcher
 {
     index: BufferAttribute;
-    attributes;
-
+    attributes: any; // {name:BufferAttribute, ...}
     morphAttributes;
 
     groups;
@@ -120,9 +119,9 @@ class BufferGeometry extends EventDispatcher
         this.drawRange.count = count;
     }
 
-    applyMatrix(matrix)
+    applyMatrix(matrix: Matrix4)
     {
-        let position = this.attributes.position;
+        let position: BufferAttribute = this.attributes.position;
         if (position !== undefined)
         {
             matrix.applyToBufferAttribute(position);
@@ -427,7 +426,7 @@ class BufferGeometry extends EventDispatcher
             this.addAttribute('skinWeight', skinWeights.copyVector4sArray(geometry.skinWeights));
         }
 
-        //
+        //bounding
         if (geometry.boundingSphere !== null)
             this.boundingSphere = geometry.boundingSphere.clone();
 
@@ -442,7 +441,7 @@ class BufferGeometry extends EventDispatcher
         if (this.boundingBox === null)
             this.boundingBox = new Box3();
 
-        let position = this.attributes.position;
+        let position: BufferAttribute = this.attributes.position;
         if (position !== undefined)
             this.boundingBox.setFromBufferAttribute(position);
         else

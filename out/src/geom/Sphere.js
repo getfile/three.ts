@@ -2,9 +2,9 @@ define(["require", "exports", "./Box3", "../math/Vector3"], function (require, e
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Sphere {
-        constructor(center, radius) {
+        constructor(center, radius = 0) {
             this.center = (center !== undefined) ? center : new Vector3_1.Vector3();
-            this.radius = (radius !== undefined) ? radius : 0;
+            this.radius = radius;
         }
         set(center, radius) {
             this.center.copy(center);

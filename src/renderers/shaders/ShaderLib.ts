@@ -1,8 +1,8 @@
-import { ShaderChunk } from './ShaderChunk.js';
-import { UniformsUtils } from './UniformsUtils.js';
-import { Vector3 } from '../../math/Vector3.js';
-import { UniformsLib } from './UniformsLib.js';
-import { Color } from '../../math/Color.js';
+import { ShaderChunk } from './ShaderChunk';
+import { UniformsUtils } from './UniformsUtils';
+import { Vector3 } from '../../math/Vector3';
+import { UniformsLib } from './UniformsLib';
+import { Color } from '../../math/Color';
 
 /**
  * @author alteredq / http://alteredqualia.com/
@@ -10,7 +10,28 @@ import { Color } from '../../math/Color.js';
  * @author mikael emtinger / http://gomo.se/
  */
 
-var ShaderLib = {
+let temp = UniformsUtils.merge( [
+	UniformsLib.common,
+	UniformsLib.envmap,
+	UniformsLib.aomap,
+	UniformsLib.lightmap,
+	UniformsLib.emissivemap,
+	UniformsLib.bumpmap,
+	UniformsLib.normalmap,
+	UniformsLib.displacementmap,
+	UniformsLib.roughnessmap,
+	UniformsLib.metalnessmap,
+	UniformsLib.fog,
+	UniformsLib.lights,
+	{
+		emissive: { value: new Color( 0x000000 ) },
+		roughness: { value: 0.5 },
+		metalness: { value: 0.5 },
+		envMapIntensity: { value: 1 } // temporary
+	}
+] );
+
+const ShaderLib = {
 
 	basic: {
 
@@ -37,10 +58,16 @@ var ShaderLib = {
 			UniformsLib.aomap,
 			UniformsLib.lightmap,
 			UniformsLib.emissivemap,
+			UniformsLib.bumpmap,
+			UniformsLib.normalmap,
+			UniformsLib.displacementmap,
+			UniformsLib.gradientmap,
 			UniformsLib.fog,
 			UniformsLib.lights,
 			{
-				emissive: { value: new Color( 0x000000 ) }
+				emissive: { value: new Color( 0x000000 ) },
+				specular: { value: new Color( 0x111111 ) },
+				shininess: { value: 30 }
 			}
 		] ),
 
@@ -78,27 +105,7 @@ var ShaderLib = {
 
 	standard: {
 
-		uniforms: UniformsUtils.merge( [
-			UniformsLib.common,
-			UniformsLib.envmap,
-			UniformsLib.aomap,
-			UniformsLib.lightmap,
-			UniformsLib.emissivemap,
-			UniformsLib.bumpmap,
-			UniformsLib.normalmap,
-			UniformsLib.displacementmap,
-			UniformsLib.roughnessmap,
-			UniformsLib.metalnessmap,
-			UniformsLib.fog,
-			UniformsLib.lights,
-			{
-				emissive: { value: new Color( 0x000000 ) },
-				roughness: { value: 0.5 },
-				metalness: { value: 0.5 },
-				envMapIntensity: { value: 1 } // temporary
-			}
-		] ),
-
+		uniforms: temp,
 		vertexShader: ShaderChunk.meshphysical_vert,
 		fragmentShader: ShaderChunk.meshphysical_frag
 
@@ -221,24 +228,22 @@ var ShaderLib = {
 		vertexShader: ShaderChunk.shadow_vert,
 		fragmentShader: ShaderChunk.shadow_frag
 
+	},
+
+	physical: {
+
+		uniforms: UniformsUtils.merge( [
+			temp,
+			{
+				clearCoat: { value: 0 },
+				clearCoatRoughness: { value: 0 }
+			}
+		] ),
+
+		vertexShader: ShaderChunk.meshphysical_vert,
+		fragmentShader: ShaderChunk.meshphysical_frag
 	}
 
-};
-
-ShaderLib.physical = {
-
-	uniforms: UniformsUtils.merge( [
-		ShaderLib.standard.uniforms,
-		{
-			clearCoat: { value: 0 },
-			clearCoatRoughness: { value: 0 }
-		}
-	] ),
-
-	vertexShader: ShaderChunk.meshphysical_vert,
-	fragmentShader: ShaderChunk.meshphysical_frag
-
-};
-
+}
 
 export { ShaderLib };

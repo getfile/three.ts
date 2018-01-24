@@ -1,4 +1,5 @@
 import { Vector3 } from '../math/Vector3';
+import { Matrix4 } from '../math/Matrix4';
 import { Box3 } from '../geom/Box3';
 import { Sphere } from '../geom/Sphere';
 import { EventDispatcher } from './EventDispatcher';
@@ -26,7 +27,7 @@ declare class BufferGeometry extends EventDispatcher {
     addGroup(start: any, count: any, materialIndex?: number): void;
     clearGroups(): void;
     setDrawRange(start: any, count: any): void;
-    applyMatrix(matrix: any): this;
+    applyMatrix(matrix: Matrix4): this;
     rotateX(angle: any): this;
     rotateY(angle: any): this;
     rotateZ(angle: any): this;

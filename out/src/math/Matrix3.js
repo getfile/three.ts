@@ -107,8 +107,6 @@ define(["require", "exports", "./Vector3"], function (require, exports, Vector3_
             return a * e * i - a * f * h - b * d * i + b * f * g + c * d * h - c * e * g;
         }
         getInverse(matrix, throwOnDegenerate = false) {
-            if (matrix && matrix.isMatrix4)
-                console.error("THREE.Matrix3: .getInverse() no longer takes a Matrix4 argument.");
             let me = matrix.elements, te = this.elements, n11 = me[0], n21 = me[1], n31 = me[2], n12 = me[3], n22 = me[4], n32 = me[5], n13 = me[6], n23 = me[7], n33 = me[8], t11 = n33 * n22 - n32 * n23, t12 = n32 * n13 - n33 * n12, t13 = n23 * n12 - n22 * n13, det = n11 * t11 + n21 * t12 + n31 * t13;
             if (det === 0) {
                 let msg = "THREE.Matrix3: .getInverse() can't invert matrix, determinant is 0";
@@ -211,11 +209,9 @@ define(["require", "exports", "./Vector3"], function (require, exports, Vector3_
                 this.elements[i] = array[i + offset];
             return this;
         }
-        toArray(array, offset) {
+        toArray(array, offset = 0) {
             if (array === undefined)
                 array = [];
-            if (offset === undefined)
-                offset = 0;
             let te = this.elements;
             array[offset] = te[0];
             array[offset + 1] = te[1];

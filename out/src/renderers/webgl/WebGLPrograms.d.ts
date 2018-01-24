@@ -1,8 +1,9 @@
+import { TWebGLProgram } from './WebGLProgram.js';
 declare class WebGLPrograms {
     renderer: any;
     extensions: any;
     capabilities: any;
-    programs: any;
+    programs: TWebGLProgram[];
     shaderIDs: any;
     parameterNames: any;
     constructor(renderer: any, extensions: any, capabilities: any);
@@ -65,7 +66,7 @@ declare class WebGLPrograms {
         depthPacking: any;
     };
     getProgramCode(material: any, parameters: any): string;
-    acquireProgram(material: any, shader: any, parameters: any, code: any): any;
-    releaseProgram(program: any): void;
+    acquireProgram(material: any, shader: any, parameters: any, code: any): TWebGLProgram;
+    releaseProgram(program: TWebGLProgram): void;
 }
 export { WebGLPrograms };

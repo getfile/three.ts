@@ -231,7 +231,7 @@ define(["require", "exports", "../../textures/CubeTexture", "../../textures/Text
         for (;;) {
             let match = RePathPart.exec(path), matchEnd = RePathPart.lastIndex, id, ids = match[1], idIsIndex = match[2] === ']', subscript = match[3];
             if (idIsIndex)
-                id = ids;
+                id = Number.parseFloat(ids);
             if (subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength) {
                 addUniform(container, subscript === undefined ?
                     new SingleUniform(id, activeInfo, addr) :

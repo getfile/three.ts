@@ -1,4 +1,4 @@
-define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], function (require, exports, constants_js_1, WebGLProgram_js_1) {
+define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], function (require, exports, Constant, WebGLProgram_js_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class WebGLPrograms {
@@ -55,7 +55,7 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
         getTextureEncodingFromMap(map, gammaOverrideLinear) {
             var encoding;
             if (!map) {
-                encoding = constants_js_1.LinearEncoding;
+                encoding = Constant.LinearEncoding;
             }
             else if (map.isTexture) {
                 encoding = map.encoding;
@@ -64,8 +64,8 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
                 console.warn("THREE.WebGLPrograms.getTextureEncodingFromMap: don't use render targets as textures. Use their .texture property instead.");
                 encoding = map.texture.encoding;
             }
-            if (encoding === constants_js_1.LinearEncoding && gammaOverrideLinear)
-                encoding = constants_js_1.GammaEncoding;
+            if (encoding === Constant.LinearEncoding && gammaOverrideLinear)
+                encoding = Constant.GammaEncoding;
             return encoding;
         }
         getParameters(material, lights, shadows, fog, nClipPlanes, nClipIntersection, object) {
@@ -88,7 +88,7 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
                 envMap: !!material.envMap,
                 envMapMode: material.envMap && material.envMap.mapping,
                 envMapEncoding: this.getTextureEncodingFromMap(material.envMap, this.renderer.gammaInput),
-                envMapCubeUV: (!!material.envMap) && ((material.envMap.mapping === constants_js_1.CubeUVReflectionMapping) || (material.envMap.mapping === constants_js_1.CubeUVRefractionMapping)),
+                envMapCubeUV: (!!material.envMap) && ((material.envMap.mapping === Constant.CubeUVReflectionMapping) || (material.envMap.mapping === Constant.CubeUVRefractionMapping)),
                 lightMap: !!material.lightMap,
                 aoMap: !!material.aoMap,
                 emissiveMap: !!material.emissiveMap,
@@ -130,17 +130,16 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
                 physicallyCorrectLights: this.renderer.physicallyCorrectLights,
                 premultipliedAlpha: material.premultipliedAlpha,
                 alphaTest: material.alphaTest,
-                doubleSided: material.side === constants_js_1.DoubleSide,
-                flipSided: material.side === constants_js_1.BackSide,
+                doubleSided: material.side === Constant.DoubleSide,
+                flipSided: material.side === Constant.BackSide,
                 depthPacking: (material.depthPacking !== undefined) ? material.depthPacking : false
             };
             return parameters;
         }
         getProgramCode(material, parameters) {
             var array = [];
-            if (parameters.shaderID) {
+            if (parameters.shaderID)
                 array.push(parameters.shaderID);
-            }
             else {
                 array.push(material.fragmentShader);
                 array.push(material.vertexShader);
@@ -168,7 +167,7 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
                 }
             }
             if (program === undefined) {
-                program = new WebGLProgram_js_1.WebGLProgram(this.renderer, this.extensions, code, material, shader, parameters);
+                program = new WebGLProgram_js_1.TWebGLProgram(this.renderer, this.extensions, code, material, shader, parameters);
                 this.programs.push(program);
             }
             return program;

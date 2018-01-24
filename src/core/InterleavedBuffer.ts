@@ -6,86 +6,91 @@ import { _Math } from '../math/Math.js';
 
 class InterleavedBuffer
 {
-	uuid: string;
-	array: Float32Array;
-	stride: number;
-	count: number;
-	dynamic: boolean;
-	updateRange: any;
-	onUploadCallback: Function;
-	version: number;
+    uuid: string;
+    
+    array: Float32Array;
+    stride: number; //item size
+    count: number; //item count
+    dynamic: boolean;
 
-	constructor( array?, stride: number = 1 )
-	{
-		this.uuid = _Math.generateUUID();
+    updateRange: { offset: number, count: number };
+    onUploadCallback: Function;
 
-		this.array = array;
-		this.stride = stride;
-		this.count = array !== undefined ? array.length / stride : 0;
+    version: number;
 
-		this.dynamic = false;
-		this.updateRange = { offset: 0, count: - 1 };
+    constructor(array?, stride: number = 1)
+    {
+        this.uuid = _Math.generateUUID();
 
-		this.onUploadCallback = function () { };
+        this.array = array;
+        this.stride = stride;
+        this.count = array !== undefined ? array.length / stride : 0;
 
-		this.version = 0;
-	}
+        this.dynamic = false;
+        this.updateRange = { offset: 0, count: - 1 };
 
-	set needsUpdate( value: boolean )
-	{
-		if ( value === true ) this.version++;
-	}
+        this.onUploadCallback = function () { };
 
-	setArray( array )
-	{
-		if ( Array.isArray( array ) )
-			throw new TypeError( 'THREE.BufferAttribute: array should be a Typed Array.' );
+        this.version = 0;
+    }
 
-		this.count = array !== undefined ? array.length / this.stride : 0;
-		this.array = array;
-	}
+    set needsUpdate(value: boolean)
+    {
+        if (value) this.version++;
+    }
 
-	setDynamic( value: boolean )
-	{
-		this.dynamic = value;
-		return this;
-	}
+    setArray(array)
+    {
+        if (Array.isArray(array))
+            throw new TypeError('THREE.BufferAttribute: array should be a Typed Array.');
 
-	copy( source: InterleavedBuffer )
-	{
-		this.array = new Float32Array( source.array );
-		this.count = source.count;
-		this.stride = source.stride;
-		this.dynamic = source.dynamic;
-		return this;
-	}
+        this.count = array !== undefined ? array.length / this.stride : 0;
+        this.array = array;
+    }
 
-	copyAt( index1: number, attribute: InterleavedBuffer, index2: number )
-	{
-		index1 *= this.stride;
-		index2 *= attribute.stride;
-		for ( var i = 0, l = this.stride; i < l; i++ )
-			this.array[ index1 + i ] = attribute.array[ index2 + i ];
+    setDynamic(value: boolean)
+    {
+        this.dynamic = value;
+        return this;
+    }
 
-		return this;
-	}
+    copy(source: InterleavedBuffer)
+    {
+        this.array = new Float32Array(source.array);
+        this.count = source.count;
+        this.stride = source.stride;
+        this.dynamic = source.dynamic;
+        return this;
+    }
 
-	set( value, offset: number = 0 )
-	{
-		this.array.set( value, offset );
-		return this;
-	}
+    //copy one element, from dex2 to dex1
+    copyAt(index1: number, attribute: InterleavedBuffer, index2: number)
+    {
+        index1 *= this.stride;
+        index2 *= attribute.stride;
+        for (var i = 0, l = this.stride; i < l; i++)
+            this.array[index1 + i] = attribute.array[index2 + i];
 
-	clone()
-	{
-		return new InterleavedBuffer().copy( this );
-	}
+        return this;
+    }
 
-	onUpload( callback: Function )
-	{
-		this.onUploadCallback = callback;
-		return this;
-	}
+    set(value, offset: number = 0)
+    {
+        this.array.set(value, offset);
+        return this;
+    }
+
+    clone()
+    {
+        return new InterleavedBuffer().copy(this);
+    }
+
+    //set dataUpload callback function 
+    onUpload(callback: Function)
+    {
+        this.onUploadCallback = callback;
+        return this;
+    }
 
 }
 

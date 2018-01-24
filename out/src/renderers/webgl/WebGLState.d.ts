@@ -105,8 +105,8 @@ declare class WebGLState {
     setScissorTest(scissorTest: any): void;
     activeTexture(webglSlot?: any): void;
     bindTexture(webglType: any, webglTexture: any): void;
-    compressedTexImage2D(): void;
-    texImage2D(): void;
+    compressedTexImage2D(...args: any[]): void;
+    texImage2D(...args: any[]): void;
     scissor(scissor: Vector4): void;
     viewport(viewport: Vector4): void;
     reset(): void;

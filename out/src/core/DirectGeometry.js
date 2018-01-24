@@ -10,7 +10,7 @@ define(["require", "exports", "../math/Vector2"], function (require, exports, Ve
             this.uvs = [];
             this.uvs2 = [];
             this.groups = [];
-            this.morphTargets = {};
+            this.morphTargets = { position: null, normal: null };
             this.skinWeights = [];
             this.skinIndices = [];
             this.boundingBox = null;

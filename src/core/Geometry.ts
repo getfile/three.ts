@@ -1,16 +1,3 @@
-import { EventDispatcher } from './EventDispatcher';
-import { Face3 } from './Face3';
-import { Object3D } from './Object3D';
-import { Sphere } from '../geom/Sphere';
-import { Box3 } from '../geom/Box3';
-import { Vector2 } from '../math/Vector2';
-import { Vector3 } from '../math/Vector3';
-import { Matrix3 } from '../math/Matrix3';
-import { Matrix4 } from '../math/Matrix4';
-import { Color } from '../math/Color';
-import { _Math } from '../math/Math';
-import { BufferGeometry } from "./BufferGeometry";
-
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author kile / http://kile.stravaganza.org/
@@ -20,30 +7,44 @@ import { BufferGeometry } from "./BufferGeometry";
  * @author bhouston / http://clara.io
  */
 
+import { BufferGeometry } from "./BufferGeometry";
+import { EventDispatcher } from './EventDispatcher';
+import { Face3 } from './Face3';
+import { Object3D } from './Object3D';
+import { Sphere } from '../geom/Sphere';
+import { Box3 } from '../geom/Box3';
+import { Spherical } from '../geom/Spherical';
+import { Vector2 } from '../math/Vector2';
+import { Vector3 } from '../math/Vector3';
+import { Matrix3 } from '../math/Matrix3';
+import { Matrix4 } from '../math/Matrix4';
+import { Color } from '../math/Color';
+import { _Math } from '../math/Math';
+
 let geometryId = 0; // Geometry uses even numbers as Id
 
 class Geometry extends EventDispatcher
 {
-    vertices;
-    colors;
-    faces;
+    vertices: Vector3[];
+    colors: Color[];
+    faces: Face3[];
     faceVertexUvs;
     morphTargets;
     morphNormals;
     skinWeights;
     skinIndices;
 
-    lineDistances;
-    boundingBox;
-    boundingSphere;
+    lineDistances: number[];
+    boundingBox: Box3;
+    boundingSphere: Sphere;
 
-    elementsNeedUpdate;
-    verticesNeedUpdate;
-    uvsNeedUpdate;
-    normalsNeedUpdate;
-    colorsNeedUpdate;
-    lineDistancesNeedUpdate;
-    groupsNeedUpdate;
+    elementsNeedUpdate: boolean;
+    verticesNeedUpdate: boolean;
+    uvsNeedUpdate: boolean;
+    normalsNeedUpdate: boolean;
+    colorsNeedUpdate: boolean;
+    lineDistancesNeedUpdate: boolean;
+    groupsNeedUpdate: boolean;
 
     parameters;
 
@@ -936,7 +937,7 @@ class Geometry extends EventDispatcher
         return data;
     }
 
-    clone()
+    clone(): Geometry
     {
 		/*
 		 // Handle primitives
@@ -959,7 +960,7 @@ class Geometry extends EventDispatcher
         return new Geometry().copy(this);
     }
 
-    copy(source: Geometry)
+    copy(source: Geometry): Geometry
     {
         let i, il, j, jl, k, kl;
 

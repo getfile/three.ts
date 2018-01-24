@@ -1,12 +1,13 @@
+import { WebGLState } from './WebGLState';
 declare class WebGLTextures {
     private _gl;
     extensions: any;
-    state: any;
+    state: WebGLState;
     properties: any;
     capabilities: any;
     utils: any;
     infoMemory: any;
-    _isWebGL2: any;
+    _isWebGL2: boolean;
     _videoTextures: any;
     constructor(_gl: any, extensions: any, state: any, properties: any, capabilities: any, utils: any, infoMemory: any);
     clampToMaxSize(image: any, maxSize: any): any;
@@ -14,7 +15,7 @@ declare class WebGLTextures {
     makePowerOfTwo(image: any): any;
     textureNeedsPowerOfTwo(texture: any): boolean;
     textureNeedsGenerateMipmaps(texture: any, isPowerOfTwo: any): boolean;
-    filterFallback(f: any): any;
+    filterFallback(f: any): number;
     onTextureDispose(event: any): void;
     onRenderTargetDispose(event: any): void;
     deallocateTexture(texture: any): void;

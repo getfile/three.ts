@@ -1,12 +1,12 @@
-import { Color } from '../../math/Color.js';
-import { Vector2 } from '../../math/Vector2.js';
-import { Matrix3 } from '../../math/Matrix3.js';
+import { Color } from '../../math/Color';
+import { Vector2 } from '../../math/Vector2';
+import { Matrix3 } from '../../math/Matrix3';
 
 /**
  * Uniforms library for shared webgl shaders
  */
 
-var UniformsLib = {
+const UniformsLib = {
 
 	common: {
 
@@ -108,67 +108,78 @@ var UniformsLib = {
 
 		ambientLightColor: { value: [] },
 
-		directionalLights: { value: [], properties: {
-			direction: {},
-			color: {},
+		directionalLights: {
+			value: [], properties: {
+				direction: {},
+				color: {},
 
-			shadow: {},
-			shadowBias: {},
-			shadowRadius: {},
-			shadowMapSize: {}
-		} },
+				shadow: {},
+				shadowBias: {},
+				shadowRadius: {},
+				shadowMapSize: {}
+			}
+		},
 
 		directionalShadowMap: { value: [] },
 		directionalShadowMatrix: { value: [] },
 
-		spotLights: { value: [], properties: {
-			color: {},
-			position: {},
-			direction: {},
-			distance: {},
-			coneCos: {},
-			penumbraCos: {},
-			decay: {},
+		spotLights: {
+			value: [], properties: {
+				color: {},
+				position: {},
+				direction: {},
+				distance: {},
+				coneCos: {},
+				penumbraCos: {},
+				decay: {},
 
-			shadow: {},
-			shadowBias: {},
-			shadowRadius: {},
-			shadowMapSize: {}
-		} },
+				shadow: {},
+				shadowBias: {},
+				shadowRadius: {},
+				shadowMapSize: {}
+			}
+		},
 
 		spotShadowMap: { value: [] },
 		spotShadowMatrix: { value: [] },
 
-		pointLights: { value: [], properties: {
-			color: {},
-			position: {},
-			decay: {},
-			distance: {},
+		pointLights: {
+			value: [], properties: {
+				color: {},
+				position: {},
+				decay: {},
+				distance: {},
 
-			shadow: {},
-			shadowBias: {},
-			shadowRadius: {},
-			shadowMapSize: {},
-			shadowCameraNear: {},
-			shadowCameraFar: {}
-		} },
+				shadow: {},
+				shadowBias: {},
+				shadowRadius: {},
+				shadowMapSize: {},
+				shadowCameraNear: {},
+				shadowCameraFar: {}
+			}
+		},
 
 		pointShadowMap: { value: [] },
 		pointShadowMatrix: { value: [] },
 
-		hemisphereLights: { value: [], properties: {
-			direction: {},
-			skyColor: {},
-			groundColor: {}
-		} },
+		hemisphereLights: {
+			value: [], properties: {
+				direction: {},
+				skyColor: {},
+				groundColor: {}
+			}
+		},
 
-		// TODO (abelnation): RectAreaLight BRDF data needs to be moved from example to main src
-		rectAreaLights: { value: [], properties: {
-			color: {},
-			position: {},
-			width: {},
-			height: {}
-		} }
+		// TODO (abelnation): RectAreaLight BRDF data needs to be moved from
+		// example to main src
+		rectAreaLights: {
+			value: [], properties: {
+				color: {},
+				position: {},
+				width: {},
+				height: {}
+			}
+		}
 
 	},
 

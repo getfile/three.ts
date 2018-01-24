@@ -1,22 +1,22 @@
-define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shaders/ShaderChunk.js", "../../constants.js"], function (require, exports, WebGLUniforms_js_1, WebGLShader_js_1, ShaderChunk_js_1, constants_js_1) {
+define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shaders/ShaderChunk.js", "../../constants.js"], function (require, exports, WebGLUniforms_js_1, WebGLShader_js_1, ShaderChunk_js_1, Constant) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var programIdCount = 0;
     function getEncodingComponents(encoding) {
         switch (encoding) {
-            case constants_js_1.LinearEncoding:
+            case Constant.LinearEncoding:
                 return ['Linear', '( value )'];
-            case constants_js_1.sRGBEncoding:
+            case Constant.sRGBEncoding:
                 return ['sRGB', '( value )'];
-            case constants_js_1.RGBEEncoding:
+            case Constant.RGBEEncoding:
                 return ['RGBE', '( value )'];
-            case constants_js_1.RGBM7Encoding:
+            case Constant.RGBM7Encoding:
                 return ['RGBM', '( value, 7.0 )'];
-            case constants_js_1.RGBM16Encoding:
+            case Constant.RGBM16Encoding:
                 return ['RGBM', '( value, 16.0 )'];
-            case constants_js_1.RGBDEncoding:
+            case Constant.RGBDEncoding:
                 return ['RGBD', '( value, 256.0 )'];
-            case constants_js_1.GammaEncoding:
+            case Constant.GammaEncoding:
                 return ['Gamma', '( value, float( GAMMA_FACTOR ) )'];
             default:
                 throw new Error('unsupported encoding: ' + encoding);
@@ -33,16 +33,16 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
     function getToneMappingFunction(functionName, toneMapping) {
         var toneMappingName;
         switch (toneMapping) {
-            case constants_js_1.LinearToneMapping:
+            case Constant.LinearToneMapping:
                 toneMappingName = 'Linear';
                 break;
-            case constants_js_1.ReinhardToneMapping:
+            case Constant.ReinhardToneMapping:
                 toneMappingName = 'Reinhard';
                 break;
-            case constants_js_1.Uncharted2ToneMapping:
+            case Constant.Uncharted2ToneMapping:
                 toneMappingName = 'Uncharted2';
                 break;
-            case constants_js_1.CineonToneMapping:
+            case Constant.CineonToneMapping:
                 toneMappingName = 'OptimizedCineon';
                 break;
             default:
@@ -95,9 +95,8 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
         var pattern = /^[ \t]*#include +<([\w\d.]+)>/gm;
         function replace(match, include) {
             var replace = ShaderChunk_js_1.ShaderChunk[include];
-            if (replace === undefined) {
+            if (replace === undefined)
                 throw new Error('Can not resolve #include <' + include + '>');
-            }
             return parseIncludes(replace);
         }
         return string.replace(pattern, replace);
@@ -106,61 +105,58 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
         var pattern = /for \( int i \= (\d+)\; i < (\d+)\; i \+\+ \) \{([\s\S]+?)(?=\})\}/g;
         function replace(match, start, end, snippet) {
             var unroll = '';
-            for (var i = parseInt(start); i < parseInt(end); i++) {
+            for (var i = parseInt(start); i < parseInt(end); i++)
                 unroll += snippet.replace(/\[ i \]/g, '[ ' + i + ' ]');
-            }
             return unroll;
         }
         return string.replace(pattern, replace);
     }
-    class WebGLProgram {
+    class TWebGLProgram {
         constructor(renderer, extensions, code, material, shader, parameters) {
             this.gl = renderer.context;
             var defines = material.defines;
             var vertexShader = shader.vertexShader;
             var fragmentShader = shader.fragmentShader;
             var shadowMapTypeDefine = 'SHADOWMAP_TYPE_BASIC';
-            if (parameters.shadowMapType === constants_js_1.PCFShadowMap) {
+            if (parameters.shadowMapType === Constant.PCFShadowMap)
                 shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF';
-            }
-            else if (parameters.shadowMapType === constants_js_1.PCFSoftShadowMap) {
+            else if (parameters.shadowMapType === Constant.PCFSoftShadowMap)
                 shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF_SOFT';
-            }
             var envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
             var envMapModeDefine = 'ENVMAP_MODE_REFLECTION';
             var envMapBlendingDefine = 'ENVMAP_BLENDING_MULTIPLY';
             if (parameters.envMap) {
                 switch (material.envMap.mapping) {
-                    case constants_js_1.CubeReflectionMapping:
-                    case constants_js_1.CubeRefractionMapping:
+                    case Constant.CubeReflectionMapping:
+                    case Constant.CubeRefractionMapping:
                         envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
                         break;
-                    case constants_js_1.CubeUVReflectionMapping:
-                    case constants_js_1.CubeUVRefractionMapping:
+                    case Constant.CubeUVReflectionMapping:
+                    case Constant.CubeUVRefractionMapping:
                         envMapTypeDefine = 'ENVMAP_TYPE_CUBE_UV';
                         break;
-                    case constants_js_1.EquirectangularReflectionMapping:
-                    case constants_js_1.EquirectangularRefractionMapping:
+                    case Constant.EquirectangularReflectionMapping:
+                    case Constant.EquirectangularRefractionMapping:
                         envMapTypeDefine = 'ENVMAP_TYPE_EQUIREC';
                         break;
-                    case constants_js_1.SphericalReflectionMapping:
+                    case Constant.SphericalReflectionMapping:
                         envMapTypeDefine = 'ENVMAP_TYPE_SPHERE';
                         break;
                 }
                 switch (material.envMap.mapping) {
-                    case constants_js_1.CubeRefractionMapping:
-                    case constants_js_1.EquirectangularRefractionMapping:
+                    case Constant.CubeRefractionMapping:
+                    case Constant.EquirectangularRefractionMapping:
                         envMapModeDefine = 'ENVMAP_MODE_REFRACTION';
                         break;
                 }
                 switch (material.combine) {
-                    case constants_js_1.MultiplyOperation:
+                    case Constant.MultiplyOperation:
                         envMapBlendingDefine = 'ENVMAP_BLENDING_MULTIPLY';
                         break;
-                    case constants_js_1.MixOperation:
+                    case Constant.MixOperation:
                         envMapBlendingDefine = 'ENVMAP_BLENDING_MIX';
                         break;
-                    case constants_js_1.AddOperation:
+                    case Constant.AddOperation:
                         envMapBlendingDefine = 'ENVMAP_BLENDING_ADD';
                         break;
                 }
@@ -174,16 +170,14 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
                 prefixVertex = [
                     customDefines
                 ].filter(filterEmptyLine).join('\n');
-                if (prefixVertex.length > 0) {
+                if (prefixVertex.length > 0)
                     prefixVertex += '\n';
-                }
                 prefixFragment = [
                     customExtensions,
                     customDefines
                 ].filter(filterEmptyLine).join('\n');
-                if (prefixFragment.length > 0) {
+                if (prefixFragment.length > 0)
                     prefixFragment += '\n';
-                }
             }
             else {
                 prefixVertex = [
@@ -298,9 +292,9 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
                     parameters.envMap && extensions.get('EXT_shader_texture_lod') ? '#define TEXTURE_LOD_EXT' : '',
                     'uniform mat4 viewMatrix;',
                     'uniform vec3 cameraPosition;',
-                    (parameters.toneMapping !== constants_js_1.NoToneMapping) ? '#define TONE_MAPPING' : '',
-                    (parameters.toneMapping !== constants_js_1.NoToneMapping) ? ShaderChunk_js_1.ShaderChunk['tonemapping_pars_fragment'] : '',
-                    (parameters.toneMapping !== constants_js_1.NoToneMapping) ? getToneMappingFunction('toneMapping', parameters.toneMapping) : '',
+                    (parameters.toneMapping !== Constant.NoToneMapping) ? '#define TONE_MAPPING' : '',
+                    (parameters.toneMapping !== Constant.NoToneMapping) ? ShaderChunk_js_1.ShaderChunk['tonemapping_pars_fragment'] : '',
+                    (parameters.toneMapping !== Constant.NoToneMapping) ? getToneMappingFunction('toneMapping', parameters.toneMapping) : '',
                     parameters.dithering ? '#define DITHERING' : '',
                     (parameters.outputEncoding || parameters.mapEncoding || parameters.envMapEncoding || parameters.emissiveMapEncoding) ? ShaderChunk_js_1.ShaderChunk['encodings_pars_fragment'] : '',
                     parameters.mapEncoding ? getTexelDecodingFunction('mapTexelToLinear', parameters.mapEncoding) : '',
@@ -321,8 +315,8 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
             }
             var vertexGlsl = prefixVertex + vertexShader;
             var fragmentGlsl = prefixFragment + fragmentShader;
-            var glVertexShader = WebGLShader_js_1.WebGLShader(this.gl, this.gl.VERTEX_SHADER, vertexGlsl);
-            var glFragmentShader = WebGLShader_js_1.WebGLShader(this.gl, this.gl.FRAGMENT_SHADER, fragmentGlsl);
+            var glVertexShader = WebGLShader_js_1.webGLShader(this.gl, this.gl.VERTEX_SHADER, vertexGlsl);
+            var glFragmentShader = WebGLShader_js_1.webGLShader(this.gl, this.gl.FRAGMENT_SHADER, fragmentGlsl);
             this.gl.attachShader(program, glVertexShader);
             this.gl.attachShader(program, glFragmentShader);
             if (material.index0AttributeName !== undefined) {
@@ -396,6 +390,6 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
             return this.getAttributes();
         }
     }
-    exports.WebGLProgram = WebGLProgram;
+    exports.TWebGLProgram = TWebGLProgram;
 });
 //# sourceMappingURL=WebGLProgram.js.map

@@ -10,7 +10,10 @@ declare class BufferAttribute {
     count: number;
     normalized: boolean;
     dynamic: boolean;
-    updateRange: Object;
+    updateRange: {
+        offset: number;
+        count: number;
+    };
     onUploadCallback: Function;
     version: number;
     constructor(array: any, itemSize: number, normalized?: boolean);

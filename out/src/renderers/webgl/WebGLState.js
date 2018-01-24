@@ -477,17 +477,17 @@ define(["require", "exports", "../../constants", "../../math/Vector4"], function
                 boundTexture.texture = webglTexture;
             }
         }
-        compressedTexImage2D() {
+        compressedTexImage2D(...args) {
             try {
-                this.gl.compressedTexImage2D.apply(this.gl, arguments);
+                this.gl.compressedTexImage2D.apply(this.gl, args);
             }
             catch (error) {
                 console.error('THREE.WebGLState:', error);
             }
         }
-        texImage2D() {
+        texImage2D(...args) {
             try {
-                this.gl.texImage2D.apply(this.gl, arguments);
+                this.gl.texImage2D.apply(this.gl, args);
             }
             catch (error) {
                 console.error('THREE.WebGLState:', error);

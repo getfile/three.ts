@@ -552,7 +552,7 @@ function parseUniform( activeInfo, addr, container )
 			idIsIndex = match[ 2 ] === ']',
 			subscript = match[ 3 ];
 
-		if ( idIsIndex ) id = ids; // convert to integer
+		if ( idIsIndex ) id = Number.parseFloat(ids); // convert to integer
 
 		if ( subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength )
 		{

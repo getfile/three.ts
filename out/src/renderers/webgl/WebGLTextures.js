@@ -1,4 +1,4 @@
-define(["require", "exports", "../../constants", "../../math/Math"], function (require, exports, constants_1, Math_1) {
+define(["require", "exports", "../../constants", "../../math/Math"], function (require, exports, Constant, Math_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class WebGLTextures {
@@ -42,15 +42,15 @@ define(["require", "exports", "../../constants", "../../math/Math"], function (r
             return image;
         }
         textureNeedsPowerOfTwo(texture) {
-            return (texture.wrapS !== constants_1.ClampToEdgeWrapping || texture.wrapT !== constants_1.ClampToEdgeWrapping) ||
-                (texture.minFilter !== constants_1.NearestFilter && texture.minFilter !== constants_1.LinearFilter);
+            return (texture.wrapS !== Constant.ClampToEdgeWrapping || texture.wrapT !== Constant.ClampToEdgeWrapping) ||
+                (texture.minFilter !== Constant.NearestFilter && texture.minFilter !== Constant.LinearFilter);
         }
         textureNeedsGenerateMipmaps(texture, isPowerOfTwo) {
             return texture.generateMipmaps && isPowerOfTwo &&
-                texture.minFilter !== constants_1.NearestFilter && texture.minFilter !== constants_1.LinearFilter;
+                texture.minFilter !== Constant.NearestFilter && texture.minFilter !== Constant.LinearFilter;
         }
         filterFallback(f) {
-            if (f === constants_1.NearestFilter || f === constants_1.NearestMipMapNearestFilter || f === constants_1.NearestMipMapLinearFilter)
+            if (f === Constant.NearestFilter || f === Constant.NearestMipMapNearestFilter || f === Constant.NearestMipMapLinearFilter)
                 return this._gl.NEAREST;
             return this._gl.LINEAR;
         }
@@ -154,7 +154,7 @@ define(["require", "exports", "../../constants", "../../math/Math"], function (r
                             let mipmap, mipmaps = cubeImage[i].mipmaps;
                             for (let j = 0, jl = mipmaps.length; j < jl; j++) {
                                 mipmap = mipmaps[j];
-                                if (texture.format !== constants_1.RGBAFormat && texture.format !== constants_1.RGBFormat) {
+                                if (texture.format !== Constant.RGBAFormat && texture.format !== Constant.RGBFormat) {
                                     if (this.state.getCompressedTextureFormats().indexOf(glFormat) > -1)
                                         this.state.compressedTexImage2D(this._gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, j, glFormat, mipmap.width, mipmap.height, 0, mipmap.data);
                                     else
@@ -192,18 +192,18 @@ define(["require", "exports", "../../constants", "../../math/Math"], function (r
             else {
                 this._gl.texParameteri(textureType, this._gl.TEXTURE_WRAP_S, this._gl.CLAMP_TO_EDGE);
                 this._gl.texParameteri(textureType, this._gl.TEXTURE_WRAP_T, this._gl.CLAMP_TO_EDGE);
-                if (texture.wrapS !== constants_1.ClampToEdgeWrapping || texture.wrapT !== constants_1.ClampToEdgeWrapping)
+                if (texture.wrapS !== Constant.ClampToEdgeWrapping || texture.wrapT !== Constant.ClampToEdgeWrapping)
                     console.warn('THREE.WebGLRenderer: Texture is not power of two. Texture.wrapS and Texture.wrapT should be set to THREE.ClampToEdgeWrapping.', texture);
                 this._gl.texParameteri(textureType, this._gl.TEXTURE_MAG_FILTER, this.filterFallback(texture.magFilter));
                 this._gl.texParameteri(textureType, this._gl.TEXTURE_MIN_FILTER, this.filterFallback(texture.minFilter));
-                if (texture.minFilter !== constants_1.NearestFilter && texture.minFilter !== constants_1.LinearFilter)
+                if (texture.minFilter !== Constant.NearestFilter && texture.minFilter !== Constant.LinearFilter)
                     console.warn('THREE.WebGLRenderer: Texture is not power of two. Texture.minFilter should be set to THREE.NearestFilter or THREE.LinearFilter.', texture);
             }
             extension = this.extensions.get('EXT_texture_filter_anisotropic');
             if (extension) {
-                if (texture.type === constants_1.FloatType && this.extensions.get('OES_texture_float_linear') === null)
+                if (texture.type === Constant.FloatType && this.extensions.get('OES_texture_float_linear') === null)
                     return;
-                if (texture.type === constants_1.HalfFloatType && this.extensions.get('OES_texture_half_float_linear') === null)
+                if (texture.type === Constant.HalfFloatType && this.extensions.get('OES_texture_half_float_linear') === null)
                     return;
                 if (texture.anisotropy > 1 || this.properties.get(texture).__currentAnisotropy) {
                     this._gl.texParameterf(textureType, extension.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(texture.anisotropy, this.capabilities.getMaxAnisotropy()));
@@ -233,7 +233,7 @@ define(["require", "exports", "../../constants", "../../math/Math"], function (r
             let mipmap, mipmaps = texture.mipmaps;
             if (texture.isDepthTexture) {
                 let internalFormat = this._gl.DEPTH_COMPONENT;
-                if (texture.type === constants_1.FloatType) {
+                if (texture.type === Constant.FloatType) {
                     if (!this._isWebGL2)
                         throw new Error('Float Depth Texture only supported in WebGL2.0');
                     internalFormat = this._gl.DEPTH_COMPONENT32F;
@@ -241,18 +241,18 @@ define(["require", "exports", "../../constants", "../../math/Math"], function (r
                 else if (this._isWebGL2) {
                     internalFormat = this._gl.DEPTH_COMPONENT16;
                 }
-                if (texture.format === constants_1.DepthFormat && internalFormat === this._gl.DEPTH_COMPONENT) {
-                    if (texture.type !== constants_1.UnsignedShortType && texture.type !== constants_1.UnsignedIntType) {
+                if (texture.format === Constant.DepthFormat && internalFormat === this._gl.DEPTH_COMPONENT) {
+                    if (texture.type !== Constant.UnsignedShortType && texture.type !== Constant.UnsignedIntType) {
                         console.warn('THREE.WebGLRenderer: Use UnsignedShortType or UnsignedIntType for DepthFormat DepthTexture.');
-                        texture.type = constants_1.UnsignedShortType;
+                        texture.type = Constant.UnsignedShortType;
                         glType = this.utils.convert(texture.type);
                     }
                 }
-                if (texture.format === constants_1.DepthStencilFormat) {
+                if (texture.format === Constant.DepthStencilFormat) {
                     internalFormat = this._gl.DEPTH_STENCIL;
-                    if (texture.type !== constants_1.UnsignedInt248Type) {
+                    if (texture.type !== Constant.UnsignedInt248Type) {
                         console.warn('THREE.WebGLRenderer: Use UnsignedInt248Type for DepthStencilFormat DepthTexture.');
-                        texture.type = constants_1.UnsignedInt248Type;
+                        texture.type = Constant.UnsignedInt248Type;
                         glType = this.utils.convert(texture.type);
                     }
                 }
@@ -272,7 +272,7 @@ define(["require", "exports", "../../constants", "../../math/Math"], function (r
             else if (texture.isCompressedTexture) {
                 for (let i = 0, il = mipmaps.length; i < il; i++) {
                     mipmap = mipmaps[i];
-                    if (texture.format !== constants_1.RGBAFormat && texture.format !== constants_1.RGBFormat) {
+                    if (texture.format !== Constant.RGBAFormat && texture.format !== Constant.RGBFormat) {
                         if (this.state.getCompressedTextureFormats().indexOf(glFormat) > -1)
                             this.state.compressedTexImage2D(this._gl.TEXTURE_2D, i, glFormat, mipmap.width, mipmap.height, 0, mipmap.data);
                         else
@@ -338,10 +338,10 @@ define(["require", "exports", "../../constants", "../../math/Math"], function (r
             }
             this.setTexture2D(renderTarget.depthTexture, 0);
             let webglDepthTexture = this.properties.get(renderTarget.depthTexture).__webglTexture;
-            if (renderTarget.depthTexture.format === constants_1.DepthFormat) {
+            if (renderTarget.depthTexture.format === Constant.DepthFormat) {
                 this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.DEPTH_ATTACHMENT, this._gl.TEXTURE_2D, webglDepthTexture, 0);
             }
-            else if (renderTarget.depthTexture.format === constants_1.DepthStencilFormat) {
+            else if (renderTarget.depthTexture.format === Constant.DepthStencilFormat) {
                 this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.DEPTH_STENCIL_ATTACHMENT, this._gl.TEXTURE_2D, webglDepthTexture, 0);
             }
             else

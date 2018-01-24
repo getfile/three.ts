@@ -1,9 +1,9 @@
 import { Color } from '../math/Color';
 import { Vector3 } from '../math/Vector3';
 declare class Face3 {
-    a: any;
-    b: any;
-    c: any;
+    a: number;
+    b: number;
+    c: number;
     color: Color;
     normal: Vector3;
     vertexColors: Array<Color>;

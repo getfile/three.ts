@@ -1,4 +1,5 @@
-declare class WebGLProgram {
+import { WebGLRenderer } from "../WebGLRenderer";
+declare class TWebGLProgram {
     id: any;
     code: any;
     usedTimes: any;
@@ -6,15 +7,15 @@ declare class WebGLProgram {
     fragmentShader: any;
     cachedUniforms: any;
     cachedAttributes: any;
-    gl: any;
-    program: any;
+    gl: WebGLRenderingContext;
+    program: WebGLProgram;
     renderer: any;
     diagnostics: any;
-    constructor(renderer: any, extensions: any, code: any, material: any, shader: any, parameters: any);
+    constructor(renderer: WebGLRenderer, extensions: any, code: any, material: any, shader: any, parameters: any);
     getUniforms(): any;
     getAttributes(): any;
     destroy(): void;
     readonly uniforms: any;
     readonly attributes: any;
 }
-export { WebGLProgram };
+export { TWebGLProgram };

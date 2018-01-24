@@ -1,4 +1,4 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../../core/InterleavedBufferAttribute"], function (require, exports, InterleavedBufferAttribute_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class WebGLAttributes {
@@ -53,12 +53,12 @@ define(["require", "exports"], function (require, exports) {
             }
         }
         get(attribute) {
-            if (attribute.isInterleavedBufferAttribute)
+            if (attribute instanceof InterleavedBufferAttribute_1.InterleavedBufferAttribute)
                 attribute = attribute.data;
             return this.buffers[attribute.uuid];
         }
         remove(attribute) {
-            if (attribute.isInterleavedBufferAttribute)
+            if (attribute instanceof InterleavedBufferAttribute_1.InterleavedBufferAttribute)
                 attribute = attribute.data;
             let data = this.buffers[attribute.uuid];
             if (data) {
@@ -67,7 +67,7 @@ define(["require", "exports"], function (require, exports) {
             }
         }
         update(attribute, bufferType) {
-            if (attribute.isInterleavedBufferAttribute)
+            if (attribute instanceof InterleavedBufferAttribute_1.InterleavedBufferAttribute)
                 attribute = attribute.data;
             let data = this.buffers[attribute.uuid];
             if (data === undefined)
