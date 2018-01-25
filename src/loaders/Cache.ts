@@ -2,34 +2,35 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
+//add, get, remove, clear
 class Cache
 {
-	static enabled = false;
-	static files = {};
+    private static enabled: boolean = false;
+    private static files = {};
 
-	static add( key, file )
-	{
-		if ( Cache.enabled === false ) return;
-		// console.log( 'THREE.Cache', 'Adding key:', key );
-		Cache.files[ key ] = file;
-	}
+    static add(key: string, file)
+    {
+        if (Cache.enabled === false) return;
+        // console.log( 'THREE.Cache', 'Adding key:', key );
+        Cache.files[key] = file;
+    }
 
-	static get( key )
-	{
-		if ( Cache.enabled === false ) return;
-		// console.log( 'THREE.Cache', 'Checking key:', key );
-		return Cache.files[ key ];
-	}
+    static get(key)
+    {
+        if (Cache.enabled === false) return;
+        // console.log( 'THREE.Cache', 'Checking key:', key );
+        return Cache.files[key];
+    }
 
-	static remove( key )
-	{
-		delete Cache.files[ key ];
-	}
+    static remove(key)
+    {
+        delete Cache.files[key];
+    }
 
-	static clear()
-	{
-		Cache.files = {};
-	}
+    static clear()
+    {
+        Cache.files = {};
+    }
 
 }
 

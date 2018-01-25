@@ -1,4 +1,6 @@
 import { Object3D } from '../core/Object3D';
+import { WebGLBackground } from '../renderers/webgl/WebGLBackground';
+import { Fog } from './Fog';
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -6,46 +8,47 @@ import { Object3D } from '../core/Object3D';
 
 class Scene extends Object3D
 {
-	background;
-	fog;
-	overrideMaterial;
-	autoUpdate;
+    background: WebGLBackground;
+    fog: Fog;
 
-	constructor()
-	{
-		super();
+    overrideMaterial;
+    autoUpdate: boolean;
 
-		this.type = 'Scene';
-		this.background = null;
-		this.fog = null;
-		this.overrideMaterial = null;
+    constructor()
+    {
+        super();
 
-		this.autoUpdate = true; // checked by the renderer
-	}
+        this.type = 'Scene';
+        this.background = null;
+        this.fog = null;
+        this.overrideMaterial = null;
 
-	copy( source, recursive )
-	{
-		super.copy( source, recursive );
+        this.autoUpdate = true; // checked by the renderer
+    }
 
-		if ( source.background !== null ) this.background = source.background.clone();
-		if ( source.fog !== null ) this.fog = source.fog.clone();
-		if ( source.overrideMaterial !== null ) this.overrideMaterial = source.overrideMaterial.clone();
+    copy(source, recursive)
+    {
+        super.copy(source, recursive);
 
-		this.autoUpdate = source.autoUpdate;
-		this.matrixAutoUpdate = source.matrixAutoUpdate;
+        if (source.background !== null) this.background = source.background.clone();
+        if (source.fog !== null) this.fog = source.fog.clone();
+        if (source.overrideMaterial !== null) this.overrideMaterial = source.overrideMaterial.clone();
 
-		return this;
-	}
+        this.autoUpdate = source.autoUpdate;
+        this.matrixAutoUpdate = source.matrixAutoUpdate;
 
-	toJSON( meta )
-	{
-		var data = super.toJSON( meta );
+        return this;
+    }
 
-		if ( this.background !== null ) data.object.background = this.background.toJSON( meta );
-		if ( this.fog !== null ) data.object.fog = this.fog.toJSON();
+    toJSON(meta)
+    {
+        var data = super.toJSON(meta);
 
-		return data;
-	}
+        if (this.background !== null) data.object.background = this.background.toJSON(meta);
+        if (this.fog !== null) data.object.fog = this.fog.toJSON();
+
+        return data;
+    }
 
 }
 

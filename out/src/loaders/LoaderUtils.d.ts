@@ -1,6 +1,5 @@
 declare class LoaderUtils {
-    constructor();
-    decodeText(array: any): any;
-    extractUrlBase(url: any): string;
+    static decodeText(array: number[]): string;
+    static extractUrlBase(url: string): string;
 }
 export { LoaderUtils };

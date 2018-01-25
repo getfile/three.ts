@@ -4,78 +4,80 @@
 
 class LoadingManager
 {
-	onStart;
-	onLoad;
-	onProgress;
-	onError;
+    onStart: Function;
+    onLoad: Function;
+    onProgress: Function;
+    onError: Function;
+    urlModifier: Function;
 
-	isLoading;
-	itemsLoaded;
-	itemsTotal;
-	urlModifier;
+    isLoading: boolean;
 
-	constructor( onLoad?, onProgress?, onError?)
-	{
-		this.isLoading = false;
-		this.itemsLoaded = 0;
-		this.itemsTotal = 0;
-		this.urlModifier = undefined;
+    itemsLoaded: number; //item num
+    itemsTotal: number; //item count
 
-		this.onStart = undefined;
-		this.onLoad = onLoad;
-		this.onProgress = onProgress;
-		this.onError = onError;
-	}
+    constructor(onLoad?: Function, onProgress?: Function, onError?: Function)
+    {
+        this.isLoading = false;
+        this.itemsLoaded = 0;
+        this.itemsTotal = 0;
+        this.urlModifier = undefined;
 
-	itemStart( url )
-	{
-		this.itemsTotal++;
-		if ( this.isLoading === false )
-		{
-			if ( this.onStart !== undefined )
-				this.onStart( url, this.itemsLoaded, this.itemsTotal );
-		}
+        this.onStart = undefined;
+        this.onLoad = onLoad;
+        this.onProgress = onProgress;
+        this.onError = onError;
+    }
 
-		this.isLoading = true;
-	}
+    //loader start
+    itemStart(url: string)
+    {
+        this.itemsTotal++;
+        if (this.isLoading === false)
+        {
+            if (this.onStart !== undefined)
+                this.onStart(url, this.itemsLoaded, this.itemsTotal);
+        }
+        this.isLoading = true;
+    }
 
-	itemEnd( url )
-	{
-		this.itemsLoaded++;
-		if ( this.onProgress !== undefined )
-			this.onProgress( url, this.itemsLoaded, this.itemsTotal );
+    //loader over
+    itemEnd(url: string)
+    {
+        this.itemsLoaded++;
+        if (this.onProgress !== undefined)
+            this.onProgress(url, this.itemsLoaded, this.itemsTotal);
 
-		if ( this.itemsLoaded === this.itemsTotal )
-		{
-			this.isLoading = false;
-			if ( this.onLoad !== undefined )
-				this.onLoad();
-		}
-	}
+        if (this.itemsLoaded === this.itemsTotal)
+        {
+            this.isLoading = false;
+            if (this.onLoad !== undefined)
+                this.onLoad();
+        }
+    }
 
-	itemError( url )
-	{
-		if ( this.onError !== undefined )
-			this.onError( url );
-	}
+    //loader error
+    itemError(url: string)
+    {
+        if (this.onError !== undefined)
+            this.onError(url);
+    }
 
-	resolveURL( url )
-	{
-		if ( this.urlModifier )
-			return this.urlModifier( url );
+    resolveURL(url: string): string
+    {
+        if (this.urlModifier)
+            return this.urlModifier(url);
+        return url;
+    }
 
-		return url;
-	}
-
-	setURLModifier( transform )
-	{
-		this.urlModifier = transform;
-		return this;
-	}
+    setURLModifier(transform: Function): LoadingManager
+    {
+        this.urlModifier = transform;
+        return this;
+    }
 
 }
 
-var DefaultLoadingManager = new LoadingManager();
+let defaultLoadingManager = new LoadingManager();
 
 
-export { LoadingManager, DefaultLoadingManager };
+export { LoadingManager, defaultLoadingManager };

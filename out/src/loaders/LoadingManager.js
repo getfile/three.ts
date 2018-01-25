@@ -45,7 +45,7 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.LoadingManager = LoadingManager;
-    var DefaultLoadingManager = new LoadingManager();
-    exports.DefaultLoadingManager = DefaultLoadingManager;
+    let defaultLoadingManager = new LoadingManager();
+    exports.defaultLoadingManager = defaultLoadingManager;
 });
 //# sourceMappingURL=LoadingManager.js.map
