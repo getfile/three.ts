@@ -34,7 +34,7 @@ class PolyhedronGeometry extends Geometry
 // PolyhedronBufferGeometry
 class PolyhedronBufferGeometry extends BufferGeometry
 {
-	constructor( vertices, indices, radius, detail )
+	constructor( vertices, indices, radius: number = 1, detail: number = 0 )
 	{
 		super();
 		this.type = 'PolyhedronBufferGeometry';

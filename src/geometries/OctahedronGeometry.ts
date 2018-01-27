@@ -30,7 +30,7 @@ class OctahedronGeometry extends Geometry
 // OctahedronBufferGeometry
 class OctahedronBufferGeometry extends PolyhedronBufferGeometry
 {
-	constructor( radius, detail )
+	constructor( radius, detail: number = 0 )
 	{
 		var vertices = [
 			1, 0, 0, - 1, 0, 0, 0, 1, 0,

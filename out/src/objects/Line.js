@@ -1,4 +1,4 @@
-define(["require", "exports", "../geom/Sphere", "../geom/Ray", "../core/Object3D", "../core/BufferGeometry", "../math/Matrix4", "../math/Vector3", "../materials/LineBasicMaterial", "./LineSegments", "../core/Geometry"], function (require, exports, Sphere_1, Ray_1, Object3D_1, BufferGeometry_1, Matrix4_1, Vector3_1, LineBasicMaterial_1, LineSegments_1, Geometry_1) {
+define(["require", "exports", "../geom/Sphere", "../geom/Ray", "../core/Object3D", "../core/BufferGeometry", "../math/Matrix4", "../math/Vector3", "../materials/LineBasicMaterial", "./LineSegments"], function (require, exports, Sphere_1, Ray_1, Object3D_1, BufferGeometry_1, Matrix4_1, Vector3_1, LineBasicMaterial_1, LineSegments_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Line extends Object3D_1.Object3D {
@@ -79,7 +79,7 @@ define(["require", "exports", "../geom/Sphere", "../geom/Ray", "../core/Object3D
                     }
                 }
             }
-            else if (geometry instanceof Geometry_1.Geometry) {
+            else if (geometry instanceof BufferGeometry_1.BufferGeometry) {
                 var vertices = geometry.vertices;
                 var nbVertices = vertices.length;
                 for (var i = 0; i < nbVertices - 1; i += step) {
