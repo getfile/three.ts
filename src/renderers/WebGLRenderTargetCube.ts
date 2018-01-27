@@ -6,16 +6,16 @@ import { WebGLRenderTarget } from './WebGLRenderTarget';
 
 class WebGLRenderTargetCube extends WebGLRenderTarget
 {
-	activeCubeFace;
-	activeMipMapLevel;
+    activeCubeFace: number;
+    activeMipMapLevel: number;
 
-	constructor( width, height, options )
-	{
-		super( width, height, options );
+    constructor(width: number, height: number, options)
+    {
+        super(width, height, options);
 
-		this.activeCubeFace = 0; // PX 0, NX 1, PY 2, NY 3, PZ 4, NZ 5
-		this.activeMipMapLevel = 0;
-	}
+        this.activeCubeFace = 0; // PX 0, NX 1, PY 2, NY 3, PZ 4, NZ 5
+        this.activeMipMapLevel = 0;
+    }
 }
 
 

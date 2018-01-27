@@ -36,15 +36,14 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
             ];
         }
         allocateBones(object) {
-            var skeleton = object.skeleton;
-            var bones = skeleton.bones;
-            if (this.capabilities.floatVertexTextures) {
+            let skeleton = object.skeleton;
+            let bones = skeleton.bones;
+            if (this.capabilities.floatVertexTextures)
                 return 1024;
-            }
             else {
-                var nVertexUniforms = this.capabilities.maxVertexUniforms;
-                var nVertexMatrices = Math.floor((nVertexUniforms - 20) / 4);
-                var maxBones = Math.min(nVertexMatrices, bones.length);
+                let nVertexUniforms = this.capabilities.maxVertexUniforms;
+                let nVertexMatrices = Math.floor((nVertexUniforms - 20) / 4);
+                let maxBones = Math.min(nVertexMatrices, bones.length);
                 if (maxBones < bones.length) {
                     console.warn('THREE.WebGLRenderer: Skeleton has ' + bones.length + ' bones. This GPU supports ' + maxBones + '.');
                     return 0;
@@ -53,7 +52,7 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
             }
         }
         getTextureEncodingFromMap(map, gammaOverrideLinear) {
-            var encoding;
+            let encoding;
             if (!map) {
                 encoding = Constant.LinearEncoding;
             }
@@ -69,16 +68,16 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
             return encoding;
         }
         getParameters(material, lights, shadows, fog, nClipPlanes, nClipIntersection, object) {
-            var shaderID = this.shaderIDs[material.type];
-            var maxBones = object.isSkinnedMesh ? this.allocateBones(object) : 0;
-            var precision = this.capabilities.precision;
+            let shaderID = this.shaderIDs[material.type];
+            let maxBones = object.isSkinnedMesh ? this.allocateBones(object) : 0;
+            let precision = this.capabilities.precision;
             if (material.precision !== null) {
                 precision = this.capabilities.getMaxPrecision(material.precision);
                 if (precision !== material.precision)
                     console.warn('THREE.WebGLProgram.getParameters:', material.precision, 'not supported, using', precision, 'instead.');
             }
-            var currentRenderTarget = this.renderer.getRenderTarget();
-            var parameters = {
+            let currentRenderTarget = this.renderer.getRenderTarget();
+            let parameters = {
                 shaderID: shaderID,
                 precision: precision,
                 supportsVertexTextures: this.capabilities.vertexTextures,
@@ -137,7 +136,7 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
             return parameters;
         }
         getProgramCode(material, parameters) {
-            var array = [];
+            let array = [];
             if (parameters.shaderID)
                 array.push(parameters.shaderID);
             else {
@@ -145,21 +144,21 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
                 array.push(material.vertexShader);
             }
             if (material.defines !== undefined) {
-                for (var name in material.defines) {
+                for (let name in material.defines) {
                     array.push(name);
                     array.push(material.defines[name]);
                 }
             }
-            for (var i = 0; i < this.parameterNames.length; i++)
+            for (let i = 0; i < this.parameterNames.length; i++)
                 array.push(parameters[this.parameterNames[i]]);
             array.push(material.onBeforeCompile.toString());
             array.push(this.renderer.gammaOutput);
             return array.join();
         }
         acquireProgram(material, shader, parameters, code) {
-            var program;
-            for (var p = 0, pl = this.programs.length; p < pl; p++) {
-                var programInfo = this.programs[p];
+            let program;
+            for (let p = 0, pl = this.programs.length; p < pl; p++) {
+                let programInfo = this.programs[p];
                 if (programInfo.code === code) {
                     program = programInfo;
                     ++program.usedTimes;
@@ -174,7 +173,7 @@ define(["require", "exports", "../../constants.js", "./WebGLProgram.js"], functi
         }
         releaseProgram(program) {
             if (--program.usedTimes === 0) {
-                var i = this.programs.indexOf(program);
+                let i = this.programs.indexOf(program);
                 this.programs[i] = this.programs[this.programs.length - 1];
                 this.programs.pop();
                 program.destroy();

@@ -14,9 +14,9 @@ declare class WebGLCapabilities {
     vertexTextures: any;
     floatFragmentTextures: any;
     floatVertexTextures: any;
-    gl: any;
+    gl: WebGLRenderingContext;
     extensions: any;
-    constructor(gl: any, extensions: any, parameters: any);
+    constructor(gl: WebGLRenderingContext, extensions: any, parameters: any);
     getMaxAnisotropy(): any;
     getMaxPrecision(precision: any): "highp" | "mediump" | "lowp";
 }

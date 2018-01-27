@@ -16,7 +16,7 @@ declare class Matrix4 {
     makeRotationFromEuler(euler: Euler): this;
     makeRotationFromQuaternion(q: Quaternion): this;
     lookAt(eye: Vector3, target: Vector3, up: Vector3): this;
-    multiply(m: Matrix4, n: Matrix4): this;
+    multiply(m: Matrix4, n?: Matrix4): this;
     premultiply(m: Matrix4): this;
     multiplyMatrices(a: Matrix4, b: Matrix4): this;
     multiplyScalar(s: number): this;

@@ -58,7 +58,7 @@ define(["require", "exports"], function (require, exports) {
                 renderItem.z = z;
                 renderItem.group = group;
             }
-            (material.this.transparent === true ? this.transparent : this.opaque).push(renderItem);
+            (material.transparent === true ? this.transparent : this.opaque).push(renderItem);
             this.renderItemsIndex++;
         }
         sort() {
@@ -68,6 +68,7 @@ define(["require", "exports"], function (require, exports) {
                 this.transparent.sort(reversePainterSortStable);
         }
     }
+    exports.WebGLRenderList = WebGLRenderList;
     class WebGLRenderLists {
         constructor() {
             this.lists = {};

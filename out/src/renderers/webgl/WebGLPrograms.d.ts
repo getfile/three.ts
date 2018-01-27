@@ -1,12 +1,15 @@
 import { TWebGLProgram } from './WebGLProgram.js';
+import { WebGLRenderer } from '../WebGLRenderer';
+import { WebGLExtensions } from './WebGLExtensions';
+import { WebGLCapabilities } from './WebGLCapabilities';
 declare class WebGLPrograms {
-    renderer: any;
-    extensions: any;
-    capabilities: any;
+    renderer: WebGLRenderer;
+    extensions: WebGLExtensions;
+    capabilities: WebGLCapabilities;
     programs: TWebGLProgram[];
     shaderIDs: any;
-    parameterNames: any;
-    constructor(renderer: any, extensions: any, capabilities: any);
+    parameterNames: string[];
+    constructor(renderer: WebGLRenderer, extensions: WebGLExtensions, capabilities: WebGLCapabilities);
     allocateBones(object: any): number;
     getTextureEncodingFromMap(map: any, gammaOverrideLinear: any): any;
     getParameters(material: any, lights: any, shadows: any, fog: any, nClipPlanes: any, nClipIntersection: any, object: any): {
@@ -58,7 +61,7 @@ declare class WebGLPrograms {
         shadowMapEnabled: boolean;
         shadowMapType: any;
         toneMapping: any;
-        physicallyCorrectLights: any;
+        physicallyCorrectLights: boolean;
         premultipliedAlpha: any;
         alphaTest: any;
         doubleSided: boolean;

@@ -1,4 +1,4 @@
-define(["require", "exports", "../core/Object3D", "../core/Face3", "../core/BufferGeometry", "../math/Vector3", "../math/Vector2", "../math/Matrix4", "../geom/Sphere", "../geom/Ray", "../geom/Triangle", "../constants", "../materials/MeshBasicMaterial"], function (require, exports, Object3D_1, Face3_1, BufferGeometry_1, Vector3_1, Vector2_1, Matrix4_1, Sphere_1, Ray_1, Triangle_1, constants_1, MeshBasicMaterial_1) {
+define(["require", "exports", "../core/Object3D", "../core/Face3", "../core/BufferGeometry", "../math/Vector3", "../math/Vector2", "../math/Matrix4", "../geom/Sphere", "../geom/Ray", "../geom/Triangle", "../constants", "../materials/MeshBasicMaterial", "../core/Geometry"], function (require, exports, Object3D_1, Face3_1, BufferGeometry_1, Vector3_1, Vector2_1, Matrix4_1, Sphere_1, Ray_1, Triangle_1, Constant, MeshBasicMaterial_1, Geometry_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Mesh extends Object3D_1.Object3D {
@@ -7,7 +7,7 @@ define(["require", "exports", "../core/Object3D", "../core/Face3", "../core/Buff
             this.type = 'Mesh';
             this.geometry = geometry !== undefined ? geometry : new BufferGeometry_1.BufferGeometry();
             this.material = material !== undefined ? material : new MeshBasicMaterial_1.MeshBasicMaterial({ color: Math.random() * 0xffffff });
-            this.drawMode = constants_1.TrianglesDrawMode;
+            this.drawMode = Constant.TrianglesDrawMode;
             this.updateMorphTargets();
         }
         setDrawMode(value) {
@@ -25,7 +25,7 @@ define(["require", "exports", "../core/Object3D", "../core/Face3", "../core/Buff
         updateMorphTargets() {
             let geometry = this.geometry;
             let m, ml, name;
-            if (geometry.isBufferGeometry) {
+            if (geometry instanceof BufferGeometry_1.BufferGeometry) {
                 let morphAttributes = geometry.morphAttributes;
                 let keys = Object.keys(morphAttributes);
                 if (keys.length > 0) {
@@ -80,10 +80,10 @@ define(["require", "exports", "../core/Object3D", "../core/Face3", "../core/Buff
             }
             function checkIntersection(object, material, raycaster, ray, pA, pB, pC, point) {
                 let intersect;
-                if (material.side === constants_1.BackSide)
+                if (material.side === Constant.BackSide)
                     intersect = ray.intersectTriangle(pC, pB, pA, true, point);
                 else
-                    intersect = ray.intersectTriangle(pA, pB, pC, material.side !== constants_1.DoubleSide, point);
+                    intersect = ray.intersectTriangle(pA, pB, pC, material.side !== Constant.DoubleSide, point);
                 if (intersect === null)
                     return null;
                 intersectionPointWorld.copy(point);
@@ -131,7 +131,7 @@ define(["require", "exports", "../core/Object3D", "../core/Face3", "../core/Buff
                 if (ray.intersectsBox(geometry.boundingBox) === false)
                     return;
             let intersection;
-            if (geometry.isBufferGeometry) {
+            if (geometry instanceof BufferGeometry_1.BufferGeometry) {
                 let a, b, c;
                 let index = geometry.index;
                 let position = geometry.attributes.position;
@@ -162,7 +162,7 @@ define(["require", "exports", "../core/Object3D", "../core/Face3", "../core/Buff
                     }
                 }
             }
-            else if (geometry.isGeometry) {
+            else if (geometry instanceof Geometry_1.Geometry) {
                 let fvA, fvB, fvC;
                 let isMultiMaterial = Array.isArray(material);
                 let vertices = geometry.vertices;

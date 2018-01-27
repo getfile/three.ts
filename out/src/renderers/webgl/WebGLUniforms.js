@@ -3,13 +3,6 @@ define(["require", "exports", "../../textures/CubeTexture", "../../textures/Text
     Object.defineProperty(exports, "__esModule", { value: true });
     let emptyTexture = new Texture_1.Texture();
     let emptyCubeTexture = new CubeTexture_1.CubeTexture();
-    class UniformContainer {
-        constructor() {
-            this.seq = [];
-            this.map = {};
-        }
-    }
-    exports.UniformContainer = UniformContainer;
     let arrayCacheF32 = [];
     let arrayCacheI32 = [];
     let mat4array = new Float32Array(16);
@@ -49,48 +42,39 @@ define(["require", "exports", "../../textures/CubeTexture", "../../textures/Text
         gl.uniform1i(this.addr, v);
     }
     function setValue2fv(gl, v) {
-        if (v.x === undefined) {
+        if (v.x === undefined)
             gl.uniform2fv(this.addr, v);
-        }
-        else {
+        else
             gl.uniform2f(this.addr, v.x, v.y);
-        }
     }
     function setValue3fv(gl, v) {
-        if (v.x !== undefined) {
+        if (v.x !== undefined)
             gl.uniform3f(this.addr, v.x, v.y, v.z);
-        }
-        else if (v.r !== undefined) {
+        else if (v.r !== undefined)
             gl.uniform3f(this.addr, v.r, v.g, v.b);
-        }
-        else {
+        else
             gl.uniform3fv(this.addr, v);
-        }
     }
     function setValue4fv(gl, v) {
-        if (v.x === undefined) {
+        if (v.x === undefined)
             gl.uniform4fv(this.addr, v);
-        }
-        else {
+        else
             gl.uniform4f(this.addr, v.x, v.y, v.z, v.w);
-        }
     }
     function setValue2fm(gl, v) {
         gl.uniformMatrix2fv(this.addr, false, v.elements || v);
     }
     function setValue3fm(gl, v) {
-        if (v.elements === undefined) {
+        if (v.elements === undefined)
             gl.uniformMatrix3fv(this.addr, false, v);
-        }
         else {
             mat3array.set(v.elements);
             gl.uniformMatrix3fv(this.addr, false, mat3array);
         }
     }
     function setValue4fm(gl, v) {
-        if (v.elements === undefined) {
+        if (v.elements === undefined)
             gl.uniformMatrix4fv(this.addr, false, v);
-        }
         else {
             mat4array.set(v.elements);
             gl.uniformMatrix4fv(this.addr, false, mat4array);
@@ -164,16 +148,14 @@ define(["require", "exports", "../../textures/CubeTexture", "../../textures/Text
     function setValueT1a(gl, v, renderer) {
         let n = v.length, units = allocTexUnits(renderer, n);
         gl.uniform1iv(this.addr, units);
-        for (let i = 0; i !== n; ++i) {
+        for (let i = 0; i !== n; ++i)
             renderer.setTexture2D(v[i] || emptyTexture, units[i]);
-        }
     }
     function setValueT6a(gl, v, renderer) {
         let n = v.length, units = allocTexUnits(renderer, n);
         gl.uniform1iv(this.addr, units);
-        for (let i = 0; i !== n; ++i) {
+        for (let i = 0; i !== n; ++i)
             renderer.setTextureCube(v[i] || emptyCubeTexture, units[i]);
-        }
     }
     function getPureArraySetter(type) {
         switch (type) {
@@ -207,6 +189,13 @@ define(["require", "exports", "../../textures/CubeTexture", "../../textures/Text
         this.size = activeInfo.size;
         this.setValue = getPureArraySetter(activeInfo.type);
     }
+    class UniformContainer {
+        constructor() {
+            this.seq = [];
+            this.map = {};
+        }
+    }
+    exports.UniformContainer = UniformContainer;
     class StructuredUniform extends UniformContainer {
         constructor(id) {
             super();

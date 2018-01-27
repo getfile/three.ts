@@ -3,8 +3,8 @@ define(["require", "exports", "../math/Vector3"], function (require, exports, Ve
     Object.defineProperty(exports, "__esModule", { value: true });
     class Ray {
         constructor(origin, direction) {
-            this.origin = (origin !== undefined) ? origin : new Vector3_1.Vector3();
-            this.direction = (direction !== undefined) ? direction : new Vector3_1.Vector3();
+            this.origin = origin || new Vector3_1.Vector3();
+            this.direction = direction || new Vector3_1.Vector3();
         }
         set(origin, direction) {
             this.origin.copy(origin);
@@ -36,9 +36,8 @@ define(["require", "exports", "../math/Vector3"], function (require, exports, Ve
             var result = optionalTarget || new Vector3_1.Vector3();
             result.subVectors(point, this.origin);
             var directionDistance = result.dot(this.direction);
-            if (directionDistance < 0) {
+            if (directionDistance < 0)
                 return result.copy(this.origin);
-            }
             return result.copy(this.direction).multiplyScalar(directionDistance).add(this.origin);
         }
         distanceToPoint(point) {
@@ -47,9 +46,8 @@ define(["require", "exports", "../math/Vector3"], function (require, exports, Ve
         distanceSqToPoint(point) {
             var v1 = new Vector3_1.Vector3();
             var directionDistance = v1.subVectors(point, this.origin).dot(this.direction);
-            if (directionDistance < 0) {
+            if (directionDistance < 0)
                 return this.origin.distanceToSquared(point);
-            }
             v1.copy(this.direction).multiplyScalar(directionDistance).add(this.origin);
             return v1.distanceToSquared(point);
         }
@@ -114,12 +112,10 @@ define(["require", "exports", "../math/Vector3"], function (require, exports, Ve
                 s0 = Math.max(0, -(a01 * s1 + b0));
                 sqrDist = -s0 * s0 + s1 * (s1 + 2 * b1) + c;
             }
-            if (optionalPointOnRay) {
+            if (optionalPointOnRay)
                 optionalPointOnRay.copy(this.direction).multiplyScalar(s0).add(this.origin);
-            }
-            if (optionalPointOnSegment) {
+            if (optionalPointOnSegment)
                 optionalPointOnSegment.copy(segDir).multiplyScalar(s1).add(segCenter);
-            }
             return sqrDist;
         }
         intersectSphere(sphere, optionalTarget) {
@@ -145,9 +141,8 @@ define(["require", "exports", "../math/Vector3"], function (require, exports, Ve
         distanceToPlane(plane) {
             var denominator = plane.normal.dot(this.direction);
             if (denominator === 0) {
-                if (plane.distanceToPoint(this.origin) === 0) {
+                if (plane.distanceToPoint(this.origin) === 0)
                     return 0;
-                }
                 return null;
             }
             var t = -(this.origin.dot(plane.normal) + plane.constant) / denominator;
@@ -155,20 +150,17 @@ define(["require", "exports", "../math/Vector3"], function (require, exports, Ve
         }
         intersectPlane(plane, optionalTarget) {
             var t = this.distanceToPlane(plane);
-            if (t === null) {
+            if (t === null)
                 return null;
-            }
             return this.at(t, optionalTarget);
         }
         intersectsPlane(plane) {
             var distToPoint = plane.distanceToPoint(this.origin);
-            if (distToPoint === 0) {
+            if (distToPoint === 0)
                 return true;
-            }
             var denominator = plane.normal.dot(this.direction);
-            if (denominator * distToPoint < 0) {
+            if (denominator * distToPoint < 0)
                 return true;
-            }
             return false;
         }
         intersectBox(box, optionalTarget) {
@@ -219,7 +211,6 @@ define(["require", "exports", "../math/Vector3"], function (require, exports, Ve
             var v = new Vector3_1.Vector3();
             return this.intersectBox(box, v) !== null;
         }
-        ;
         intersectTriangle(a, b, c, backfaceCulling, optionalTarget) {
             var diff = new Vector3_1.Vector3();
             var edge1 = new Vector3_1.Vector3();
@@ -239,25 +230,20 @@ define(["require", "exports", "../math/Vector3"], function (require, exports, Ve
                 sign = -1;
                 DdN = -DdN;
             }
-            else {
+            else
                 return null;
-            }
             diff.subVectors(this.origin, a);
             var DdQxE2 = sign * this.direction.dot(edge2.crossVectors(diff, edge2));
-            if (DdQxE2 < 0) {
+            if (DdQxE2 < 0)
                 return null;
-            }
             var DdE1xQ = sign * this.direction.dot(edge1.cross(diff));
-            if (DdE1xQ < 0) {
+            if (DdE1xQ < 0)
                 return null;
-            }
-            if (DdQxE2 + DdE1xQ > DdN) {
+            if (DdQxE2 + DdE1xQ > DdN)
                 return null;
-            }
             var QdN = -sign * diff.dot(normal);
-            if (QdN < 0) {
+            if (QdN < 0)
                 return null;
-            }
             return this.at(QdN / DdN, optionalTarget);
         }
         applyMatrix4(matrix4) {

@@ -1,7 +1,7 @@
 import { WebGLRenderTarget } from './WebGLRenderTarget';
 declare class WebGLRenderTargetCube extends WebGLRenderTarget {
-    activeCubeFace: any;
-    activeMipMapLevel: any;
-    constructor(width: any, height: any, options: any);
+    activeCubeFace: number;
+    activeMipMapLevel: number;
+    constructor(width: number, height: number, options: any);
 }
 export { WebGLRenderTargetCube };

@@ -24,11 +24,11 @@ class WebGLCapabilities
 	floatFragmentTextures;
 	floatVertexTextures;
 
-	gl;
+	gl:WebGLRenderingContext;
 	extensions;
 
 
-	constructor( gl, extensions, parameters )
+	constructor( gl:WebGLRenderingContext, extensions, parameters )
 	{
 		this.gl = gl;
 		this.extensions = extensions;

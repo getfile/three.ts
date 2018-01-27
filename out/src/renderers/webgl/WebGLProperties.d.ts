@@ -3,7 +3,7 @@ declare class WebGLProperties {
     properties: any;
     constructor();
     get(object: EventDispatcher): any;
-    remove(object: any): void;
+    remove(object: EventDispatcher): void;
     clear(): void;
 }
 export { WebGLProperties };

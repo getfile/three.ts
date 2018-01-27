@@ -8,51 +8,54 @@ import { Matrix4 } from '../math/Matrix4';
 import { Quaternion } from '../math/Quaternion';
 import { Object3D } from '../core/Object3D';
 import { Vector3 } from '../math/Vector3';
+import { Vector4 } from '../math/Vector4';
 
 class Camera extends Object3D
 {
 
-	matrixWorldInverse: Matrix4;
-	projectionMatrix: Matrix4;
+    matrixWorldInverse: Matrix4;
+    projectionMatrix: Matrix4;
 
-	constructor()
-	{
-		super();
+    bounds: Vector4;
 
-		this.type = 'Camera';
-		this.matrixWorldInverse = new Matrix4();
-		this.projectionMatrix = new Matrix4();
-	}
+    constructor()
+    {
+        super();
 
-	copy( source, recursive: boolean = true )
-	{
-		super.copy( source, recursive );
+        this.type = 'Camera';
+        this.matrixWorldInverse = new Matrix4();
+        this.projectionMatrix = new Matrix4();
+    }
 
-		this.matrixWorldInverse.copy( source.matrixWorldInverse );
-		this.projectionMatrix.copy( source.projectionMatrix );
+    copy(source, recursive: boolean = true)
+    {
+        super.copy(source, recursive);
 
-		return this;
-	}
+        this.matrixWorldInverse.copy(source.matrixWorldInverse);
+        this.projectionMatrix.copy(source.projectionMatrix);
 
-	getWorldDirection( optionalTarget )
-	{
-		var quaternion = new Quaternion();
-		var result = optionalTarget || new Vector3();
+        return this;
+    }
 
-		this.getWorldQuaternion( quaternion );
-		return result.set( 0, 0, - 1 ).applyQuaternion( quaternion );
-	}
+    getWorldDirection(optionalTarget)
+    {
+        var quaternion = new Quaternion();
+        var result = optionalTarget || new Vector3();
 
-	updateMatrixWorld( force? )
-	{
-		Object3D.prototype.updateMatrixWorld.call( this, force );
-		this.matrixWorldInverse.getInverse( this.matrixWorld );
-	}
+        this.getWorldQuaternion(quaternion);
+        return result.set(0, 0, - 1).applyQuaternion(quaternion);
+    }
 
-	clone()
-	{
-		return new Camera().copy( this );
-	}
+    updateMatrixWorld(force?)
+    {
+        Object3D.prototype.updateMatrixWorld.call(this, force);
+        this.matrixWorldInverse.getInverse(this.matrixWorld);
+    }
+
+    clone()
+    {
+        return new Camera().copy(this);
+    }
 }
 
 export { Camera };

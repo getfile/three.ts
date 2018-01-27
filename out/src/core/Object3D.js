@@ -82,34 +82,28 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             let v1 = new Vector3_1.Vector3(0, 1, 0);
             return this.rotateOnAxis(v1, angle);
         }
-        ;
         rotateZ(angle) {
             let v1 = new Vector3_1.Vector3(0, 0, 1);
             return this.rotateOnAxis(v1, angle);
         }
-        ;
         translateOnAxis(axis, distance) {
             let v1 = new Vector3_1.Vector3();
             v1.copy(axis).applyQuaternion(this.quaternion);
             this.position.add(v1.multiplyScalar(distance));
             return this;
         }
-        ;
         translateX(distance) {
             let v1 = new Vector3_1.Vector3(1, 0, 0);
             return this.translateOnAxis(v1, distance);
         }
-        ;
         translateY(distance) {
             let v1 = new Vector3_1.Vector3(0, 1, 0);
             return this.translateOnAxis(v1, distance);
         }
-        ;
         translateZ(distance) {
             let v1 = new Vector3_1.Vector3(0, 0, 1);
             return this.translateOnAxis(v1, distance);
         }
-        ;
         localToWorld(vector) {
             return vector.applyMatrix4(this.matrixWorld);
         }
@@ -117,7 +111,6 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
             let m1 = new Matrix4_1.Matrix4();
             return vector.applyMatrix4(m1.getInverse(this.matrixWorld));
         }
-        ;
         lookAt(x, y = 0, z = 0) {
             let m1 = new Matrix4_1.Matrix4();
             let vector = new Vector3_1.Vector3();
@@ -137,19 +130,17 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
                     this.add(arguments[i]);
                 return this;
             }
+            if (!object)
+                return this;
             if (object === this) {
                 console.error("THREE.Object3D.add: object can't be added as a child of itself.", object);
                 return this;
             }
-            if ((object && object.isObject3D)) {
-                if (object.parent !== null)
-                    object.parent.remove(object);
-                object.parent = this;
-                object.dispatchEvent({ type: 'added' });
-                this.children.push(object);
-            }
-            else
-                console.error("THREE.Object3D.add: object not an instance of THREE.Object3D.", object);
+            if (object.parent !== null)
+                object.parent.remove(object);
+            object.parent = this;
+            object.dispatchEvent({ type: 'added' });
+            this.children.push(object);
             return this;
         }
         remove(object) {
@@ -352,7 +343,7 @@ define(["require", "exports", "./EventDispatcher", "./Layers", "../math/Vector3"
                 return values;
             }
         }
-        clone(recursive) {
+        clone(recursive = false) {
             return new Object3D().copy(this, recursive);
         }
         copy(source, recursive = true) {

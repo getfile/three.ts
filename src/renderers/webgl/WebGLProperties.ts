@@ -7,36 +7,37 @@ import { EventDispatcher } from "../../core/EventDispatcher";
 
 class WebGLProperties
 {
-	properties;
+    properties;
 
-	constructor()
-	{
-		this.properties = {};
-	}
+    constructor()
+    {
+        this.properties = {};
+    }
 
-	get( object: EventDispatcher )
-	{
-		var uuid = object.uuid;
-		var map = this.properties[ uuid ];
+    get(object: EventDispatcher)
+    {
+        var uuid = object.uuid;
+        var map = this.properties[uuid];
 
-		if ( map === undefined )
-		{
-			map = {};
-			this.properties[ uuid ] = map;
-		}
+        if (map === undefined)
+        {
+            map = {};
+            this.properties[uuid] = map;
+        }
 
-		return map;
-	}
+        return map;
+    }
 
-	remove( object )
-	{
-		delete this.properties[ object.uuid ];
-	}
+    remove(object: EventDispatcher)
+    {
+        delete this.properties[object.uuid];
+    }
 
-	clear()
-	{
-		this.properties = {};
-	}
+    clear()
+    {
+        this.properties = {};
+    }
+
 
 }
 

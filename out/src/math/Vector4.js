@@ -336,29 +336,23 @@ define(["require", "exports"], function (require, exports) {
         equals(v) {
             return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z) && (v.w === this.w));
         }
-        fromArray(array, offset) {
-            if (offset === undefined)
-                offset = 0;
+        fromArray(array, offset = 0) {
             this.x = array[offset];
             this.y = array[offset + 1];
             this.z = array[offset + 2];
             this.w = array[offset + 3];
             return this;
         }
-        toArray(array, offset) {
+        toArray(array, offset = 0) {
             if (array === undefined)
                 array = [];
-            if (offset === undefined)
-                offset = 0;
             array[offset] = this.x;
             array[offset + 1] = this.y;
             array[offset + 2] = this.z;
             array[offset + 3] = this.w;
             return array;
         }
-        fromBufferAttribute(attribute, index, offset) {
-            if (offset !== undefined)
-                console.warn('THREE.Vector4: offset has been removed from .fromBufferAttribute().');
+        fromBufferAttribute(attribute, index) {
             this.x = attribute.getX(index);
             this.y = attribute.getY(index);
             this.z = attribute.getZ(index);
