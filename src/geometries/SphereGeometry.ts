@@ -36,7 +36,7 @@ class SphereGeometry extends Geometry
 // SphereBufferGeometry
 class SphereBufferGeometry extends BufferGeometry
 {
-	constructor( radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength )
+	constructor( radius, widthSegments, heightSegments, phiStart: number = 0, phiLength: number = Math.PI * 2, thetaStart: number = 0, thetaLength: number = Math.PI )
 	{
 		super();
 
