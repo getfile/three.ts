@@ -18,7 +18,7 @@ class MeshPhysicalMaterial extends MeshStandardMaterial
 
 	constructor( parameters )
 	{
-		super();
+		super( parameters );
 
 		this.defines = { 'PHYSICAL': '' };
 		this.type = 'MeshPhysicalMaterial';
