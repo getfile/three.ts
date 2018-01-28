@@ -217,7 +217,7 @@ class WebGLPrograms
     }
 
     //add TWebGlProgram
-    acquireProgram( material, shader, parameters, code )
+    acquireProgram( material, shader, parameters, code: string )
     {
         let program: TWebGLProgram;
 

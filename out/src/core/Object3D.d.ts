@@ -5,8 +5,8 @@ import { Matrix3 } from '../math/Matrix3';
 import { Matrix4 } from '../math/Matrix4';
 import { Euler } from '../math/Euler';
 import { Quaternion } from '../math/Quaternion';
-import { Geometry } from './Geometry';
 import { Material } from '../materials/Material';
+import { BufferGeometry } from './BufferGeometry';
 declare class Object3D extends EventDispatcher {
     parent: Object3D;
     children: Array<Object3D>;
@@ -26,7 +26,7 @@ declare class Object3D extends EventDispatcher {
     receiveShadow: boolean;
     frustumCulled: boolean;
     renderOrder: number;
-    geometry: Geometry;
+    geometry: BufferGeometry;
     material: Material;
     userData: Object;
     up: Vector3;

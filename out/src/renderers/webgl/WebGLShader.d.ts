@@ -1,2 +1,2 @@
-declare function webGLShader(gl: WebGLRenderingContext, type: number, string: string): WebGLShader;
+declare function webGLShader(gl: WebGLRenderingContext, type: number, code: string): WebGLShader;
 export { webGLShader };

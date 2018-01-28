@@ -30,12 +30,12 @@ define(["require", "exports", "../math/Vector3", "../math/Matrix4", "../math/Mat
             if (!(attribute instanceof BufferAttribute_1.BufferAttribute) && !(attribute instanceof InterleavedBufferAttribute_1.InterleavedBufferAttribute)) {
                 console.warn('THREE.BufferGeometry: .addAttribute() now expects ( name, attribute ).');
                 this.addAttribute(name, new BufferAttribute_1.BufferAttribute(arguments[1], arguments[2]));
-                return;
+                return this;
             }
             if (name === 'index') {
                 console.warn('THREE.BufferGeometry.addAttribute: Use .setIndex() for index attribute.');
                 this.setIndex(attribute);
-                return;
+                return this;
             }
             this.attributes[name] = attribute;
             return this;
@@ -116,7 +116,6 @@ define(["require", "exports", "../math/Vector3", "../math/Matrix4", "../math/Mat
             obj.updateMatrix();
             this.applyMatrix(obj.matrix);
         }
-        ;
         center() {
             this.computeBoundingBox();
             let offset = this.boundingBox.getCenter().negate();

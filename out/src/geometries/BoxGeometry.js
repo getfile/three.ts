@@ -19,7 +19,7 @@ define(["require", "exports", "../core/Geometry", "../core/BufferGeometry", "../
     }
     exports.BoxGeometry = BoxGeometry;
     class BoxBufferGeometry extends BufferGeometry_1.BufferGeometry {
-        constructor(width, height, depth, widthSegments, heightSegments, depthSegments) {
+        constructor(width = 1, height = 1, depth = 1, widthSegments = 1, heightSegments = 1, depthSegments = 1) {
             super();
             this.type = 'BoxBufferGeometry';
             this.parameters = {

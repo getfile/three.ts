@@ -1,15 +1,17 @@
+import { WebGLExtensions } from "./WebGLExtensions";
+
 /**
  * @author mrdoob / http://mrdoob.com/
  */
 
 class WebGLBufferRenderer
 {
-	gl;
-	extensions;
+	gl:WebGLRenderingContext;
+	extensions:WebGLExtensions;
 	infoRender;
 	mode;
 
-	constructor( gl, extensions, infoRender )
+	constructor( gl:WebGLRenderingContext, extensions, infoRender )
 	{
 		this.gl = gl;
 		this.extensions = extensions;

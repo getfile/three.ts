@@ -4,17 +4,18 @@
 
 class Uniform
 {
-	value: any;
+    value: any;
 
-	constructor( value: any )
-	{
-		this.value = value;
-	}
+    constructor( value: any )
+    {
+        this.value = value;
+    }
 
-	clone():Uniform
-	{
-		return new Uniform( this.value.clone === undefined ? this.value : this.value.clone() );
-	}
+    clone(): Uniform
+    {
+        return new Uniform( this.value.clone === undefined ? this.value : this.value.clone() );
+    }
+
 }
 
 export { Uniform };

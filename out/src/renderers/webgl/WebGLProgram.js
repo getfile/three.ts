@@ -1,4 +1,4 @@
-define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shaders/ShaderChunk.js", "../../constants.js"], function (require, exports, WebGLUniforms_js_1, WebGLShader_js_1, ShaderChunk_js_1, Constant) {
+define(["require", "exports", "./WebGLUniforms", "./WebGLShader", "../shaders/ShaderChunk", "../../constants"], function (require, exports, WebGLUniforms_1, WebGLShader_1, ShaderChunk_1, Constant) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var programIdCount = 0;
@@ -94,7 +94,7 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
     function parseIncludes(string) {
         var pattern = /^[ \t]*#include +<([\w\d.]+)>/gm;
         function replace(match, include) {
-            var replace = ShaderChunk_js_1.ShaderChunk[include];
+            var replace = ShaderChunk_1.ShaderChunk[include];
             if (replace === undefined)
                 throw new Error('Can not resolve #include <' + include + '>');
             return parseIncludes(replace);
@@ -293,10 +293,10 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
                     'uniform mat4 viewMatrix;',
                     'uniform vec3 cameraPosition;',
                     (parameters.toneMapping !== Constant.NoToneMapping) ? '#define TONE_MAPPING' : '',
-                    (parameters.toneMapping !== Constant.NoToneMapping) ? ShaderChunk_js_1.ShaderChunk['tonemapping_pars_fragment'] : '',
+                    (parameters.toneMapping !== Constant.NoToneMapping) ? ShaderChunk_1.ShaderChunk['tonemapping_pars_fragment'] : '',
                     (parameters.toneMapping !== Constant.NoToneMapping) ? getToneMappingFunction('toneMapping', parameters.toneMapping) : '',
                     parameters.dithering ? '#define DITHERING' : '',
-                    (parameters.outputEncoding || parameters.mapEncoding || parameters.envMapEncoding || parameters.emissiveMapEncoding) ? ShaderChunk_js_1.ShaderChunk['encodings_pars_fragment'] : '',
+                    (parameters.outputEncoding || parameters.mapEncoding || parameters.envMapEncoding || parameters.emissiveMapEncoding) ? ShaderChunk_1.ShaderChunk['encodings_pars_fragment'] : '',
                     parameters.mapEncoding ? getTexelDecodingFunction('mapTexelToLinear', parameters.mapEncoding) : '',
                     parameters.envMapEncoding ? getTexelDecodingFunction('envMapTexelToLinear', parameters.envMapEncoding) : '',
                     parameters.emissiveMapEncoding ? getTexelDecodingFunction('emissiveMapTexelToLinear', parameters.emissiveMapEncoding) : '',
@@ -315,8 +315,8 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
             }
             var vertexGlsl = prefixVertex + vertexShader;
             var fragmentGlsl = prefixFragment + fragmentShader;
-            var glVertexShader = WebGLShader_js_1.webGLShader(this.gl, this.gl.VERTEX_SHADER, vertexGlsl);
-            var glFragmentShader = WebGLShader_js_1.webGLShader(this.gl, this.gl.FRAGMENT_SHADER, fragmentGlsl);
+            var glVertexShader = WebGLShader_1.webGLShader(this.gl, this.gl.VERTEX_SHADER, vertexGlsl);
+            var glFragmentShader = WebGLShader_1.webGLShader(this.gl, this.gl.FRAGMENT_SHADER, fragmentGlsl);
             this.gl.attachShader(program, glVertexShader);
             this.gl.attachShader(program, glFragmentShader);
             if (material.index0AttributeName !== undefined) {
@@ -335,9 +335,8 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
                 runnable = false;
                 console.error('THREE.WebGLProgram: shader error: ', this.gl.getError(), 'gl.VALIDATE_STATUS', this.gl.getProgramParameter(program, this.gl.VALIDATE_STATUS), 'gl.getProgramInfoLog', programLog, vertexLog, fragmentLog);
             }
-            else if (programLog !== '') {
+            else if (programLog !== '')
                 console.warn('THREE.WebGLProgram: gl.getProgramInfoLog()', programLog);
-            }
             else if (vertexLog === '' || fragmentLog === '')
                 haveDiagnostics = false;
             if (haveDiagnostics) {
@@ -369,7 +368,7 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
         }
         getUniforms() {
             if (this.cachedUniforms === undefined)
-                this.cachedUniforms = new WebGLUniforms_js_1.WebGLUniforms(this.gl, this.program, this.renderer);
+                this.cachedUniforms = new WebGLUniforms_1.WebGLUniforms(this.gl, this.program, this.renderer);
             return this.cachedUniforms;
         }
         getAttributes() {
@@ -380,14 +379,6 @@ define(["require", "exports", "./WebGLUniforms.js", "./WebGLShader.js", "../shad
         destroy() {
             this.gl.deleteProgram(this.program);
             this.program = undefined;
-        }
-        get uniforms() {
-            console.warn('THREE.WebGLProgram: .uniforms is now .getUniforms().');
-            return this.getUniforms();
-        }
-        get attributes() {
-            console.warn('THREE.WebGLProgram: .attributes is now .getAttributes().');
-            return this.getAttributes();
         }
     }
     exports.TWebGLProgram = TWebGLProgram;

@@ -4,6 +4,6 @@ declare class BoxGeometry extends Geometry {
     constructor(width: any, height: any, depth: any, widthSegments: any, heightSegments: any, depthSegments: any);
 }
 declare class BoxBufferGeometry extends BufferGeometry {
-    constructor(width: any, height: any, depth: any, widthSegments?: any, heightSegments?: any, depthSegments?: any);
+    constructor(width?: number, height?: number, depth?: number, widthSegments?: number, heightSegments?: number, depthSegments?: number);
 }
 export { BoxGeometry, BoxBufferGeometry };

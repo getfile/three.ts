@@ -33,7 +33,8 @@ class BoxGeometry extends Geometry
 // BoxBufferGeometry
 class BoxBufferGeometry extends BufferGeometry 
 {
-	constructor( width, height, depth, widthSegments?, heightSegments?, depthSegments? )
+
+	constructor( width: number = 1, height: number = 1, depth: number = 1, widthSegments: number = 1, heightSegments: number = 1, depthSegments: number = 1 )
 	{
 		super();
 		this.type = 'BoxBufferGeometry';
@@ -57,10 +58,10 @@ class BoxBufferGeometry extends BufferGeometry
 		depthSegments = Math.floor( depthSegments ) || 1;
 
 		// buffers
-		let indices = [];
-		let vertices = [];
-		let normals = [];
-		let uvs = [];
+		let indices: number[] = [];
+		let vertices: number[] = [];
+		let normals: number[] = [];
+		let uvs: number[] = [];
 
 		// helper variables
 		let numberOfVertices = 0;
@@ -80,7 +81,9 @@ class BoxBufferGeometry extends BufferGeometry
 		this.addAttribute( 'normal', new Float32BufferAttribute( normals, 3 ) );
 		this.addAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
 
-		function buildPlane( u, v, w, udir, vdir, width, height, depth, gridX, gridY, materialIndex )
+		function buildPlane( u: string, v: string, w: string, udir: number, vdir: number, //
+			width: number, height: number, depth: number, //
+			gridX: number, gridY: number, materialIndex: number )
 		{
 			let segmentWidth = width / gridX;
 			let segmentHeight = height / gridY;

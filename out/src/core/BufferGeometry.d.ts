@@ -4,27 +4,32 @@ import { Box3 } from '../geom/Box3';
 import { Sphere } from '../geom/Sphere';
 import { EventDispatcher } from './EventDispatcher';
 import { BufferAttribute } from './BufferAttribute';
-import { InterleavedBufferAttribute } from "./InterleavedBufferAttribute";
 import { DirectGeometry } from './DirectGeometry';
+import { Geometry } from './Geometry';
+interface GroupInfo {
+    start: number;
+    count?: number;
+    materialIndex: number;
+}
 declare class BufferGeometry extends EventDispatcher {
     index: BufferAttribute;
     attributes: any;
     morphAttributes: any;
-    groups: any;
+    groups: GroupInfo[];
     boundingBox: Box3;
     boundingSphere: Sphere;
     drawRange: {
-        start;
-        count;
+        start: number;
+        count: number;
     };
     parameters: any;
     constructor();
     getIndex(): BufferAttribute;
-    setIndex(index: any): void;
-    addAttribute(name: any, attribute: BufferAttribute | InterleavedBufferAttribute): this;
+    setIndex(index: BufferAttribute): void;
+    addAttribute(name: string, attribute: any): BufferGeometry;
     getAttribute(name: any): any;
     removeAttribute(name: any): this;
-    addGroup(start: any, count: any, materialIndex?: number): void;
+    addGroup(start: number, count: number, materialIndex?: number): void;
     clearGroups(): void;
     setDrawRange(start: any, count: any): void;
     applyMatrix(matrix: Matrix4): this;
@@ -38,7 +43,7 @@ declare class BufferGeometry extends EventDispatcher {
     setFromObject(object: any): this;
     setFromPoints(points: any): this;
     updateFromObject(object: any): this;
-    fromGeometry(geometry: any): this;
+    fromGeometry(geometry: Geometry): this;
     fromDirectGeometry(geometry: DirectGeometry): this;
     computeBoundingBox(): void;
     computeBoundingSphere(): void;
@@ -62,4 +67,4 @@ declare class BufferGeometry extends EventDispatcher {
     copy(source: BufferGeometry): this;
     dispose(): void;
 }
-export { BufferGeometry };
+export { GroupInfo, BufferGeometry };

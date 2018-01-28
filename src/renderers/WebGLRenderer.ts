@@ -18,7 +18,7 @@ import { WebGLSpriteRenderer } from './webgl/WebGLSpriteRenderer';
 import { WebGLShadowMap } from './webgl/WebGLShadowMap';
 import { WebGLAttributes } from './webgl/WebGLAttributes';
 import { WebGLBackground } from './webgl/WebGLBackground';
-import { WebGLRenderLists, WebGLRenderList } from './webgl/WebGLRenderLists';
+import { WebGLRenderLists, WebGLRenderList, RenderItem } from './webgl/WebGLRenderLists';
 import { WebGLMorphtargets } from './webgl/WebGLMorphtargets';
 import { WebGLIndexedBufferRenderer } from './webgl/WebGLIndexedBufferRenderer';
 import { WebGLBufferRenderer } from './webgl/WebGLBufferRenderer';
@@ -979,12 +979,10 @@ class WebGLRenderer
         if ( this._clippingEnabled ) this._clipping.beginShadows();
 
         this.shadowMap.render( this.shadowsArray, scene, camera );
-
         this.lights.setup( this.lightsArray, this.shadowsArray, camera );
 
         if ( this._clippingEnabled ) this._clipping.endShadows();
 
-        //
         this._infoRender.frame++;
         this._infoRender.calls = 0;
         this._infoRender.vertices = 0;
@@ -995,8 +993,6 @@ class WebGLRenderer
             renderTarget = null;
 
         this.setRenderTarget( renderTarget );
-
-        //
         this.background.render( this.currentRenderList, scene, camera, forceClear );
 
         // render scene
@@ -1006,14 +1002,12 @@ class WebGLRenderer
         if ( scene.overrideMaterial )
         {
             let overrideMaterial = scene.overrideMaterial;
-
             if ( opaqueObjects.length ) this.renderObjects( opaqueObjects, scene, camera, overrideMaterial );
             if ( transparentObjects.length ) this.renderObjects( transparentObjects, scene, camera, overrideMaterial );
         } else
         {
             // opaque pass (front-to-back order)
             if ( opaqueObjects.length ) this.renderObjects( opaqueObjects, scene, camera );
-
             // transparent pass (back-to-front order)
             if ( transparentObjects.length ) this.renderObjects( transparentObjects, scene, camera );
         }
@@ -1107,14 +1101,14 @@ class WebGLRenderer
             } else if ( object.isLensFlare )
             {
                 this.flaresArray.push( object );
+
             } else if ( object.isImmediateRenderObject )
             {
                 if ( sortObjects )
-                {
                     this._vector3.setFromMatrixPosition( object.matrixWorld )
                         .applyMatrix4( this._projScreenMatrix );
-                }
                 this.currentRenderList.push( object, null, object.material, this._vector3.z, null );
+
             } else if ( object.isMesh || object.isLine || object.isPoints )
             {
                 if ( object.isSkinnedMesh )
@@ -1123,10 +1117,8 @@ class WebGLRenderer
                 if ( !object.frustumCulled || this._frustum.intersectsObject( object ) )
                 {
                     if ( sortObjects )
-                    {
                         this._vector3.setFromMatrixPosition( object.matrixWorld )
                             .applyMatrix4( this._projScreenMatrix );
-                    }
 
                     let geometry = this.objects.update( object );
                     let material = object.material;
@@ -1156,7 +1148,7 @@ class WebGLRenderer
             this.projectObject( children[i], camera, sortObjects );
     }
 
-    renderObjects( renderList, scene, camera, overrideMaterial?)
+    renderObjects( renderList: RenderItem[], scene, camera, overrideMaterial?)
     {
         for ( let i = 0, l = renderList.length; i < l; i++ )
         {
