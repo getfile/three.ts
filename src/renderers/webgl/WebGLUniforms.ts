@@ -1,54 +1,11 @@
 /**
  * @author tschw
- *
- * Uniforms of a program.
- * Those form a tree structure with a special top-level container for the root,
- * which you get by calling 'new WebGLUniforms( gl, program, renderer )'.
- *
- *
- * Properties of inner nodes including the top-level container:
- *
- * .seq - array of nested uniforms
- * .map - nested uniforms by name
- *
- *
- * Methods of all nodes except the top-level container:
- *
- * .setValue( gl, value, [renderer] )
- *
- * 		uploads a uniform value(s)
- *  	the 'renderer' parameter is needed for sampler uniforms
- *
- *
- * Static methods of the top-level container (renderer factorizations):
- *
- * .upload( gl, seq, values, renderer )
- *
- * 		sets uniforms in 'seq' to 'values[id].value'
- *
- * .seqWithValue( seq, values ) : filteredSeq
- *
- * 		filters 'seq' entries with corresponding entry in values
- *
- *
- * Methods of the top-level container (renderer factorizations):
- *
- * .setValue( gl, name, value )
- *
- * 		sets uniform with  name 'name' to 'value'
- *
- * .set( gl, obj, prop )
- *
- * 		sets uniform from object and property with same name than uniform
- *
- * .setOptional( gl, obj, prop )
- *
- * 		like .set for an optional property of the object
- *
  */
 
 import { CubeTexture } from '../../textures/CubeTexture';
 import { Texture } from '../../textures/Texture';
+import { Vector4 } from '../../math/Vector4';
+import { WebGLRenderer } from '../WebGLRenderer';
 
 let emptyTexture = new Texture();
 let emptyCubeTexture = new CubeTexture();
@@ -64,7 +21,7 @@ let arrayCacheI32 = [];
 let mat4array = new Float32Array( 16 );
 let mat3array = new Float32Array( 9 );
 
-// Flattening for arrays of vectors and matrices
+/** Flattening for arrays of vectors and matrices */
 function flatten( array, nBlocks, blockSize )
 {
     let firstElem = array[0];
@@ -94,7 +51,7 @@ function flatten( array, nBlocks, blockSize )
 }
 
 // Texture unit allocation
-function allocTexUnits( renderer, n )
+function allocTexUnits( renderer: WebGLRenderer, n )
 {
     let r = arrayCacheI32[n];
     if ( r === undefined )
@@ -109,23 +66,19 @@ function allocTexUnits( renderer, n )
     return r;
 }
 
-// --- Setters ---
-
-// Note: Defining these methods externally, because they come in a bunch
-// and this way their names minify.
-// Single scalar
-function setValue1f( gl, v )
+// set with Single scalar 
+function setValue1f( gl: WebGLRenderingContext, v: number )
 {
     gl.uniform1f( this.addr, v );
 }
 
-function setValue1i( gl, v )
+function setValue1i( gl: WebGLRenderingContext, v: number )
 {
     gl.uniform1i( this.addr, v );
 }
 
-// Single float vector (from flat array or THREE.VectorN)
-function setValue2fv( gl, v )
+/** set with number[] | Vector2 | Vector3 */
+function setValue2fv( gl: WebGLRenderingContext, v )
 {
     if ( v.x === undefined )
         gl.uniform2fv( this.addr, v );
@@ -133,7 +86,8 @@ function setValue2fv( gl, v )
         gl.uniform2f( this.addr, v.x, v.y );
 }
 
-function setValue3fv( gl, v )
+/** set with number[] | Vector3 | Color */
+function setValue3fv( gl: WebGLRenderingContext, v )
 {
     if ( v.x !== undefined )
         gl.uniform3f( this.addr, v.x, v.y, v.z );
@@ -143,7 +97,8 @@ function setValue3fv( gl, v )
         gl.uniform3fv( this.addr, v );
 }
 
-function setValue4fv( gl, v )
+/** set with number[] | Vector4 */
+function setValue4fv( gl: WebGLRenderingContext, v: any )
 {
     if ( v.x === undefined )
         gl.uniform4fv( this.addr, v );
@@ -151,13 +106,14 @@ function setValue4fv( gl, v )
         gl.uniform4f( this.addr, v.x, v.y, v.z, v.w );
 }
 
-// Single matrix (from flat array or MatrixN)
-function setValue2fm( gl, v )
+/** set matrix with Matrix3 | number[] */
+function setValue2fm( gl: WebGLRenderingContext, v )
 {
     gl.uniformMatrix2fv( this.addr, false, v.elements || v );
 }
 
-function setValue3fm( gl, v )
+/** set matrix with Matrix3 | number[] */
+function setValue3fm( gl: WebGLRenderingContext, v )
 {
     if ( v.elements === undefined )
         gl.uniformMatrix3fv( this.addr, false, v );
@@ -168,7 +124,8 @@ function setValue3fm( gl, v )
     }
 }
 
-function setValue4fm( gl, v )
+/** set matrix with Matrix4 | number[] */
+function setValue4fm( gl: WebGLRenderingContext, v )
 {
     if ( v.elements === undefined )
         gl.uniformMatrix4fv( this.addr, false, v );
@@ -179,38 +136,39 @@ function setValue4fm( gl, v )
     }
 }
 
-// Single texture (2D / Cube)
-function setValueT1( gl, v, renderer )
+/** set Single texture (2D / Cube) */
+function setValueT1( gl: WebGLRenderingContext, v, renderer )
 {
     let unit = renderer.allocTextureUnit();
     gl.uniform1i( this.addr, unit );
     renderer.setTexture2D( v || emptyTexture, unit );
 }
 
-function setValueT6( gl, v, renderer )
+/** set cube texture */
+function setValueT6( gl: WebGLRenderingContext, v, renderer )
 {
     let unit = renderer.allocTextureUnit();
     gl.uniform1i( this.addr, unit );
     renderer.setTextureCube( v || emptyCubeTexture, unit );
 }
 
-// Integer / Boolean vectors or arrays thereof (always flat arrays)
-function setValue2iv( gl, v )
+function setValue2iv( gl: WebGLRenderingContext, v: number[] | Int32Array )
 {
     gl.uniform2iv( this.addr, v );
 }
 
-function setValue3iv( gl, v )
+function setValue3iv( gl: WebGLRenderingContext, v: number[] | Int32Array )
 {
     gl.uniform3iv( this.addr, v );
 }
 
-function setValue4iv( gl, v )
+function setValue4iv( gl: WebGLRenderingContext, v: number[] | Int32Array )
 {
     gl.uniform4iv( this.addr, v );
 }
 
 // Helper to pick the right setter for the singular case
+/**get set Function */
 function getSingularSetter( type )
 {
     switch ( type )
@@ -235,50 +193,50 @@ function getSingularSetter( type )
 }
 
 // Array of scalars
-function setValue1fv( gl, v )
+function setValue1fv( gl: WebGLRenderingContext, v )
 {
     gl.uniform1fv( this.addr, v );
 }
 
-function setValue1iv( gl, v )
+function setValue1iv( gl: WebGLRenderingContext, v )
 {
     gl.uniform1iv( this.addr, v );
 }
 
 // Array of vectors (flat or from THREE classes)
-function setValueV2a( gl, v )
+function setValueV2a( gl: WebGLRenderingContext, v )
 {
     gl.uniform2fv( this.addr, flatten( v, this.size, 2 ) );
 }
 
-function setValueV3a( gl, v )
+function setValueV3a( gl: WebGLRenderingContext, v )
 {
     gl.uniform3fv( this.addr, flatten( v, this.size, 3 ) );
 }
 
-function setValueV4a( gl, v )
+function setValueV4a( gl: WebGLRenderingContext, v )
 {
     gl.uniform4fv( this.addr, flatten( v, this.size, 4 ) );
 }
 
 // Array of matrices (flat or from THREE clases)
-function setValueM2a( gl, v )
+function setValueM2a( gl: WebGLRenderingContext, v )
 {
     gl.uniformMatrix2fv( this.addr, false, flatten( v, this.size, 4 ) );
 }
 
-function setValueM3a( gl, v )
+function setValueM3a( gl: WebGLRenderingContext, v )
 {
     gl.uniformMatrix3fv( this.addr, false, flatten( v, this.size, 9 ) );
 }
 
-function setValueM4a( gl, v )
+function setValueM4a( gl: WebGLRenderingContext, v )
 {
     gl.uniformMatrix4fv( this.addr, false, flatten( v, this.size, 16 ) );
 }
 
 // Array of textures (2D / Cube)
-function setValueT1a( gl, v, renderer )
+function setValueT1a( gl: WebGLRenderingContext, v, renderer )
 {
     let n = v.length,
         units = allocTexUnits( renderer, n );
@@ -288,7 +246,7 @@ function setValueT1a( gl, v, renderer )
         renderer.setTexture2D( v[i] || emptyTexture, units[i] );
 }
 
-function setValueT6a( gl, v, renderer )
+function setValueT6a( gl: WebGLRenderingContext, v, renderer )
 {
     let n = v.length,
         units = allocTexUnits( renderer, n );
@@ -322,31 +280,44 @@ function getPureArraySetter( type )
     }
 }
 
-// --- Uniform Classes ---
-function SingleUniform( id, activeInfo, addr )
+/** 单一uniform对象 */
+class SingleUniform
 {
-    this.id = id;
-    this.addr = addr;
-    this.setValue = getSingularSetter( activeInfo.type );
-    // this.path = activeInfo.name; // DEBUG
+    id;
+    addr;
+    setValue;
+    constructor( id: number, activeInfo: WebGLActiveInfo, addr: WebGLUniformLocation )
+    {
+        this.id = id;
+        this.addr = addr;
+        this.setValue = getSingularSetter( activeInfo.type );
+        // this.path = activeInfo.name; // DEBUG
+    }
 }
 
-function PureArrayUniform( id, activeInfo, addr )
+/** 数组uniform对象 */
+class PureArrayUniform
 {
-    this.id = id;
-    this.addr = addr;
-    this.size = activeInfo.size;
-    this.setValue = getPureArraySetter( activeInfo.type );
-    // this.path = activeInfo.name; // DEBUG
+    id;
+    addr;
+    size;
+    setValue;
+    constructor( id: number, activeInfo: WebGLActiveInfo, addr: WebGLUniformLocation )
+    {
+        this.id = id;
+        this.addr = addr;
+        this.size = activeInfo.size;
+        this.setValue = getPureArraySetter( activeInfo.type );
+        // this.path = activeInfo.name; // DEBUG
+    }
 }
 
 // --- Base for inner nodes (including the root) ---
-
+/** 集合和映射表 */
 class UniformContainer
 {
     seq;
     map;
-
     constructor()
     {
         this.seq = [];
@@ -354,6 +325,7 @@ class UniformContainer
     }
 }
 
+/** 组合uniform对象 */
 class StructuredUniform extends UniformContainer
 {
     id;
@@ -364,25 +336,22 @@ class StructuredUniform extends UniformContainer
         this.id = id;
     }
 
-    setValue( gl, value )
+    setValue( gl: WebGLRenderingContext, value )
     {
-        // Note: Don't need an extra 'renderer' parameter, since samplers
-        // are not allowed in structured uniforms.
         let seq = this.seq;
-
         for ( let i = 0, n = seq.length; i !== n; ++i )
         {
             let u = seq[i];
             u.setValue( gl, value[u.id] );
         }
     }
+
 }
 
 
 // --- Top-level ---
 
 // Parser - builds up the property tree from the path strings
-let RePathPart = /([\w\d_]+)(\])?(\[|\.)?/g;
 
 // extracts
 // 	- the identifier (member name or array index)
@@ -393,58 +362,14 @@ let RePathPart = /([\w\d_]+)(\])?(\[|\.)?/g;
 // allow straightforward parsing of the hierarchy that WebGL encodes
 // in the uniform names.
 
-function addUniform( container, uniformObject )
-{
-    container.seq.push( uniformObject );
-    container.map[uniformObject.id] = uniformObject;
-}
-
-function parseUniform( activeInfo, addr, container )
-{
-    let path = activeInfo.name,
-        pathLength = path.length;
-
-    // reset RegExp object, because of the early exit of a previous run
-    RePathPart.lastIndex = 0;
-
-    for ( ; ; )
-    {
-        let match = RePathPart.exec( path ),
-            matchEnd = RePathPart.lastIndex,
-            id: number,
-            ids = match[1],
-            idIsIndex = match[2] === ']',
-            subscript = match[3];
-
-        if ( idIsIndex ) id = Number.parseFloat( ids ); // convert to integer
-
-        if ( subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength )
-        {
-            // bare name or "pure" bottom-level array "[0]" suffix
-            addUniform( container, subscript === undefined ?
-                new SingleUniform( id, activeInfo, addr ) :
-                new PureArrayUniform( id, activeInfo, addr ) );
-            break;
-        } else
-        {
-            // step into inner node / create it in case it doesn't exist
-            let map = container.map, next = map[id];
-            if ( next === undefined )
-            {
-                next = new StructuredUniform( id );
-                addUniform( container, next );
-            }
-            container = next;
-        }
-    }
-}
-
 // Root Container
+
+/**着色器参数集管理 */
 class WebGLUniforms extends UniformContainer
 {
-    renderer;
+    renderer: WebGLRenderer;
 
-    constructor( gl, program, renderer )
+    constructor( gl: WebGLRenderingContext, program, renderer )
     {
         super();
 
@@ -454,26 +379,26 @@ class WebGLUniforms extends UniformContainer
         for ( let i = 0; i < n; ++i )
         {
             let info = gl.getActiveUniform( program, i ),
-                path = info.name,
-                addr = gl.getUniformLocation( program, path );
+                path: string = info.name,
+                addr: WebGLUniformLocation = gl.getUniformLocation( program, path );
 
-            parseUniform( info, addr, this );
+            WebGLUniforms.parseUniform( info, addr, this );
         }
     }
 
-    setValue( gl, name, value )
+    setValue( gl: WebGLRenderingContext, name, value )
     {
         let u = this.map[name];
         if ( u !== undefined ) u.setValue( gl, value, this.renderer );
     }
 
-    setOptional( gl, object, name )
+    setOptional( gl: WebGLRenderingContext, object, name )
     {
         let v = object[name];
         if ( v !== undefined ) this.setValue( gl, name, v );
     }
 
-    static upload( gl, seq, values, renderer )
+    static upload( gl: WebGLRenderingContext, seq, values, renderer )
     {
         for ( let i = 0, n = seq.length; i !== n; ++i )
         {
@@ -499,7 +424,56 @@ class WebGLUniforms extends UniformContainer
         return r;
     }
 
+    static RePathPart = /([\w\d_]+)(\])?(\[|\.)?/g;
+
+    static addUniform( container: UniformContainer, uniformObject: SingleUniform | PureArrayUniform | StructuredUniform )
+    {
+        container.seq.push( uniformObject );
+        container.map[uniformObject.id] = uniformObject;
+    }
+
+    /** 解析activeInfo， 生成uniform对象集 */
+    static parseUniform( activeInfo: WebGLActiveInfo, addr: WebGLUniformLocation, container: UniformContainer )
+    {
+        let path: string = activeInfo.name,
+            pathLength = path.length;
+
+        // reset RegExp object, because of the early exit of a previous run
+        WebGLUniforms.RePathPart.lastIndex = 0;
+
+        for ( ; ; )
+        {
+            let match = WebGLUniforms.RePathPart.exec( path ),
+                matchEnd = WebGLUniforms.RePathPart.lastIndex,
+                id: number,
+                ids = match[1],
+                idIsIndex = match[2] === ']',
+                subscript = match[3];
+
+            if ( idIsIndex ) id = Number.parseFloat( ids ); // convert to integer
+
+            if ( subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength )
+            {
+                // bare name or "pure" bottom-level array "[0]" suffix
+                WebGLUniforms.addUniform( container, subscript === undefined ?
+                    new SingleUniform( id, activeInfo, addr ) :
+                    new PureArrayUniform( id, activeInfo, addr ) );
+                break;
+            } else
+            {
+                // step into inner node / create it in case it doesn't exist
+                let map = container.map, next = map[id];
+                if ( next === undefined )
+                {
+                    next = new StructuredUniform( id );
+                    WebGLUniforms.addUniform( container, next );
+                }
+                container = next;
+            }
+        }
+    }
+
+
 }
 
-
-export { UniformContainer, WebGLUniforms };
+export { SingleUniform, PureArrayUniform, UniformContainer, StructuredUniform, WebGLUniforms };

@@ -40,6 +40,8 @@ import { ArrayCamera } from '../cameras/ArrayCamera';
 import { PerspectiveCamera } from '../cameras/PerspectiveCamera';
 import { Light } from '../lights/Light';
 import { Sprite } from '../objects/Sprite';
+import { Object3D } from '../core/Object3D';
+import { TWebGLProgram } from './webgl/WebGLProgram';
 
 /**
  * @author supereggbert / http://www.paulbrunt.co.uk/
@@ -564,7 +566,7 @@ class WebGLRenderer
         } );
     }
 
-    renderBufferImmediate( object, program, material )
+    renderBufferImmediate( object, program: TWebGLProgram, material )
     {
         this.state.initAttributes();
 
@@ -835,6 +837,7 @@ class WebGLRenderer
                         this._gl.bindBuffer( this._gl.ARRAY_BUFFER, buffer );
                         this._gl.vertexAttribPointer( programAttribute, size, type, normalized, 0, startIndex * size * bytesPerElement );
                     }
+
                 } else if ( materialDefaultAttributeValues !== undefined )
                 {
                     let value = materialDefaultAttributeValues[name];
@@ -867,14 +870,14 @@ class WebGLRenderer
     }
 
     // Compile
-    compile( scene, camera )
+    compile( scene: Scene, camera )
     {
         this.lightsArray.length = 0;
         this.shadowsArray.length = 0;
 
-        scene.traverse( function ( object )
+        scene.traverse( ( object: Object3D ) =>
         {
-            if ( object.isLight )
+            if ( object instanceof Light )
             {
                 this.lightsArray.push( object );
                 if ( object.castShadow )
@@ -884,7 +887,7 @@ class WebGLRenderer
 
         this.lights.setup( this.lightsArray, this.shadowsArray, camera );
 
-        scene.traverse( function ( object )
+        scene.traverse( ( object: Object3D ) =>
         {
             if ( object.material )
             {
