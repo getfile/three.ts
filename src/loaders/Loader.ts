@@ -8,12 +8,14 @@ import { Color } from '../math/Color';
  * @author alteredq / http://alteredqualia.com/
  */
 
+/** 资源加载器 */
 class Loader
 {
     onLoadStart;
     onLoadProgress;
     onLoadComplete;
 
+    /** [regex, loader, ...] */
     handlers;
     crossOrigin;
 
@@ -33,11 +35,11 @@ class Loader
 
     get( file )
     {
-        var handlers = this.handlers;
-        for ( var i = 0, l = handlers.length; i < l; i += 2 )
+        let handlers = this.handlers;
+        for ( let i = 0, l = handlers.length; i < l; i += 2 )
         {
-            var regex = handlers[i];
-            var loader = handlers[i + 1];
+            let regex = handlers[i];
+            let loader = handlers[i + 1];
 
             if ( regex.test( file ) )
                 return loader;
@@ -48,15 +50,15 @@ class Loader
 
     initMaterials( materials, texturePath, crossOrigin )
     {
-        var array = [];
-        for ( var i = 0; i < materials.length; ++i )
+        let array = [];
+        for ( let i = 0; i < materials.length; ++i )
             array[i] = this.createMaterial( materials[i], texturePath, crossOrigin );
         return array;
     }
 
-    createMaterial( m, texturePath, crossOrigin )
+    createMaterial( m, texturePath: string, crossOrigin )
     {
-        var BlendingMode = {
+        let BlendingMode = {
             NoBlending: Constant.NoBlending,
             NormalBlending: Constant.NormalBlending,
             AdditiveBlending: Constant.AdditiveBlending,
@@ -65,19 +67,19 @@ class Loader
             CustomBlending: Constant.CustomBlending
         };
 
-        var color = new Color();
-        var textureLoader = new TextureLoader();
-        var materialLoader = new MaterialLoader();
+        let color = new Color();
+        let textureLoader = new TextureLoader();
+        let materialLoader = new MaterialLoader();
 
         // convert from old material format
-        var textures = {};
+        let textures = {};
 
         function loadTexture( path, repeat, offset, wrap, anisotropy )
         {
-            var fullPath = texturePath + path;
-            var loader = this.get( fullPath );
+            let fullPath = texturePath + path;
+            let loader = this.get( fullPath );
 
-            var texture;
+            let texture;
 
             if ( loader !== null )
                 texture = loader.load( fullPath );
@@ -110,20 +112,20 @@ class Loader
             if ( anisotropy !== undefined )
                 texture.anisotropy = anisotropy;
 
-            var uuid = _Math.generateUUID();
+            let uuid = _Math.generateUUID();
             textures[uuid] = texture;
             return uuid;
         }
 
         //
-        var json: any = {
+        let json: any = {
             uuid: _Math.generateUUID(),
             type: 'MeshLambertMaterial'
         };
 
-        for ( var name in m )
+        for ( let name in m )
         {
-            var value = m[name];
+            let value = m[name];
             switch ( name )
             {
                 case 'DbgColor':

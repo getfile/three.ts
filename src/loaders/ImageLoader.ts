@@ -3,29 +3,29 @@
  */
 
 import { Cache } from './Cache';
-import { defaultLoadingManager } from './LoadingManager';
+import { defaultLoadingManager, LoadingManager } from './LoadingManager';
 
 
 class ImageLoader
 {
-    manager;
-    crossOrigin;
-    path;
+    manager: LoadingManager;
+    crossOrigin: string;
+    path: string;
 
-    constructor( manager )
+    constructor( manager: LoadingManager )
     {
         this.manager = ( manager !== undefined ) ? manager : defaultLoadingManager;
         this.crossOrigin = 'Anonymous';
     }
 
-    load( url, onLoad, onProgress, onError )
+    load( url: string, onLoad: Function, onProgress: Function, onError: Function ): HTMLImageElement
     {
         if ( url === undefined ) url = '';
         if ( this.path !== undefined ) url = this.path + url;
 
         url = this.manager.resolveURL( url );
         var cached = Cache.get( url );
-        if ( cached !== undefined )
+        if ( cached !== undefined ) //文件已经加载过
         {
             this.manager.itemStart( url );
             setTimeout( () =>
@@ -40,8 +40,8 @@ class ImageLoader
         var image: HTMLImageElement = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'img' ) as HTMLImageElement;
         image.addEventListener( 'load', () =>
         {
-            Cache.add( url, this );
-            if ( onLoad ) onLoad( this );
+            Cache.add( url, image );
+            if ( onLoad ) onLoad( image );
             this.manager.itemEnd( url );
         }, false );
 
@@ -56,7 +56,6 @@ class ImageLoader
             if ( onError ) onError( event );
             this.manager.itemEnd( url );
             this.manager.itemError( url );
-
         }, false );
 
         if ( url.substr( 0, 5 ) !== 'data:' )
@@ -70,13 +69,13 @@ class ImageLoader
         return image;
     }
 
-    setCrossOrigin( value )
+    setCrossOrigin( value: string ): ImageLoader
     {
         this.crossOrigin = value;
         return this;
     }
 
-    setPath( value )
+    setPath( value: string ): ImageLoader
     {
         this.path = value;
         return this;

@@ -5,56 +5,55 @@
 import { RGBAFormat, RGBFormat } from '../constants';
 import { ImageLoader } from './ImageLoader';
 import { Texture } from '../textures/Texture';
-import { DefaultLoadingManager } from './LoadingManager';
+import { defaultLoadingManager, LoadingManager } from './LoadingManager';
 
 
 class TextureLoader
 {
-	manager;
-	crossOrigin;
-	path;
+    manager: LoadingManager;
+    crossOrigin: string;
+    path: string;
 
-	constructor( manager? )
-	{
-		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
-		this.crossOrigin = 'Anonymous';
-	}
+    constructor( manager?: LoadingManager )
+    {
+        this.manager = ( manager !== undefined ) ? manager : defaultLoadingManager;
+        this.crossOrigin = 'Anonymous';
+    }
 
-	load( url, onLoad?, onProgress?, onError? )
-	{
-		var texture = new Texture();
+    load( url: string, onLoad?: Function, onProgress?: Function, onError?: Function ): Texture
+    {
+        var texture = new Texture();
 
-		var loader = new ImageLoader( this.manager );
-		loader.setCrossOrigin( this.crossOrigin );
-		loader.setPath( this.path );
-		loader.load( url, function ( image )
-		{
-			texture.image = image;
+        var loader = new ImageLoader( this.manager );
+        loader.setCrossOrigin( this.crossOrigin );
+        loader.setPath( this.path );
+        loader.load( url, ( image ) =>
+        {
+            texture.image = image;
 
-			// JPEGs can't have an alpha channel, so memory can be saved by storing them as RGB.
-			var isJPEG = url.search( /\.(jpg|jpeg)$/ ) > 0 || url.search( /^data\:image\/jpeg/ ) === 0;
+            // JPEGs can't have an alpha channel, so memory can be saved by storing them as RGB.
+            var isJPEG = url.search( /\.(jpg|jpeg)$/ ) > 0 || url.search( /^data\:image\/jpeg/ ) === 0;
+            texture.format = isJPEG ? RGBFormat : RGBAFormat;
+            texture.needsUpdate = true;
 
-			texture.format = isJPEG ? RGBFormat : RGBAFormat;
-			texture.needsUpdate = true;
+            if ( onLoad !== undefined )
+                onLoad( texture );
+        }, onProgress, onError );
 
-			if ( onLoad !== undefined )
-				onLoad( texture );
-		}, onProgress, onError );
+        return texture;
+    }
 
-		return texture;
-	}
+    setCrossOrigin( value: string ): TextureLoader
+    {
+        this.crossOrigin = value;
+        return this;
+    }
 
-	setCrossOrigin( value )
-	{
-		this.crossOrigin = value;
-		return this;
-	}
-
-	setPath( value )
-	{
-		this.path = value;
-		return this;
-	}
+    setPath( value: string ): TextureLoader
+    {
+        this.path = value;
+        return this;
+    }
 
 }
 

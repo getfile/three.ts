@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-/**加载管理 */
+/**加载项管理 */
 class LoadingManager
 {
     onStart: Function;
@@ -29,7 +29,7 @@ class LoadingManager
         this.onError = onError;
     }
 
-    //loader start
+    /**添加加载项 */
     itemStart( url: string )
     {
         this.itemsTotal++;
@@ -41,7 +41,7 @@ class LoadingManager
         this.isLoading = true;
     }
 
-    //loader over
+    /**结束加载项 */
     itemEnd( url: string )
     {
         this.itemsLoaded++;
@@ -56,7 +56,7 @@ class LoadingManager
         }
     }
 
-    //loader error
+    /**加载项加载出错 */
     itemError( url: string )
     {
         if ( this.onError !== undefined )
@@ -80,6 +80,7 @@ class LoadingManager
 
 }
 
+/** 默认加载项管理器 */
 let defaultLoadingManager = new LoadingManager();
 
 
